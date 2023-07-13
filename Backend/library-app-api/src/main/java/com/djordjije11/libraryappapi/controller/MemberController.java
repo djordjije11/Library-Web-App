@@ -1,11 +1,11 @@
 package com.djordjije11.libraryappapi.controller;
 
+import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.model.Member;
 import com.djordjije11.libraryappapi.repository.member.MemberReadonlyRepository;
-import com.djordjije11.libraryappapi.service.MemberService;
+import com.djordjije11.libraryappapi.service.member.MemberService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,11 +25,13 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Member getById(@PathVariable Long id){
-        return memberReadonlyRepository.findById(id).orElseThrow();
+        return memberReadonlyRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("Member not found."));
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody Member member){
         memberService.save(member);
     }
