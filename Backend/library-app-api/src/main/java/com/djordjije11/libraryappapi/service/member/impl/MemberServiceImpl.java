@@ -16,10 +16,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public void save(Member member){
-        if(member == null || StringExt.isNullOrBlank(member.getEmail())){
-            throw new RecordNotValidException();
-        }
-
         memberRepository.save(member);
     }
 }
