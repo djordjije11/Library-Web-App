@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.validation;
+package com.djordjije11.libraryappapi.validation.before;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(validatedBy = BeforeValidator.class)
+@Constraint(validatedBy = BeforeLocalDateValidator.class)
 public @interface Before {
     public int years() default 0;
     public int months() default 0;

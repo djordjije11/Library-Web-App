@@ -1,7 +1,5 @@
 package com.djordjije11.libraryappapi.service.member.impl;
 
-import com.djordjije11.libraryappapi.exception.RecordNotValidException;
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import com.djordjije11.libraryappapi.model.Member;
 import com.djordjije11.libraryappapi.repository.member.MemberRepository;
 import com.djordjije11.libraryappapi.service.member.MemberService;
@@ -15,7 +13,7 @@ public class MemberServiceImpl implements MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public void save(Member member){
-        memberRepository.save(member);
+    public Member save(Member member){
+        return memberRepository.save(member);
     }
 }

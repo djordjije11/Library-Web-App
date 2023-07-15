@@ -1,7 +1,7 @@
-package com.djordjije11.libraryappapi.dto;
+package com.djordjije11.libraryappapi.dto.member;
 
 import com.djordjije11.libraryappapi.model.Gender;
-import com.djordjije11.libraryappapi.validation.Before;
+import com.djordjije11.libraryappapi.validation.before.Before;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
@@ -14,10 +14,9 @@ public record SaveMemberDto(
         @NotBlank(message = "Lastname is mandatory.")
         String lastname,
         Gender gender,
-        @NotBlank
+        @NotBlank(message = "Email is mandatory.")
         @Email(message = "Email must be valid.")
         String email,
-        @Past(message = "Birthday must be in past.")
         @Before(years = 16, message = "Member must be at least 16 years old.")
         LocalDate birthday
 ) {

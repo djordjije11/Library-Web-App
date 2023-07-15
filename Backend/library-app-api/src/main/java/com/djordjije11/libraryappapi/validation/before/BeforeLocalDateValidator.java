@@ -1,10 +1,10 @@
-package com.djordjije11.libraryappapi.validation;
+package com.djordjije11.libraryappapi.validation.before;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 
-public class BeforeValidator implements ConstraintValidator<Before, LocalDate> {
+public class BeforeLocalDateValidator implements ConstraintValidator<Before, LocalDate> {
     private int years;
     private int months;
     private int days;
@@ -19,9 +19,6 @@ public class BeforeValidator implements ConstraintValidator<Before, LocalDate> {
 
     @Override
     public boolean isValid(LocalDate localDate, ConstraintValidatorContext constraintValidatorContext) {
-        if(localDate == null){
-            return true;
-        }
-        return localDate.isBefore(LocalDate.now().minusYears(years).minusMonths(months).minusDays(days));
+        return localDate == null || localDate.isBefore(LocalDate.now().minusYears(years).minusMonths(months).minusDays(days));
     }
 }
