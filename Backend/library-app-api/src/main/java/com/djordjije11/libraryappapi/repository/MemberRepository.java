@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.repository.member;
+package com.djordjije11.libraryappapi.repository;
 
 import com.djordjije11.libraryappapi.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

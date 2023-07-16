@@ -20,6 +20,10 @@ public class Building {
     public Building() {
     }
 
+    public Building(Address address){
+        this.address = address;
+    }
+
     public Long getId() {
         return id;
     }

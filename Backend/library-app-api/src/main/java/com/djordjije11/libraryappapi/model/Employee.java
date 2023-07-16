@@ -33,6 +33,17 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(String idCardNumber, String firstname, String lastname, Gender gender, String username, String email, String password, Building building) {
+        this.idCardNumber = idCardNumber;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.building = building;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }

@@ -1,7 +1,6 @@
 package com.djordjije11.libraryappapi.model;
 
 import jakarta.persistence.*;
-import org.springframework.core.annotation.Order;
 
 @Entity
 public class City {
@@ -13,8 +12,15 @@ public class City {
     private Long id;
     @Column(nullable = false, columnDefinition = "nvarchar(100)")
     private String name;
+    @Column(nullable = false, unique = true)
+    private String zipcode;
 
     public City() {
+    }
+
+    public City(String name, String zipcode){
+        this.name = name;
+        this.zipcode = zipcode;
     }
 
     public long getRowVersion() {
@@ -39,5 +45,13 @@ public class City {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 }

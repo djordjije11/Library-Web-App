@@ -21,6 +21,12 @@ public class Address {
     public Address() {
     }
 
+    public Address(String streetName, Integer streetNumber, City city) {
+        this.streetName = streetName;
+        this.streetNumber = streetNumber;
+        this.city = city;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }
