@@ -5,7 +5,7 @@ import com.djordjije11.libraryappapi.validation.before.Before;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
-public record SaveMemberDto(
+public record CreateMemberDto(
         @Size(min = 10, max = 20, message = "IdCardNumber must be between 10 and 20 characters.")
         @Pattern(regexp = "^\\d{10,20}$", message = "IdCardNumber must be valid.")
         String idCardNumber,
