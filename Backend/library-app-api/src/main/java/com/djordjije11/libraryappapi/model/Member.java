@@ -32,6 +32,15 @@ public class Member {
     public Member() {
     }
 
+    public Member(String idCardNumber, String firstname, String lastname, Gender gender, String email, LocalDate birthday) {
+        this.idCardNumber = idCardNumber;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.email = email;
+        this.birthday = birthday;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }

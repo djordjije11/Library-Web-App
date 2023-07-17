@@ -25,6 +25,13 @@ public class Lending {
     public Lending() {
     }
 
+    public Lending(LocalDate lendingDate, LocalDate returnDate, BookCopy bookCopy, Member member) {
+        this.lendingDate = lendingDate;
+        this.returnDate = returnDate;
+        this.bookCopy = bookCopy;
+        this.member = member;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }

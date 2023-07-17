@@ -34,6 +34,13 @@ public class BookCopy {
     public BookCopy() {
     }
 
+    public BookCopy(String isbn, BookCopyStatus status, Book book, Building building) {
+        this.isbn = isbn;
+        this.status = status;
+        this.book = book;
+        this.building = building;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }

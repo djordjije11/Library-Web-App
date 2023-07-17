@@ -25,6 +25,12 @@ public class Author {
     public Author() {
     }
 
+    public Author(String firstname, String lastname, String biography){
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.biography = biography;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }
