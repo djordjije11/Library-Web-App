@@ -1,5 +1,6 @@
 package com.djordjije11.libraryappapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,8 @@ public class Book {
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_book_publisher"))
     private Publisher publisher;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
+    @OneToMany(mappedBy = "book")
+//    @JsonIgnore
     private List<BookCopy> bookCopies = new ArrayList<>();
 
     @ManyToMany
@@ -34,6 +36,10 @@ public class Book {
     private List<Author> authors = new ArrayList<>();
 
     public Book() {
+    }
+
+    public Book(Long id) {
+        this.id = id;
     }
 
     public long getRowVersion() {

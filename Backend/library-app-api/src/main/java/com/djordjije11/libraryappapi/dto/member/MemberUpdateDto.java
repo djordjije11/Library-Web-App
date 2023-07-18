@@ -2,10 +2,14 @@ package com.djordjije11.libraryappapi.dto.member;
 
 import com.djordjije11.libraryappapi.model.Gender;
 import com.djordjije11.libraryappapi.validation.before.Before;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
-public record CreateMemberDto(
+public record MemberUpdateDto(
+        long rowVersion,
         @Size(min = 10, max = 20, message = "IdCardNumber must be between 10 and 20 characters.")
         @Pattern(regexp = "^\\d{10,20}$", message = "IdCardNumber must be valid.")
         String idCardNumber,

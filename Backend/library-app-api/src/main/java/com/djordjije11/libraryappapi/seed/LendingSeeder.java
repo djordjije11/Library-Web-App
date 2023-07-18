@@ -1,11 +1,12 @@
 package com.djordjije11.libraryappapi.seed;
 
+import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.helper.random.util.RandomUtil;
-import com.djordjije11.libraryappapi.model.BookCopy;
-import com.djordjije11.libraryappapi.model.Lending;
-import com.djordjije11.libraryappapi.model.Member;
+import com.djordjije11.libraryappapi.model.*;
+import com.djordjije11.libraryappapi.repository.BookCopyRepository;
 import com.djordjije11.libraryappapi.repository.LendingRepository;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Random;
 @Component
 public class LendingSeeder {
     private final LendingRepository lendingRepository;
+    private final BookCopyRepository bookCopyRepository;
     private final Random random;
 
     private static class LendingDates {
@@ -34,7 +36,7 @@ public class LendingSeeder {
             if (randomLendingDate.isAfter(dateNow)) {
                 return new LendingDates(dateNow, null);
             }
-            if(random.nextBoolean()){
+            if (random.nextBoolean()) {
                 return new LendingDates(randomLendingDate, null);
             }
             LocalDate randomReturnDate = randomLendingDate
@@ -46,8 +48,9 @@ public class LendingSeeder {
         }
     }
 
-    public LendingSeeder(LendingRepository lendingRepository) {
+    public LendingSeeder(LendingRepository lendingRepository, BookCopyRepository bookCopyRepository) {
         this.lendingRepository = lendingRepository;
+        this.bookCopyRepository = bookCopyRepository;
         this.random = new Random();
     }
 
@@ -61,7 +64,13 @@ public class LendingSeeder {
 
     private Lending seedLending(Member member, BookCopy bookCopy) {
         LendingDates lendingDates = LendingDates.getLendingDates(member.getBirthday(), random);
-        var lending = new Lending(lendingDates.lendingDate, lendingDates.returnDate, bookCopy, member);
+        BookCopy dbBookCopy = bookCopyRepository.findById(bookCopy.getId()).get();
+        if (lendingDates.returnDate == null) {
+            dbBookCopy.setStatus(BookCopyStatus.LENT);
+            dbBookCopy.setBuilding(null);
+            bookCopyRepository.save(dbBookCopy);
+        }
+        var lending = new Lending(lendingDates.lendingDate, lendingDates.returnDate, dbBookCopy, member);
         return lendingRepository.save(lending);
     }
 }

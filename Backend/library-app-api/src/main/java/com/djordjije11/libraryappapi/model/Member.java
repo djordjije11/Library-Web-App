@@ -41,6 +41,14 @@ public class Member {
         this.birthday = birthday;
     }
 
+    public Member(Long id, String idCardNumber, String firstname, String lastname, String email) {
+        this.id = id;
+        this.idCardNumber = idCardNumber;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }

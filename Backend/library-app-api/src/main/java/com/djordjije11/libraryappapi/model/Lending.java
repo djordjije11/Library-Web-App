@@ -15,7 +15,7 @@ public class Lending {
     private LocalDate lendingDate;
     private LocalDate returnDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_lending_book_copy"))
     private BookCopy bookCopy;
     @ManyToOne
@@ -23,6 +23,12 @@ public class Lending {
     private Member member;
 
     public Lending() {
+    }
+
+    public Lending(LocalDate lendingDate, BookCopy bookCopy, Member member) {
+        this.lendingDate = lendingDate;
+        this.bookCopy = bookCopy;
+        this.member = member;
     }
 
     public Lending(LocalDate lendingDate, LocalDate returnDate, BookCopy bookCopy, Member member) {

@@ -1,5 +1,6 @@
 package com.djordjije11.libraryappapi.controller.exceptionhandler;
 
+import com.djordjije11.libraryappapi.exception.ErrorType;
 import com.djordjije11.libraryappapi.exception.RecordNotCurrentVersionException;
 import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.exception.RequestNotValidException;
@@ -22,29 +23,32 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RecordNotCurrentVersionException.class)
     protected ResponseEntity<Object> handleRecordNotCurrentVersion(RecordNotCurrentVersionException ex, WebRequest request){
         var responseBody = new HashMap<String, Object>();
-        responseBody.put("error", ex.getMessage());
-        responseBody.put("record", ex.getRecord());
+        responseBody.put("error", ErrorType.RECORD_NOT_CURRENT_VERSION);
+        responseBody.put("message", ex.getMessage());
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(StaleObjectStateException.class)
     protected ResponseEntity<Object> handleRecordNotCurrentVersion(StaleObjectStateException ex, WebRequest request){
         var responseBody = new HashMap<String, Object>();
-        responseBody.put("error", ex.getMessage());
+        responseBody.put("error", ErrorType.RECORD_NOT_CURRENT_VERSION);
+        responseBody.put("message", ex.getMessage());
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(RecordNotFoundException.class)
     protected ResponseEntity<Object> handleRecordNotFound(RecordNotFoundException ex, WebRequest request){
         var responseBody = new HashMap<String, Object>();
-        responseBody.put("error", ex.getMessage());
+        responseBody.put("error", ErrorType.RECORD_NOT_FOUND);
+        responseBody.put("message", ex.getMessage());
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(RequestNotValidException.class)
     protected ResponseEntity<Object> handleRequestNotValid(RequestNotValidException ex, WebRequest request){
         var responseBody = new HashMap<String, Object>();
-        responseBody.put("error", ex.getMessage());
+        responseBody.put("error", ErrorType.REQUEST_NOT_VALID);
+        responseBody.put("message", ex.getMessage());
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
@@ -57,7 +61,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        responseBody.put("errors", errors);
+        responseBody.put("messages", errors);
+        responseBody.put("error", ErrorType.RECORD_NOT_VALID);
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
 }

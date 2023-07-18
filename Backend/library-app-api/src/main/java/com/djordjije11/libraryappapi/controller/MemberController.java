@@ -1,8 +1,10 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.dto.mapper.EntityMapper;
-import com.djordjije11.libraryappapi.dto.member.CreateMemberDto;
+import com.djordjije11.libraryappapi.dto.member.MemberUpdateDto;
+import com.djordjije11.libraryappapi.mapper.member.MemberMapper;
+import com.djordjije11.libraryappapi.dto.member.MemberCreateDto;
 import com.djordjije11.libraryappapi.dto.member.MemberDto;
+import com.djordjije11.libraryappapi.dto.member.MemberShortDto;
 import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.exception.RequestNotValidException;
 import com.djordjije11.libraryappapi.service.member.MemberService;
@@ -16,16 +18,17 @@ import java.util.List;
 @RequestMapping("/api/member")
 public class MemberController {
     private final MemberService memberService;
-    private final EntityMapper mapper;
+    private final MemberMapper mapper;
 
-    public MemberController(MemberService memberService, EntityMapper mapper) {
+    public MemberController(MemberService memberService, MemberMapper mapper) {
         this.memberService = memberService;
         this.mapper = mapper;
     }
 
     @GetMapping
-    public ResponseEntity<List<MemberDto>> getAll() {
-        var memberDtos = memberService.getAll().stream().map(mapper::map).toList();
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<MemberShortDto>> getAll() {
+        var memberDtos = memberService.getAll().stream().map(mapper::mapShort).toList();
         return ResponseEntity.ok(memberDtos);
     }
 
@@ -34,23 +37,26 @@ public class MemberController {
     public ResponseEntity<MemberDto> getById(@PathVariable Long id) {
         var member = memberService.get(id)
                 .orElseThrow(() -> new RecordNotFoundException(id));
-        return ResponseEntity.ok(mapper.map(member));
+        return ResponseEntity.ok(mapper.mapDetail(member));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<MemberDto> create(@Valid @RequestBody CreateMemberDto memberDto) throws RequestNotValidException {
+    public ResponseEntity<MemberDto> create(@Valid @RequestBody MemberCreateDto memberDto) throws RequestNotValidException {
         var member = memberService.create(mapper.map(memberDto));
-        return new ResponseEntity<>(mapper.map(member), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.mapDetail(member), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<MemberDto> update(@PathVariable Long id, @Valid @RequestBody MemberDto memberDto) throws RequestNotValidException {
+    public ResponseEntity<MemberDto> update(
+            @PathVariable Long id,
+            @Valid @RequestBody MemberUpdateDto memberDto
+    ) throws RequestNotValidException {
         var member = mapper.map(memberDto);
         member.setId(id);
         var dbMember = memberService.update(member);
-        return new ResponseEntity<>(mapper.map(dbMember), HttpStatus.OK);
+        return ResponseEntity.ok(mapper.mapDetail(dbMember));
     }
 
     @DeleteMapping("/{id}")

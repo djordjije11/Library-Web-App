@@ -8,9 +8,9 @@ import com.djordjije11.libraryappapi.repository.BookRepository;
 import com.djordjije11.libraryappapi.repository.PublisherRepository;
 import com.github.javafaker.Faker;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Component;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,7 +20,6 @@ import java.util.Random;
 
 @Component
 public class BookSeeder {
-    private static final String BOOKS = "seed\\books.csv";
     private final InputStream BOOKS_DATASET_PATH = getClass().getClassLoader().getResourceAsStream("seed\\books.csv");
 
     private final Faker faker;
@@ -126,7 +125,9 @@ public class BookSeeder {
 
     private void seedBooks(int count, int bookCopiesMaxCount) throws IOException, CsvValidationException {
         int counter = 0;
-        CSVReader csvReader = new CSVReader(new InputStreamReader(BOOKS_DATASET_PATH));
+        CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(BOOKS_DATASET_PATH))
+                .withSkipLines(1)
+                .build();
         String[] record;
         while (counter < count && (record = csvReader.readNext()) != null) {
             if (random.nextBoolean()) {

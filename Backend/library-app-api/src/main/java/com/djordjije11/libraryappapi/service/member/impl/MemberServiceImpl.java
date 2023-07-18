@@ -8,11 +8,13 @@ import com.djordjije11.libraryappapi.exception.member.MemberWithLendingsDeleteEx
 import com.djordjije11.libraryappapi.model.Member;
 import com.djordjije11.libraryappapi.repository.LendingRepository;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
+import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.member.MemberService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@GlobalTransactional
 @Service
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
@@ -24,7 +26,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public Member create(Member member) throws MemberIdCardNotUniqueException {
-        if(memberRepository.existsByIdCardNumber(member.getIdCardNumber())){
+        if (memberRepository.existsByIdCardNumber(member.getIdCardNumber())) {
             throw new MemberIdCardNotUniqueException(member.getIdCardNumber());
         }
         return memberRepository.save(member);
@@ -37,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void delete(Long id) throws MemberWithLendingsDeleteException {
-        if(lendingRepository.existsByMemberId(id)){
+        if (lendingRepository.existsByMemberId(id)) {
             throw new MemberWithLendingsDeleteException();
         }
         memberRepository.deleteById(id);
@@ -46,13 +48,14 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member update(Member member) throws RequestNotValidException, RecordNotFoundException {
         var dbMember = memberRepository.findById(member.getId())
-                .orElseThrow(() -> new RecordNotFoundException(member.getId()));
+                .orElseThrow(() -> new RecordNotFoundException(Member.class, member.getId()));
 
-        if(dbMember.getRowVersion() != member.getRowVersion()){
-            throw new RecordNotCurrentVersionException(dbMember);
+        if (dbMember.getRowVersion() != member.getRowVersion()) {
+            throw new RecordNotCurrentVersionException();
         }
 
-        if(memberRepository.existsByIdCardNumberAndIdIsNot(member.getIdCardNumber(), member.getId())){
+        boolean idCardNumberChanged = dbMember.getIdCardNumber().equals(member.getIdCardNumber()) == false;
+        if (idCardNumberChanged && memberRepository.existsByIdCardNumberAndIdIsNot(member.getIdCardNumber(), member.getId())) {
             throw new MemberIdCardNotUniqueException(member.getIdCardNumber());
         }
 
@@ -68,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public List<Member> getAll(){
-        return memberRepository.findAll();
+    public List<Member> getAll() {
+        return memberRepository.findAllByIdMemberShort();
     }
 }

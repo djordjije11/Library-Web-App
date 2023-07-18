@@ -1,5 +1,6 @@
 package com.djordjije11.libraryappapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Author {
     private String biography;
 
     @ManyToMany(mappedBy = "authors")
+//    @JsonIgnore
     private List<Book> books = new ArrayList<>();
 
     public Author() {

@@ -15,6 +15,7 @@ public class Building {
     private Address address;
 
     @OneToMany(mappedBy = "building")
+//    @JsonIgnore
     private List<Employee> employees = new ArrayList<>();
 
     public Building() {
