@@ -21,6 +21,10 @@ public class Building {
     public Building() {
     }
 
+    public Building(Long id){
+        this.id = id;
+    }
+
     public Building(Address address){
         this.address = address;
     }

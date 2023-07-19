@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.controller;
+package com.djordjije11.libraryappapi.service.lending.impl.controller;
 
 import com.djordjije11.libraryappapi.dto.member.MemberUpdateDto;
 import com.djordjije11.libraryappapi.mapper.member.MemberMapper;
@@ -35,9 +35,7 @@ public class MemberController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<MemberDto> getById(@PathVariable Long id) {
-        var member = memberService.get(id)
-                .orElseThrow(() -> new RecordNotFoundException(id));
-        return ResponseEntity.ok(mapper.mapDetail(member));
+        return ResponseEntity.ok(mapper.mapDetail(memberService.get(id)));
     }
 
     @PostMapping

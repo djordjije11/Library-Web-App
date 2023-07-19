@@ -6,7 +6,6 @@ import com.djordjije11.libraryappapi.model.*;
 import com.djordjije11.libraryappapi.repository.BookCopyRepository;
 import com.djordjije11.libraryappapi.repository.LendingRepository;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;

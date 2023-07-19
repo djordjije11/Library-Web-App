@@ -1,6 +1,5 @@
 package com.djordjije11.libraryappapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class Book {
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_book_publisher"))
     private Publisher publisher;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
 //    @JsonIgnore
     private List<BookCopy> bookCopies = new ArrayList<>();
 

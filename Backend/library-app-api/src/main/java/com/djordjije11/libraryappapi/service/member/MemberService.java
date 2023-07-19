@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface MemberService {
     Member create(Member member) throws MemberIdCardNotUniqueException;
-    Optional<Member> get(Long id);
+    Member get(Long id);
     void delete(Long id) throws MemberWithLendingsDeleteException;
     Member update(Member member) throws RequestNotValidException, RecordNotFoundException;
 
