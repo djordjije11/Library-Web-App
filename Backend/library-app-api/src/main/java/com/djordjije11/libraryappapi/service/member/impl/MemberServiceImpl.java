@@ -10,9 +10,9 @@ import com.djordjije11.libraryappapi.repository.LendingRepository;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
 import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.member.MemberService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
 
 @GlobalTransactional
 @Service
@@ -70,9 +70,8 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member);
     }
 
-
     @Override
-    public List<Member> getAll() {
-        return memberRepository.findAllByIdMemberShort();
+    public Page<Member> get(Pageable pageable) {
+        return memberRepository.findAll(pageable);
     }
 }

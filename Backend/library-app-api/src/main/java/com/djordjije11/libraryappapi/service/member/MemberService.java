@@ -5,6 +5,9 @@ import com.djordjije11.libraryappapi.exception.RequestNotValidException;
 import com.djordjije11.libraryappapi.exception.member.MemberIdCardNotUniqueException;
 import com.djordjije11.libraryappapi.exception.member.MemberWithLendingsDeleteException;
 import com.djordjije11.libraryappapi.model.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +16,5 @@ public interface MemberService {
     Member get(Long id);
     void delete(Long id) throws MemberWithLendingsDeleteException;
     Member update(Member member) throws RequestNotValidException, RecordNotFoundException;
-
-    List<Member> getAll();
+    Page<Member> get(Pageable pageable);
 }

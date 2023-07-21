@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Random;
 
 public final class RandomUtil {
+
+    private RandomUtil(){}
     public static <T> T getOne(Random random, List<T> list) {
         return list.get(random.nextInt(list.size()));
     }
-
     public static String getDigitsString(Random random, int count) {
         String digitsString = "";
         for (int i = 0; i < count; i++){
