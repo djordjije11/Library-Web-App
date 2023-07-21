@@ -1,11 +1,10 @@
-package com.djordjije11.libraryappapi.service.lending.impl.controller;
+package com.djordjije11.libraryappapi.controller;
 
 import com.djordjije11.libraryappapi.dto.member.MemberUpdateDto;
 import com.djordjije11.libraryappapi.mapper.member.MemberMapper;
 import com.djordjije11.libraryappapi.dto.member.MemberCreateDto;
 import com.djordjije11.libraryappapi.dto.member.MemberDto;
 import com.djordjije11.libraryappapi.dto.member.MemberShortDto;
-import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.exception.RequestNotValidException;
 import com.djordjije11.libraryappapi.service.member.MemberService;
 import jakarta.validation.Valid;

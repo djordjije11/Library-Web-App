@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.service.lending.impl.controller;
+package com.djordjije11.libraryappapi.controller;
 
 import com.djordjije11.libraryappapi.dto.lending.LendingDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsCreateDto;
