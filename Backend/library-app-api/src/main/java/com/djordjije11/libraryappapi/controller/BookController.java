@@ -1,7 +1,9 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.controller.request.RequestQueryParams;
-import com.djordjije11.libraryappapi.controller.request.bookcopy.BookCopyRequestQueryParams;
+import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
+import com.djordjije11.libraryappapi.service.book.specification.book.BooksSpecification;
+import com.djordjije11.libraryappapi.service.book.specification.bookcopy.BookCopiesInBuildingSpecification;
+import com.djordjije11.libraryappapi.service.book.specification.bookcopy.BookCopiesSpecification;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.RowVersionDto;
 import com.djordjije11.libraryappapi.dto.book.*;
@@ -15,6 +17,7 @@ import com.djordjije11.libraryappapi.mapper.book.BookMapper;
 import com.djordjije11.libraryappapi.mapper.bookcopy.BookCopyMapper;
 import com.djordjije11.libraryappapi.model.Book;
 import com.djordjije11.libraryappapi.model.BookCopy;
+import com.djordjije11.libraryappapi.model.BookCopyStatus;
 import com.djordjije11.libraryappapi.model.Building;
 import com.djordjije11.libraryappapi.service.book.BookService;
 import jakarta.validation.Valid;
@@ -42,10 +45,11 @@ public class BookController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<BookShortDto>> get(
-            @Valid RequestQueryParams queryParams
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search
     ) {
-        Page<Book> page = bookService.get(queryParams.createPageable(), queryParams.search());
-        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        Page<Book> page = bookService.get(BooksSpecification.create(search), pagingAndSortingParams.createPageable());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookShortDto> bookDtos = page.map(bookMapper::mapShort).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(bookDtos);
     }
@@ -62,12 +66,13 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<BookCopyDto>> getAllCopiesInBuilding(
             @PathVariable Long bookId,
-            @Valid RequestQueryParams queryParams
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search
     ) {
         // TODO: 7/19/2023 getBuilding().getId();
         Long buildingId = 1L;
-        Page<BookCopy> page = bookService.getAllCopiesInBuilding(queryParams.createPageable(), bookId, buildingId, queryParams.search());
-        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        Page<BookCopy> page = bookService.getCopies(BookCopiesInBuildingSpecification.create(bookId, buildingId, search), pagingAndSortingParams.createPageable());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(bookCopyDtos);
     }
@@ -76,11 +81,12 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<BookCopyDto>> getAllCopies(
             @PathVariable Long bookId,
-            @Valid RequestQueryParams queryParams,
-            @Valid BookCopyRequestQueryParams bookCopyQueryParams
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) BookCopyStatus status
     ) {
-        Page<BookCopy> page = bookService.getAllCopies(queryParams.createPageable(), bookId, bookCopyQueryParams.status(), queryParams.search());
-        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        Page<BookCopy> page = bookService.getCopies(BookCopiesSpecification.create(bookId, status, search), pagingAndSortingParams.createPageable());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(bookCopyDtos);
     }

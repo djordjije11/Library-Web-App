@@ -12,6 +12,7 @@ import com.djordjije11.libraryappapi.service.book.BookService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -35,18 +36,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<Book> get(Pageable pageable, String filter) {
-        return bookRepository.findAllByTitleContainsIgnoreCase(pageable, filter);
+    public Page<Book> get(Specification<Book> specification, Pageable pageable) {
+        return bookRepository.findAll(specification, pageable);
     }
 
     @Override
-    public Page<BookCopy> getAllCopies(Pageable pageable, Long bookId, BookCopyStatus status, String filter) {
-        return bookCopyRepository.findAllBookCopies(pageable, bookId, status, filter);
-    }
-
-    @Override
-    public Page<BookCopy> getAllCopiesInBuilding(Pageable pageable, Long bookId, Long buildingId, String filter) {
-        return bookCopyRepository.findAllBookCopiesInBuilding(pageable, bookId, buildingId, filter);
+    public Page<BookCopy> getCopies(Specification<BookCopy> specification, Pageable pageable) {
+        return bookCopyRepository.findAll(specification, pageable);
     }
 
     @Override

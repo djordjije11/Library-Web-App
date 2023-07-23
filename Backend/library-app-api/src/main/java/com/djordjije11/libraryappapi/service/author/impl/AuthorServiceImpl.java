@@ -8,6 +8,7 @@ import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.author.AuthorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Page<Author> get(Pageable pageable, String filter) {
-        return authorRepository.findAllAuthors(pageable, filter);
+    public Page<Author> get(Specification<Author> specification, Pageable pageable) {
+        return authorRepository.findAll(specification, pageable);
     }
 
     // TODO: 7/23/2023 NEEDS TO BE IMPROVED IF BEING USED, IMPLEMENT PAGINATION AND FILTERING

@@ -1,22 +1,20 @@
 package com.djordjije11.libraryappapi.controller.request;
 
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import jakarta.validation.constraints.*;
 
-public record RequestQueryParams(
+public record RequestPagingAndSortingParams(
         @Min(value = 1, message = "A page number must not be lower than 1.")
         Integer pageNumber,
         @Min(value = 1, message = "A page size must not be lower than 1.")
         @Max(value = 100, message = "Max page size (entries per page) is 100.")
         Integer pageSize,
-        String sortBy,
-        String search
+        String sortBy
 ) {
     private static final int pageNumberDefault = 1;
     private static final int pageSizeDefault = 5;
-    private static final String searchDefault = StringExt.EMPTY;
 
     @Override
     public Integer pageNumber() {
@@ -34,15 +32,7 @@ public record RequestQueryParams(
         return pageSize;
     }
 
-    @Override
-    public String search() {
-        if (search == null) {
-            return searchDefault;
-        }
-        return search;
-    }
-
     public Pageable createPageable() {
-        return PageRequest.of(pageNumber() - 1, pageSize(), RequestParamParser.parseSort(sortBy()));
+        return PageRequest.of(pageNumber() - 1, pageSize(), RequestSortingParamsParser.parseSort(sortBy()));
     }
 }

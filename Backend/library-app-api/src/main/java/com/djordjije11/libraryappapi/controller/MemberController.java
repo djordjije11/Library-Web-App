@@ -1,6 +1,7 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.controller.request.RequestQueryParams;
+import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
+import com.djordjije11.libraryappapi.service.book.specification.member.MembersSpecification;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.member.MemberUpdateDto;
 import com.djordjije11.libraryappapi.mapper.member.MemberMapper;
@@ -33,10 +34,11 @@ public class MemberController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<MemberShortDto>> get(
-            @Valid RequestQueryParams queryParams
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search
     ) {
-        Page<Member> page = memberService.get(queryParams.createPageable(), queryParams.search());
-        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        Page<Member> page = memberService.get(MembersSpecification.create(search), pagingAndSortingParams.createPageable());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<MemberShortDto> memberDtos = page.map(mapper::mapShort).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(memberDtos);
     }

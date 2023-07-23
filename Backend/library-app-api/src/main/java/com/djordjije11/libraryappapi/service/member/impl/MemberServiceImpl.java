@@ -13,6 +13,7 @@ import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.member.MemberService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @GlobalTransactional
@@ -72,7 +73,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<Member> get(Pageable pageable, String filter) {
-        return memberRepository.findAllMembers(pageable, filter);
+    public Page<Member> get(Specification<Member> specification, Pageable pageable) {
+        return memberRepository.findAll(specification, pageable);
     }
 }

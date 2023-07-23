@@ -11,6 +11,7 @@ import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.lending.LendingService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -70,18 +71,7 @@ public class LendingServiceImpl implements LendingService {
     }
 
     @Override
-    public Page<Lending> getLendingsByMember(Pageable pageable, Long memberId, String filter) {
-        if (memberRepository.existsById(memberId) == false) {
-            throw new RecordNotFoundException(Member.class, memberId);
-        }
-        return lendingRepository.findAllLendingsByMember(pageable, memberId, filter);
-    }
-
-    @Override
-    public Page<Lending> getUnreturnedLendingsByMember(Pageable pageable, Long memberId, String filter) {
-        if (memberRepository.existsById(memberId) == false) {
-            throw new RecordNotFoundException(Member.class, memberId);
-        }
-        return lendingRepository.findAllUnreturnedLendingsByMember(pageable, memberId, filter);
+    public Page<Lending> getLendings(Specification<Lending> specification, Pageable pageable) {
+        return lendingRepository.findAll(specification, pageable);
     }
 }

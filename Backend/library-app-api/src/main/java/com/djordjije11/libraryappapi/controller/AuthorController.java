@@ -1,6 +1,7 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.controller.request.RequestQueryParams;
+import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
+import com.djordjije11.libraryappapi.service.book.specification.author.AuthorsSpecification;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.author.AuthorShortDto;
 import com.djordjije11.libraryappapi.dto.book.BookShortDto;
@@ -33,10 +34,11 @@ public class AuthorController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<AuthorShortDto>> get(
-            @Valid RequestQueryParams queryParams
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search
     ) {
-        Page<Author> page = authorService.get(queryParams.createPageable(), queryParams.search());
-        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        Page<Author> page = authorService.get(AuthorsSpecification.create(search), pagingAndSortingParams.createPageable());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<AuthorShortDto> authorDtos = page.map(authorMapper::mapShort).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(authorDtos);
     }

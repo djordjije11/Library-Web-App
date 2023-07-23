@@ -5,7 +5,7 @@ import com.djordjije11.libraryappapi.exception.parser.SortQueryNotValidException
 import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import org.springframework.data.domain.Sort;
 
-public final class RequestParamParser {
+public final class RequestSortingParamsParser {
     private static final String SORT_QUERY_SPLIT_REGEX = ",";
 
     public static Sort parseSort(String sortQuery) {

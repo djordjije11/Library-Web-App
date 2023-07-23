@@ -1,6 +1,8 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.controller.request.RequestQueryParams;
+import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
+import com.djordjije11.libraryappapi.service.book.specification.lending.LendingsByMemberSpecification;
+import com.djordjije11.libraryappapi.service.book.specification.lending.LendingsByMemberUnreturnedSpecification;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.lending.LendingByMemberDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsCreateDto;
@@ -49,10 +51,11 @@ public class LendingController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<LendingByMemberDto>> getLendingsByMember(
             @PathVariable Long memberId,
-            @Valid RequestQueryParams queryParams
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search
     ) {
-        Page<Lending> page = lendingService.getLendingsByMember(queryParams.createPageable(), memberId, queryParams.search());
-        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        Page<Lending> page = lendingService.getLendings(LendingsByMemberSpecification.create(memberId, search), pagingAndSortingParams.createPageable());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<LendingByMemberDto> lendingDtos = page.map(mapper::mapByMember).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(lendingDtos);
     }
@@ -61,10 +64,11 @@ public class LendingController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<LendingByMemberDto>> getUnreturnedLendingsByMember(
             @PathVariable Long memberId,
-            @Valid RequestQueryParams queryParams
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search
     ) {
-        Page<Lending> page = lendingService.getUnreturnedLendingsByMember(queryParams.createPageable(), memberId, queryParams.search());
-        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        Page<Lending> page = lendingService.getLendings(LendingsByMemberUnreturnedSpecification.create(memberId, search), pagingAndSortingParams.createPageable());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<LendingByMemberDto> lendingDtos = page.map(mapper::mapByMember).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(lendingDtos);
     }

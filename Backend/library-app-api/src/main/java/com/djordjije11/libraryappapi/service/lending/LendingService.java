@@ -4,12 +4,10 @@ import com.djordjije11.libraryappapi.exception.lending.LendingAlreadyReturnedExc
 import com.djordjije11.libraryappapi.model.Lending;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.List;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface LendingService {
     void returnLendings(Iterable<Long> lendingsIds, Long buildingId) throws LendingAlreadyReturnedException;
     void createLendings(Long memberId, Iterable<Long> bookCopiesIds);
-    Page<Lending> getLendingsByMember(Pageable pageable, Long memberId, String filter);
-    Page<Lending> getUnreturnedLendingsByMember(Pageable pageable, Long memberId, String filter);
+    Page<Lending> getLendings(Specification<Lending> specification, Pageable pageable);
 }
