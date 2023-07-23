@@ -2,6 +2,7 @@ package com.djordjije11.libraryappapi.helper.string.util;
 
 public final class StringExt {
     public final static String EMPTY = "";
+    public final static String SPACE = " ";
 
     private StringExt() {
     }

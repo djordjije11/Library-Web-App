@@ -1,6 +1,5 @@
 package com.djordjije11.libraryappapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

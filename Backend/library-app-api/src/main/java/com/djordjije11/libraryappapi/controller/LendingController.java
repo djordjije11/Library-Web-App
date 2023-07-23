@@ -1,15 +1,21 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.dto.lending.LendingDto;
+import com.djordjije11.libraryappapi.controller.request.RequestQueryParams;
+import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
+import com.djordjije11.libraryappapi.dto.lending.LendingByMemberDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsCreateDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsReturnDto;
 import com.djordjije11.libraryappapi.exception.lending.LendingAlreadyReturnedException;
 import com.djordjije11.libraryappapi.mapper.lending.LendingMapper;
+import com.djordjije11.libraryappapi.model.Lending;
 import com.djordjije11.libraryappapi.service.lending.LendingService;
-import org.apache.coyote.Response;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -34,20 +40,32 @@ public class LendingController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createLendings(@RequestBody LendingsCreateDto lendingsCreateDto){
+    public ResponseEntity<Object> createLendings(@RequestBody LendingsCreateDto lendingsCreateDto) {
         lendingService.createLendings(lendingsCreateDto.memberId(), lendingsCreateDto.bookCopiesIds());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/member/{memberId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<LendingDto>> getLendingsByMember(@PathVariable Long memberId){
-        return ResponseEntity.ok(lendingService.getLendingsByMember(memberId).stream().map(mapper::map).toList());
+    public ResponseEntity<List<LendingByMemberDto>> getLendingsByMember(
+            @PathVariable Long memberId,
+            @Valid RequestQueryParams queryParams
+    ) {
+        Page<Lending> page = lendingService.getLendingsByMember(queryParams.createPageable(), memberId, queryParams.search());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        List<LendingByMemberDto> lendingDtos = page.map(mapper::mapByMember).toList();
+        return ResponseEntity.ok().headers(httpHeaders).body(lendingDtos);
     }
 
     @GetMapping("/member/{memberId}/unreturned")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<LendingDto>> getUnreturnedLendingsByMember(@PathVariable Long memberId){
-        return ResponseEntity.ok(lendingService.getUnreturnedLendingsByMember(memberId).stream().map(mapper::map).toList());
+    public ResponseEntity<List<LendingByMemberDto>> getUnreturnedLendingsByMember(
+            @PathVariable Long memberId,
+            @Valid RequestQueryParams queryParams
+    ) {
+        Page<Lending> page = lendingService.getUnreturnedLendingsByMember(queryParams.createPageable(), memberId, queryParams.search());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        List<LendingByMemberDto> lendingDtos = page.map(mapper::mapByMember).toList();
+        return ResponseEntity.ok().headers(httpHeaders).body(lendingDtos);
     }
 }

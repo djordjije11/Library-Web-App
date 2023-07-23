@@ -9,9 +9,11 @@ import com.djordjije11.libraryappapi.repository.LendingRepository;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
 import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.lending.LendingService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
-import java.util.List;
 
 @GlobalTransactional
 @Service
@@ -68,18 +70,18 @@ public class LendingServiceImpl implements LendingService {
     }
 
     @Override
-    public List<Lending> getLendingsByMember(Long memberId) {
+    public Page<Lending> getLendingsByMember(Pageable pageable, Long memberId, String filter) {
         if (memberRepository.existsById(memberId) == false) {
             throw new RecordNotFoundException(Member.class, memberId);
         }
-        return lendingRepository.findAllByMember_Id(memberId);
+        return lendingRepository.findAllLendingsByMember(pageable, memberId, filter);
     }
 
     @Override
-    public List<Lending> getUnreturnedLendingsByMember(Long memberId) {
+    public Page<Lending> getUnreturnedLendingsByMember(Pageable pageable, Long memberId, String filter) {
         if (memberRepository.existsById(memberId) == false) {
             throw new RecordNotFoundException(Member.class, memberId);
         }
-        return lendingRepository.findAllByMember_IdAndReturnDateIsNull(memberId);
+        return lendingRepository.findAllUnreturnedLendingsByMember(pageable, memberId, filter);
     }
 }

@@ -6,7 +6,10 @@ import com.djordjije11.libraryappapi.model.Book;
 import com.djordjije11.libraryappapi.repository.AuthorRepository;
 import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.author.AuthorService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @GlobalTransactional
@@ -19,10 +22,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAll() {
-        return authorRepository.findAll();
+    public Page<Author> get(Pageable pageable, String filter) {
+        return authorRepository.findAllAuthors(pageable, filter);
     }
 
+    // TODO: 7/23/2023 NEEDS TO BE IMPROVED IF BEING USED, IMPLEMENT PAGINATION AND FILTERING
     @Override
     public List<Book> getAllBooksByAuthor(Long id) {
         Author author = authorRepository.findById(id)

@@ -60,6 +60,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler({RecordNotValidException.class})
+    protected ResponseEntity<Object> handleRecordNotValid(RecordNotValidException ex, WebRequest request) {
+        var responseBody = new HashMap<String, Object>();
+        responseBody.put(RESPONSE_FIELD_ERROR, ErrorType.RECORD_NOT_VALID);
+        responseBody.put(RESPONSE_FIELD_MESSAGE, ex.getMessage());
+        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         var responseBody = new HashMap<String, Object>();

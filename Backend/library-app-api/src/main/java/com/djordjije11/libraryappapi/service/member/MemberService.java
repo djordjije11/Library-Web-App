@@ -16,5 +16,5 @@ public interface MemberService {
     Member get(Long id);
     void delete(Long id) throws MemberWithLendingsDeleteException;
     Member update(Member member) throws RequestNotValidException, RecordNotFoundException;
-    Page<Member> get(Pageable pageable);
+    Page<Member> get(Pageable pageable, String filter);
 }

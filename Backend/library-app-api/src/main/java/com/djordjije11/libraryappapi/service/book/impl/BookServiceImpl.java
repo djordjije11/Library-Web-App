@@ -10,6 +10,8 @@ import com.djordjije11.libraryappapi.repository.*;
 import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.book.BookService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -33,13 +35,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAll() {
-        return bookRepository.findAll();
+    public Page<Book> get(Pageable pageable, String filter) {
+        return bookRepository.findAllByTitleContainsIgnoreCase(pageable, filter);
     }
 
     @Override
-    public List<BookCopy> getAllCopies(Long bookId, Long buildingId) {
-        return bookCopyRepository.findAllByBook_IdAndBuilding_Id(bookId, buildingId);
+    public Page<BookCopy> getAllCopies(Pageable pageable, Long bookId, BookCopyStatus status, String filter) {
+        return bookCopyRepository.findAllBookCopies(pageable, bookId, status, filter);
+    }
+
+    @Override
+    public Page<BookCopy> getAllCopiesInBuilding(Pageable pageable, Long bookId, Long buildingId, String filter) {
+        return bookCopyRepository.findAllBookCopiesInBuilding(pageable, bookId, buildingId, filter);
     }
 
     @Override
@@ -48,12 +55,19 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new RecordNotFoundException(Book.class, id));
     }
 
+    @Override
+    public BookCopy getCopy(Long id) {
+        return bookCopyRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(BookCopy.class, id));
+    }
+
     private Publisher fetchPublisher(Long id) {
         if (publisherRepository.existsById(id) == false) {
             throw new RecordNotFoundException(Publisher.class, id);
         }
         return publisherRepository.getReferenceById(id);
     }
+
     private List<Author> fetchAuthors(List<Author> authors) {
         List<Author> dbAuthors = new LinkedList<>();
         for (Author author :

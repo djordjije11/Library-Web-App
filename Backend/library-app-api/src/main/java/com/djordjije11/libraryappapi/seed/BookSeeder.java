@@ -11,6 +11,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,6 +44,13 @@ public class BookSeeder {
         this.publishers = new LinkedList<>();
         this.authors = new LinkedList<>();
         this.bookCopies = new LinkedList<>();
+    }
+
+    public List<BookCopy> seed(List<Building> buildings, int publishers, int books, int bookCopiesMax) throws CsvValidationException, IOException {
+        this.buildings = buildings;
+        seedPublishers(publishers);
+        seedBooks(books, bookCopiesMax);
+        return bookCopies;
     }
 
     private Author seedAuthor(String authorName) {
@@ -157,12 +165,5 @@ public class BookSeeder {
         for (int i = 0; i < count; i++) {
             generatePublisher();
         }
-    }
-
-    public List<BookCopy> seed(List<Building> buildings, int publishers, int books, int bookCopiesMax) throws CsvValidationException, IOException {
-        this.buildings = buildings;
-        seedPublishers(publishers);
-        seedBooks(books, bookCopiesMax);
-        return bookCopies;
     }
 }

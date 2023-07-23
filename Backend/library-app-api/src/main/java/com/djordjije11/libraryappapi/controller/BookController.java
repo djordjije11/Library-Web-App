@@ -1,5 +1,8 @@
 package com.djordjije11.libraryappapi.controller;
 
+import com.djordjije11.libraryappapi.controller.request.RequestQueryParams;
+import com.djordjije11.libraryappapi.controller.request.bookcopy.BookCopyRequestQueryParams;
+import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.RowVersionDto;
 import com.djordjije11.libraryappapi.dto.book.*;
 import com.djordjije11.libraryappapi.dto.bookcopy.BookCopyCreateDto;
@@ -15,9 +18,12 @@ import com.djordjije11.libraryappapi.model.BookCopy;
 import com.djordjije11.libraryappapi.model.Building;
 import com.djordjije11.libraryappapi.service.book.BookService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -35,13 +41,18 @@ public class BookController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<BookShortDto>> getAll() {
-        return ResponseEntity.ok(bookService.getAll().stream().map(bookMapper::mapShort).toList());
+    public ResponseEntity<List<BookShortDto>> get(
+            @Valid RequestQueryParams queryParams
+    ) {
+        Page<Book> page = bookService.get(queryParams.createPageable(), queryParams.search());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        List<BookShortDto> bookDtos = page.map(bookMapper::mapShort).toList();
+        return ResponseEntity.ok().headers(httpHeaders).body(bookDtos);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<GetBookDto> get(@PathVariable Long id){
+    public ResponseEntity<GetBookDto> getById(@PathVariable Long id) {
         BookDto bookDto = bookMapper.map(bookService.get(id));
         Long availableBookCopiesCount = bookService.getAvailableBookCopiesCount(id);
         return ResponseEntity.ok(new GetBookDto(bookDto, availableBookCopiesCount));
@@ -49,10 +60,37 @@ public class BookController {
 
     @GetMapping("/{bookId}/book-copy")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<BookCopyDto>> getAllCopies(@PathVariable Long bookId) {
+    public ResponseEntity<List<BookCopyDto>> getAllCopiesInBuilding(
+            @PathVariable Long bookId,
+            @Valid RequestQueryParams queryParams
+    ) {
         // TODO: 7/19/2023 getBuilding().getId();
         Long buildingId = 1L;
-        return ResponseEntity.ok(bookService.getAllCopies(bookId, buildingId).stream().map(bookCopyMapper::map).toList());
+        Page<BookCopy> page = bookService.getAllCopiesInBuilding(queryParams.createPageable(), bookId, buildingId, queryParams.search());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
+        return ResponseEntity.ok().headers(httpHeaders).body(bookCopyDtos);
+    }
+
+    @GetMapping("/{bookId}/book-copy/all-buildings")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<BookCopyDto>> getAllCopies(
+            @PathVariable Long bookId,
+            @Valid RequestQueryParams queryParams,
+            @Valid BookCopyRequestQueryParams bookCopyQueryParams
+    ) {
+        Page<BookCopy> page = bookService.getAllCopies(queryParams.createPageable(), bookId, bookCopyQueryParams.status(), queryParams.search());
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(queryParams.pageNumber(), queryParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
+        return ResponseEntity.ok().headers(httpHeaders).body(bookCopyDtos);
+    }
+
+    @GetMapping("/{bookId}/book-copy/{bookCopyId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BookCopyDto> getCopy(
+            @PathVariable Long bookCopyId
+    ) {
+        return ResponseEntity.ok(bookCopyMapper.map(bookService.getCopy(bookCopyId)));
     }
 
     @PostMapping

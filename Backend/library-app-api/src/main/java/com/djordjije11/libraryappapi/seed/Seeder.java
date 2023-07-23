@@ -25,7 +25,7 @@ public class Seeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
         List<Building> buildings = buildingSeeder.seed(10, 5);
         List<Employee> employees = employeeSeeder.seed(buildings, 50);
-        List<BookCopy> bookCopies = bookSeeder.seed(buildings, 10, 50, 20);
+        List<BookCopy> bookCopies = bookSeeder.seed(buildings, 10, 50, 200);
         List<Member> members = memberSeeder.seed(80);
         List<Lending> lendings = lendingSeeder.seed(members, bookCopies,100);
     }

@@ -5,6 +5,7 @@ import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.exception.RequestNotValidException;
 import com.djordjije11.libraryappapi.exception.member.MemberIdCardNotUniqueException;
 import com.djordjije11.libraryappapi.exception.member.MemberWithLendingsDeleteException;
+import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import com.djordjije11.libraryappapi.model.Member;
 import com.djordjije11.libraryappapi.repository.LendingRepository;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
@@ -71,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<Member> get(Pageable pageable) {
-        return memberRepository.findAll(pageable);
+    public Page<Member> get(Pageable pageable, String filter) {
+        return memberRepository.findAllMembers(pageable, filter);
     }
 }
