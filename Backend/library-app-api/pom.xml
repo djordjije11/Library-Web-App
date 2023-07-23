@@ -60,6 +60,12 @@
             <artifactId>guava</artifactId>
             <version>32.1.1-jre</version>
         </dependency>
+        <!--HIBERNATE SPECIFICATION-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>6.3.0.CR1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -82,6 +88,12 @@
                             <version>1.5.5.Final</version>
                         </path>
                         <!-- other annotation processors -->
+                        <!--HIBERNATE SPECIFICATION-->
+                        <path>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-jpamodelgen</artifactId>
+                            <version>${hibernate.version}</version>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
