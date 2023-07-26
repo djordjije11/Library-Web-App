@@ -1,7 +1,8 @@
 package com.djordjije11.libraryappapi.controller;
 
 import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
-import com.djordjije11.libraryappapi.service.book.specification.author.AuthorsSpecification;
+import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsParser;
+import com.djordjije11.libraryappapi.controller.request.author.AuthorRequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.author.AuthorShortDto;
 import com.djordjije11.libraryappapi.dto.book.BookShortDto;
@@ -24,11 +25,13 @@ public class AuthorController {
     private final AuthorService authorService;
     private final AuthorMapper authorMapper;
     private final BookMapper bookMapper;
+    private final RequestSortingParamsParser sortingParamsParser;
 
-    public AuthorController(AuthorService authorService, AuthorMapper authorMapper, BookMapper bookMapper) {
+    public AuthorController(AuthorService authorService, AuthorMapper authorMapper, BookMapper bookMapper, AuthorRequestSortingParamsParser sortingParamsParser) {
         this.authorService = authorService;
         this.authorMapper = authorMapper;
         this.bookMapper = bookMapper;
+        this.sortingParamsParser = sortingParamsParser;
     }
 
     @GetMapping
@@ -37,7 +40,7 @@ public class AuthorController {
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search
     ) {
-        Page<Author> page = authorService.get(AuthorsSpecification.create(search), pagingAndSortingParams.createPageable());
+        Page<Author> page = authorService.get(search, pagingAndSortingParams.createPageable(sortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<AuthorShortDto> authorDtos = page.map(authorMapper::mapShort).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(authorDtos);

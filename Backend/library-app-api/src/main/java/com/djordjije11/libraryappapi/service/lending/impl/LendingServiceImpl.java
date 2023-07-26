@@ -9,9 +9,9 @@ import com.djordjije11.libraryappapi.repository.LendingRepository;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
 import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.lending.LendingService;
+import com.djordjije11.libraryappapi.specification.lending.LendingSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -71,7 +71,16 @@ public class LendingServiceImpl implements LendingService {
     }
 
     @Override
-    public Page<Lending> getLendings(Specification<Lending> specification, Pageable pageable) {
-        return lendingRepository.findAll(specification, pageable);
+    public Page<Lending> getLendingsByMember(Long memberId, String search, Pageable pageable) {
+        return lendingRepository.findAll(LendingSpecification.byMember(memberId).and(LendingSpecification.bySearch(search)), pageable);
+    }
+
+    @Override
+    public Page<Lending> getUnreturnedLendingsByMember(Long memberId, String search, Pageable pageable) {
+        return lendingRepository.findAll(
+                LendingSpecification.isUnreturned()
+                        .and(LendingSpecification.byMember(memberId))
+                        .and(LendingSpecification.bySearch(search)),
+                pageable);
     }
 }

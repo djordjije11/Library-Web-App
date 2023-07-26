@@ -32,7 +32,7 @@ public record RequestPagingAndSortingParams(
         return pageSize;
     }
 
-    public Pageable createPageable() {
-        return PageRequest.of(pageNumber() - 1, pageSize(), RequestSortingParamsParser.parseSort(sortBy()));
+    public Pageable createPageable(RequestSortingParamsParser sortingParamsParser) {
+        return PageRequest.of(pageNumber() - 1, pageSize(), sortingParamsParser.parseSort(sortBy()));
     }
 }

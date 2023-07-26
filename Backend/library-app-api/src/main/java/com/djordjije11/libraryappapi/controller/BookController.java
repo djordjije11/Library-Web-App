@@ -1,9 +1,9 @@
 package com.djordjije11.libraryappapi.controller;
 
 import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
-import com.djordjije11.libraryappapi.service.book.specification.book.BooksSpecification;
-import com.djordjije11.libraryappapi.service.book.specification.bookcopy.BookCopiesInBuildingSpecification;
-import com.djordjije11.libraryappapi.service.book.specification.bookcopy.BookCopiesSpecification;
+import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsParser;
+import com.djordjije11.libraryappapi.controller.request.book.BookRequestSortingParamsParser;
+import com.djordjije11.libraryappapi.controller.request.bookcopy.BookCopyRequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.RowVersionDto;
 import com.djordjije11.libraryappapi.dto.book.*;
@@ -35,11 +35,15 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
     private final BookCopyMapper bookCopyMapper;
+    private final RequestSortingParamsParser bookSortingParamsParser;
+    private final RequestSortingParamsParser bookCopySortingParamsParser;
 
-    public BookController(BookService bookService, BookMapper bookMapper, BookCopyMapper bookCopyMapper) {
+    public BookController(BookService bookService, BookMapper bookMapper, BookCopyMapper bookCopyMapper, BookRequestSortingParamsParser bookSortingParamsParser, BookCopyRequestSortingParamsParser bookCopySortingParamsParser) {
         this.bookService = bookService;
         this.bookMapper = bookMapper;
         this.bookCopyMapper = bookCopyMapper;
+        this.bookSortingParamsParser = bookSortingParamsParser;
+        this.bookCopySortingParamsParser = bookCopySortingParamsParser;
     }
 
     @GetMapping
@@ -48,7 +52,7 @@ public class BookController {
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search
     ) {
-        Page<Book> page = bookService.get(BooksSpecification.create(search), pagingAndSortingParams.createPageable());
+        Page<Book> page = bookService.get(search, pagingAndSortingParams.createPageable(bookSortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookShortDto> bookDtos = page.map(bookMapper::mapShort).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(bookDtos);
@@ -71,7 +75,7 @@ public class BookController {
     ) {
         // TODO: 7/19/2023 getBuilding().getId();
         Long buildingId = 1L;
-        Page<BookCopy> page = bookService.getCopies(BookCopiesInBuildingSpecification.create(bookId, buildingId, search), pagingAndSortingParams.createPageable());
+        Page<BookCopy> page = bookService.getCopiesInBuilding(bookId, buildingId, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(bookCopyDtos);
@@ -85,7 +89,7 @@ public class BookController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) BookCopyStatus status
     ) {
-        Page<BookCopy> page = bookService.getCopies(BookCopiesSpecification.create(bookId, status, search), pagingAndSortingParams.createPageable());
+        Page<BookCopy> page = bookService.getCopiesByStatus(bookId, status, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(bookCopyDtos);

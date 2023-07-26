@@ -1,7 +1,8 @@
 package com.djordjije11.libraryappapi.controller;
 
 import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
-import com.djordjije11.libraryappapi.service.book.specification.member.MembersSpecification;
+import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsParser;
+import com.djordjije11.libraryappapi.controller.request.member.MemberRequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.member.MemberUpdateDto;
 import com.djordjije11.libraryappapi.mapper.member.MemberMapper;
@@ -25,10 +26,12 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
+    private final RequestSortingParamsParser sortingParamsParser;
 
-    public MemberController(MemberService memberService, MemberMapper mapper) {
+    public MemberController(MemberService memberService, MemberMapper mapper, MemberRequestSortingParamsParser sortingParamsParser) {
         this.memberService = memberService;
         this.mapper = mapper;
+        this.sortingParamsParser = sortingParamsParser;
     }
 
     @GetMapping
@@ -37,7 +40,7 @@ public class MemberController {
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search
     ) {
-        Page<Member> page = memberService.get(MembersSpecification.create(search), pagingAndSortingParams.createPageable());
+        Page<Member> page = memberService.get(search, pagingAndSortingParams.createPageable(sortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<MemberShortDto> memberDtos = page.map(mapper::mapShort).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(memberDtos);

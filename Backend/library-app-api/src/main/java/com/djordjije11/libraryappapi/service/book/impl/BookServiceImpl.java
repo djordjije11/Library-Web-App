@@ -9,10 +9,11 @@ import com.djordjije11.libraryappapi.model.*;
 import com.djordjije11.libraryappapi.repository.*;
 import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.book.BookService;
+import com.djordjije11.libraryappapi.specification.book.BookSpecification;
+import com.djordjije11.libraryappapi.specification.bookcopy.BookCopySpecification;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -36,13 +37,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<Book> get(Specification<Book> specification, Pageable pageable) {
-        return bookRepository.findAll(specification, pageable);
+    public Page<Book> get(String search, Pageable pageable) {
+        return bookRepository.findAll(BookSpecification.bySearch(search), pageable);
     }
 
     @Override
-    public Page<BookCopy> getCopies(Specification<BookCopy> specification, Pageable pageable) {
-        return bookCopyRepository.findAll(specification, pageable);
+    public Page<BookCopy> getCopiesInBuilding(Long bookId, Long buildingId, String search, Pageable pageable) {
+        return bookCopyRepository.findAll(
+                BookCopySpecification.byBook(bookId)
+                        .and(BookCopySpecification.byBuilding(buildingId))
+                        .and(BookCopySpecification.bySearch(search)),
+                pageable);
+    }
+
+    public Page<BookCopy> getCopiesByStatus(Long bookId, BookCopyStatus status, String search, Pageable pageable) {
+        return bookCopyRepository.findAll(
+                BookCopySpecification.byBook(bookId)
+                        .and(BookCopySpecification.byStatus(status))
+                        .and(BookCopySpecification.bySearch(search)),
+                pageable);
     }
 
     @Override

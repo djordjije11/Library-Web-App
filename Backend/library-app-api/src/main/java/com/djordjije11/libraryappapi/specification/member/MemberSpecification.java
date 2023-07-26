@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.service.book.specification.member;
+package com.djordjije11.libraryappapi.specification.member;
 
 import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
 import com.djordjije11.libraryappapi.helper.string.util.StringExt;
@@ -7,15 +7,15 @@ import com.djordjije11.libraryappapi.model.Member_;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
-public class MembersSpecification {
-    private MembersSpecification(){}
+public class MemberSpecification {
+    private MemberSpecification(){}
 
-    public static Specification<Member> create(String search){
+    public static Specification<Member> bySearch(String search){
         return new Specification<Member>() {
             @Override
             public Predicate toPredicate(Root<Member> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 if(StringExt.isNullOrBlank(search)){
-                    return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+                    return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
                 }
                 String[] names = search.split(StringExt.SPACE, 2);
                 Expression<String> membersFirstname = criteriaBuilder.upper(root.get(Member_.FIRSTNAME));

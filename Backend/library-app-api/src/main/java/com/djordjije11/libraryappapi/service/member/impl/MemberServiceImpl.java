@@ -5,15 +5,14 @@ import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.exception.RequestNotValidException;
 import com.djordjije11.libraryappapi.exception.member.MemberIdCardNotUniqueException;
 import com.djordjije11.libraryappapi.exception.member.MemberWithLendingsDeleteException;
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import com.djordjije11.libraryappapi.model.Member;
 import com.djordjije11.libraryappapi.repository.LendingRepository;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
 import com.djordjije11.libraryappapi.service.GlobalTransactional;
 import com.djordjije11.libraryappapi.service.member.MemberService;
+import com.djordjije11.libraryappapi.specification.member.MemberSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @GlobalTransactional
@@ -73,7 +72,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<Member> get(Specification<Member> specification, Pageable pageable) {
-        return memberRepository.findAll(specification, pageable);
+    public Page<Member> get(String search, Pageable pageable) {
+        return memberRepository.findAll(MemberSpecification.bySearch(search), pageable);
     }
 }

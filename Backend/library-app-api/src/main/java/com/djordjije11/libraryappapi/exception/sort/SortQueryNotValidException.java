@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.exception.parser;
+package com.djordjije11.libraryappapi.exception.sort;
 
 import com.djordjije11.libraryappapi.exception.RecordNotValidException;
 

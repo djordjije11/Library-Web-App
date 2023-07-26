@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.service.book.specification.author;
+package com.djordjije11.libraryappapi.specification.author;
 
 import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
 import com.djordjije11.libraryappapi.helper.string.util.StringExt;
@@ -7,16 +7,16 @@ import com.djordjije11.libraryappapi.model.Author_;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
-public class AuthorsSpecification {
-    private AuthorsSpecification() {
+public class AuthorSpecification {
+    private AuthorSpecification() {
     }
 
-    public static Specification<Author> create(String search) {
+    public static Specification<Author> bySearch(String search) {
         return new Specification<Author>() {
             @Override
             public Predicate toPredicate(Root<Author> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 if (StringExt.isNullOrBlank(search)) {
-                    return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
+                    return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
                 }
                 String[] names = search.split(StringExt.SPACE, 2);
                 Expression<String> authorsFirstname = criteriaBuilder.upper(root.get(Author_.FIRSTNAME));
