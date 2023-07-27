@@ -46,6 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return jwtService.generateToken(employeeClaim, userProfile);
     }
 
+    // TODO: 7/27/2023 NEEDS TO BE FIXED, IF IT WILL BE EVEN USED
     @Override
     public AuthenticationResponse register(AuthenticationRequest request) {
         var userProfile = new UserProfile(request.username(), passwordEncoder.encode(request.password()), UserRole.EMPLOYEE);

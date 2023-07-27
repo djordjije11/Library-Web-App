@@ -24,6 +24,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.login(authenticationRequest));
     }
 
+    // TODO: 7/27/2023 NEEDS TO BE FIXED, IF IT WILL BE EVEN USED
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest authenticationRequest){
         return ResponseEntity.ok(authenticationService.register(authenticationRequest));
