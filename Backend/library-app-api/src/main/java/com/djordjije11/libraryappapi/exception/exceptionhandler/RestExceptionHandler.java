@@ -1,4 +1,4 @@
-package com.djordjije11.libraryappapi.controller.exceptionhandler;
+package com.djordjije11.libraryappapi.exception.exceptionhandler;
 
 import com.djordjije11.libraryappapi.exception.*;
 import org.hibernate.StaleObjectStateException;

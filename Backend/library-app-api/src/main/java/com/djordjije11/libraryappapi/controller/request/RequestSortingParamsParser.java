@@ -3,7 +3,7 @@ package com.djordjije11.libraryappapi.controller.request;
 import com.djordjije11.libraryappapi.exception.sort.SortDirectionNotValidException;
 import com.djordjije11.libraryappapi.exception.sort.SortPropertyNotValidException;
 import com.djordjije11.libraryappapi.exception.sort.SortQueryNotValidException;
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
@@ -15,7 +15,7 @@ public abstract class RequestSortingParamsParser {
 
     public Sort parseSort(String sortQuery) {
         Sort sort = Sort.unsorted();
-        if (StringExt.isNullOrBlank(sortQuery)) {
+        if (StringUtils.isBlank(sortQuery)) {
             return sort;
         }
         String[] sortTexts = sortQuery.split(SORT_QUERY_SPLIT_REGEX);

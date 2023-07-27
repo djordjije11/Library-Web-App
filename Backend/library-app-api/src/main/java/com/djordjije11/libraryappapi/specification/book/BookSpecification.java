@@ -1,9 +1,9 @@
 package com.djordjije11.libraryappapi.specification.book;
 
 import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import com.djordjije11.libraryappapi.model.*;
 import jakarta.persistence.criteria.Join;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 public final class BookSpecification {
@@ -12,7 +12,7 @@ public final class BookSpecification {
 
     public static Specification<Book> bySearch(String search) {
         return (root, query, criteriaBuilder) -> {
-            if (StringExt.isNullOrBlank(search)) {
+            if (StringUtils.isBlank(search)) {
                 return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
             }
             Join<Book, Author> bookAuthorJoin = root.join(Book_.AUTHORS);

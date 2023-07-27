@@ -1,8 +1,8 @@
 package com.djordjije11.libraryappapi.specification.lending;
 
 import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import com.djordjije11.libraryappapi.model.*;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 public final class LendingSpecification {
@@ -19,7 +19,7 @@ public final class LendingSpecification {
 
     public static Specification<Lending> bySearch(String search) {
         return (root, query, criteriaBuilder) -> {
-            if (StringExt.isNullOrBlank(search)) {
+            if (StringUtils.isBlank(search)) {
                 return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
             }
             return criteriaBuilder.or(

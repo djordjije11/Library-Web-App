@@ -11,7 +11,6 @@ import com.djordjije11.libraryappapi.mapper.book.BookMapper;
 import com.djordjije11.libraryappapi.model.Author;
 import com.djordjije11.libraryappapi.service.author.AuthorService;
 import jakarta.validation.Valid;
-import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;

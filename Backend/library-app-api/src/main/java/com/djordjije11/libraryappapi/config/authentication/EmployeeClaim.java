@@ -9,4 +9,13 @@ public record EmployeeClaim(
         Long buildingId,
         Long userProfileId
 ) {
+
+    @Override
+    public String toString() {
+        return String.format("Employee %s %s, email: %s", firstname, lastname, email) +
+                System.lineSeparator() +
+                String.format("ID: %d, ID card number: %s", id, idCardNumber) +
+                System.lineSeparator() +
+                String.format("UserProfile ID: %d, Building ID: %d", userProfileId, buildingId);
+    }
 }

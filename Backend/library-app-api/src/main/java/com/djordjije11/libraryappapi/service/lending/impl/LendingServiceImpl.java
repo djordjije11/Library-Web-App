@@ -1,7 +1,10 @@
 package com.djordjije11.libraryappapi.service.lending.impl;
 
 import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
+import com.djordjije11.libraryappapi.exception.lending.BookCopyNotAvailableForLendingException;
+import com.djordjije11.libraryappapi.exception.lending.BookCopyNotInBuildingForLending;
 import com.djordjije11.libraryappapi.exception.lending.LendingAlreadyReturnedException;
+import com.djordjije11.libraryappapi.exception.lending.LendingReturnedNotByMemberException;
 import com.djordjije11.libraryappapi.model.*;
 import com.djordjije11.libraryappapi.repository.BookCopyRepository;
 import com.djordjije11.libraryappapi.repository.BuildingRepository;
@@ -15,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 @GlobalTransactional
 @Service
@@ -32,42 +37,56 @@ public class LendingServiceImpl implements LendingService {
     }
 
     @Override
-    public void returnLendings(Iterable<Long> lendingsIds, Long buildingId) throws LendingAlreadyReturnedException {
+    public List<Lending> returnLendings(Iterable<Long> lendingsIds, Long memberId, Long buildingId) throws LendingAlreadyReturnedException, LendingReturnedNotByMemberException {
         if (buildingRepository.existsById(buildingId) == false) {
             throw new RecordNotFoundException(Building.class, buildingId);
         }
-        Building building = buildingRepository.getReferenceById(buildingId);
-        LocalDate returnDate = LocalDate.now();
+        final var lendings = new LinkedList<Lending>();
+        final Building building = buildingRepository.getReferenceById(buildingId);
+        final LocalDate returnDate = LocalDate.now();
         for (Long lendingId :
                 lendingsIds) {
-            Lending lending = lendingRepository.findById(lendingId)
+            final Lending lending = lendingRepository.findById(lendingId)
                     .orElseThrow(() -> new RecordNotFoundException(Lending.class, lendingId));
+            if(lending.getMember().getId().equals(memberId) == false){
+                throw new LendingReturnedNotByMemberException(lendingId, memberId);
+            }
             if (lending.getReturnDate() != null) {
                 throw new LendingAlreadyReturnedException(lendingId);
             }
             lending.setReturnDate(returnDate);
-            BookCopy bookCopy = lending.getBookCopy();
+            final BookCopy bookCopy = lending.getBookCopy();
             bookCopy.setStatus(BookCopyStatus.AVAILABLE);
             bookCopy.setBuilding(building);
-            lendingRepository.save(lending);
+            lendings.add(lendingRepository.save(lending));
         }
+        return lendings;
     }
 
     @Override
-    public void createLendings(Long memberId, Iterable<Long> bookCopiesIds) {
+    public List<Lending> createLendings(Iterable<Long> bookCopiesIds, Long memberId, Long buildingId) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLending {
         if (memberRepository.existsById(memberId) == false) {
             throw new RecordNotFoundException(Member.class, memberId);
         }
-        Member member = memberRepository.getReferenceById(memberId);
-        LocalDate lendingDate = LocalDate.now();
-        bookCopiesIds.forEach(bcId -> {
-            BookCopy bookCopy = bookCopyRepository.findById(bcId)
-                    .orElseThrow(() -> new RecordNotFoundException(BookCopy.class, bcId));
+        final var lendings = new LinkedList<Lending>();
+        final Member member = memberRepository.getReferenceById(memberId);
+        final LocalDate lendingDate = LocalDate.now();
+        for (Long bookCopyId :
+                bookCopiesIds) {
+            final BookCopy bookCopy = bookCopyRepository.findById(bookCopyId)
+                    .orElseThrow(() -> new RecordNotFoundException(BookCopy.class, bookCopyId));
+            if(bookCopy.getBuilding().getId().equals(buildingId) == false){
+                throw new BookCopyNotInBuildingForLending(bookCopyId, buildingId);
+            }
+            if (bookCopy.getStatus() != BookCopyStatus.AVAILABLE) {
+                throw new BookCopyNotAvailableForLendingException(bookCopyId);
+            }
             bookCopy.setStatus(BookCopyStatus.LENT);
             bookCopy.setBuilding(null);
             bookCopyRepository.save(bookCopy);
-            lendingRepository.save(new Lending(lendingDate, bookCopy, member));
-        });
+            lendings.add(lendingRepository.save(new Lending(lendingDate, bookCopy, member)));
+        }
+        return lendings;
     }
 
     @Override

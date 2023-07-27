@@ -1,8 +1,8 @@
 package com.djordjije11.libraryappapi.specification.bookcopy;
 
 import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import com.djordjije11.libraryappapi.model.*;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 public class BookCopySpecification {
@@ -11,7 +11,7 @@ public class BookCopySpecification {
 
     public static Specification<BookCopy> bySearch(String search){
         return (root, query, criteriaBuilder) -> {
-            if(StringExt.isNullOrBlank(search)){
+            if(StringUtils.isBlank(search)){
                 return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
             }
             return criteriaBuilder.like(root.get(BookCopy_.ISBN), CriteriaBuilderHelper.containsAsSqlLike(search));

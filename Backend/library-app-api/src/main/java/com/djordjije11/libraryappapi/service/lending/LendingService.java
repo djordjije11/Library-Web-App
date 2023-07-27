@@ -1,14 +1,19 @@
 package com.djordjije11.libraryappapi.service.lending;
 
+import com.djordjije11.libraryappapi.exception.lending.BookCopyNotAvailableForLendingException;
+import com.djordjije11.libraryappapi.exception.lending.BookCopyNotInBuildingForLending;
 import com.djordjije11.libraryappapi.exception.lending.LendingAlreadyReturnedException;
+import com.djordjije11.libraryappapi.exception.lending.LendingReturnedNotByMemberException;
 import com.djordjije11.libraryappapi.model.Lending;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface LendingService {
-    void returnLendings(Iterable<Long> lendingsIds, Long buildingId) throws LendingAlreadyReturnedException;
+import java.util.List;
 
-    void createLendings(Long memberId, Iterable<Long> bookCopiesIds);
+public interface LendingService {
+    List<Lending> returnLendings(Iterable<Long> lendingsIds, Long memberId, Long buildingId) throws LendingAlreadyReturnedException, LendingReturnedNotByMemberException;
+
+    List<Lending> createLendings(Iterable<Long> bookCopiesIds, Long memberId, Long buildingId) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLending;
 
     Page<Lending> getLendingsByMember(Long memberId, String search, Pageable pageable);
 

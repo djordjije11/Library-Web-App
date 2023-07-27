@@ -1,10 +1,10 @@
 package com.djordjije11.libraryappapi.specification.author;
 
 import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
-import com.djordjije11.libraryappapi.helper.string.util.StringExt;
 import com.djordjije11.libraryappapi.model.Author;
 import com.djordjije11.libraryappapi.model.Author_;
 import jakarta.persistence.criteria.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 public class AuthorSpecification {
@@ -15,10 +15,10 @@ public class AuthorSpecification {
         return new Specification<Author>() {
             @Override
             public Predicate toPredicate(Root<Author> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                if (StringExt.isNullOrBlank(search)) {
+                if (StringUtils.isBlank(search)) {
                     return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
                 }
-                String[] names = search.split(StringExt.SPACE, 2);
+                String[] names = search.split(StringUtils.SPACE, 2);
                 Expression<String> authorsFirstname = criteriaBuilder.upper(root.get(Author_.FIRSTNAME));
                 Expression<String> authorsLastname = criteriaBuilder.upper(root.get(Author_.LASTNAME));
                 if (names.length == 2) {

@@ -71,7 +71,6 @@ public class BookController {
     @GetMapping("/{bookId}/book-copy")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<BookCopyDto>> getAllCopiesInBuilding(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long bookId,
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search
@@ -116,7 +115,6 @@ public class BookController {
     @PostMapping("/{bookId}/book-copy")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookCopyDto> createBookCopy(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long bookId,
             @Valid @RequestBody BookCopyCreateDto bookCopyCreateDto
     ) throws BookCopyIsbnNotUniqueException {
@@ -142,7 +140,6 @@ public class BookController {
     @PutMapping("/{bookId}/book-copy/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookCopyDto> updateBookCopy(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long bookId,
             @PathVariable Long id,
             @Valid @RequestBody BookCopyUpdateDto bookCopyUpdateDto
@@ -165,7 +162,6 @@ public class BookController {
     @DeleteMapping("/{bookId}/book-copy/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> discardBookCopy(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long id,
             @RequestBody RowVersionDto rowVersionDto
     ) throws BookCopyNotInBuildingException {
