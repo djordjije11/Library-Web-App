@@ -37,7 +37,7 @@ public class EmployeeSeeder {
         Name fakeName = faker.name();
         Gender gender = Gender.values()[random.nextInt(Gender.values().length)];
         Building building = RandomUtil.getOne(random, buildings);
-        var employee = new Employee(faker.idNumber().valid(), fakeName.firstName(), fakeName.lastName(), gender, fakeName.username(), faker.internet().emailAddress(), faker.internet().password(), building);
+        var employee = new Employee(faker.idNumber().valid(), fakeName.firstName(), fakeName.lastName(), gender, faker.internet().emailAddress(), building);
         return employeeRepository.save(employee);
     }
 
@@ -45,13 +45,13 @@ public class EmployeeSeeder {
         var employees = new LinkedList<Employee>();
 
         employees.add(
-                new Employee("20190162", "Đorđije", "Radović", Gender.MALE, "djordjije11", "djordjo@gmail.com", "Lozinka10", RandomUtil.getOne(random, buildings))
+                new Employee("20190162", "Đorđije", "Radović", Gender.MALE, "djordjo@gmail.com", RandomUtil.getOne(random, buildings))
         );
         employees.add(
-                new Employee("20190126", "Milica", "Pantić", Gender.FEMALE, "micaCarica", "mica@gmail.com", "Lozinka11", RandomUtil.getOne(random, buildings))
+                new Employee("20190126", "Milica", "Pantić", Gender.FEMALE, "mica@gmail.com", RandomUtil.getOne(random, buildings))
         );
         employees.add(
-                new Employee("20195326", "Aleksandar", "Nikolić", Gender.MALE, "AcaFaca", "coa@gmail.com", "RadnaSkela", RandomUtil.getOne(random, buildings))
+                new Employee("20195326", "Aleksandar", "Nikolić", Gender.MALE, "coa@gmail.com", RandomUtil.getOne(random, buildings))
         );
 
         return employeeRepository.saveAll(employees);

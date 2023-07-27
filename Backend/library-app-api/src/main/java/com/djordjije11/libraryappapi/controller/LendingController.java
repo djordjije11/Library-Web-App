@@ -1,5 +1,6 @@
 package com.djordjije11.libraryappapi.controller;
 
+import com.djordjije11.libraryappapi.config.authentication.EmployeeClaimHolder;
 import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
 import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.request.lending.LendingRequestSortingParser;
@@ -12,6 +13,7 @@ import com.djordjije11.libraryappapi.mapper.lending.LendingMapper;
 import com.djordjije11.libraryappapi.model.Lending;
 import com.djordjije11.libraryappapi.service.lending.LendingService;
 import jakarta.validation.Valid;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,20 +26,23 @@ import java.util.List;
 @RequestMapping("/api/lending")
 public class LendingController {
     private final LendingService lendingService;
-    private final LendingMapper mapper;
+    private final LendingMapper mapper = Mappers.getMapper(LendingMapper.class);
     private final RequestSortingParamsParser sortingParamsParser;
+    private final EmployeeClaimHolder employeeClaimHolder;
 
-    public LendingController(LendingService lendingService, LendingMapper mapper, LendingRequestSortingParser sortingParamsParser) {
+    public LendingController(LendingService lendingService, LendingRequestSortingParser sortingParamsParser, EmployeeClaimHolder employeeClaimHolder) {
         this.lendingService = lendingService;
-        this.mapper = mapper;
         this.sortingParamsParser = sortingParamsParser;
+        this.employeeClaimHolder = employeeClaimHolder;
     }
 
     @PutMapping("/return")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> returnLendings(@RequestBody LendingsReturnDto lendingsReturnDto) throws LendingAlreadyReturnedException {
-        // TODO: 7/18/2023 Long buildingId = ...
-        Long buildingId = 1L;
+    public ResponseEntity<Object> returnLendings(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @RequestBody LendingsReturnDto lendingsReturnDto
+    ) throws LendingAlreadyReturnedException {
+        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
         lendingService.returnLendings(lendingsReturnDto.lendingsIds(), buildingId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

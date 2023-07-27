@@ -11,6 +11,8 @@ import com.djordjije11.libraryappapi.mapper.book.BookMapper;
 import com.djordjije11.libraryappapi.model.Author;
 import com.djordjije11.libraryappapi.service.author.AuthorService;
 import jakarta.validation.Valid;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,14 +25,12 @@ import java.util.List;
 @RequestMapping("/api/author")
 public class AuthorController {
     private final AuthorService authorService;
-    private final AuthorMapper authorMapper;
-    private final BookMapper bookMapper;
+    private final AuthorMapper authorMapper = Mappers.getMapper(AuthorMapper.class);
+    private final BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
     private final RequestSortingParamsParser sortingParamsParser;
 
-    public AuthorController(AuthorService authorService, AuthorMapper authorMapper, BookMapper bookMapper, AuthorRequestSortingParamsParser sortingParamsParser) {
+    public AuthorController(AuthorService authorService, AuthorRequestSortingParamsParser sortingParamsParser) {
         this.authorService = authorService;
-        this.authorMapper = authorMapper;
-        this.bookMapper = bookMapper;
         this.sortingParamsParser = sortingParamsParser;
     }
 

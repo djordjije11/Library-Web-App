@@ -1,5 +1,6 @@
 package com.djordjije11.libraryappapi.controller;
 
+import com.djordjije11.libraryappapi.config.authentication.EmployeeClaimHolder;
 import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
 import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.request.book.BookRequestSortingParamsParser;
@@ -21,6 +22,7 @@ import com.djordjije11.libraryappapi.model.BookCopyStatus;
 import com.djordjije11.libraryappapi.model.Building;
 import com.djordjije11.libraryappapi.service.book.BookService;
 import jakarta.validation.Valid;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,17 +35,17 @@ import java.util.List;
 @RequestMapping("/api/book")
 public class BookController {
     private final BookService bookService;
-    private final BookMapper bookMapper;
-    private final BookCopyMapper bookCopyMapper;
+    private final BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
+    private final BookCopyMapper bookCopyMapper = Mappers.getMapper(BookCopyMapper.class);
     private final RequestSortingParamsParser bookSortingParamsParser;
     private final RequestSortingParamsParser bookCopySortingParamsParser;
+    private final EmployeeClaimHolder employeeClaimHolder;
 
-    public BookController(BookService bookService, BookMapper bookMapper, BookCopyMapper bookCopyMapper, BookRequestSortingParamsParser bookSortingParamsParser, BookCopyRequestSortingParamsParser bookCopySortingParamsParser) {
+    public BookController(BookService bookService, BookRequestSortingParamsParser bookSortingParamsParser, BookCopyRequestSortingParamsParser bookCopySortingParamsParser, EmployeeClaimHolder employeeClaimHolder) {
         this.bookService = bookService;
-        this.bookMapper = bookMapper;
-        this.bookCopyMapper = bookCopyMapper;
         this.bookSortingParamsParser = bookSortingParamsParser;
         this.bookCopySortingParamsParser = bookCopySortingParamsParser;
+        this.employeeClaimHolder = employeeClaimHolder;
     }
 
     @GetMapping
@@ -69,12 +71,12 @@ public class BookController {
     @GetMapping("/{bookId}/book-copy")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<BookCopyDto>> getAllCopiesInBuilding(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long bookId,
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search
     ) {
-        // TODO: 7/19/2023 getBuilding().getId();
-        Long buildingId = 1L;
+        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
         Page<BookCopy> page = bookService.getCopiesInBuilding(bookId, buildingId, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
@@ -114,12 +116,14 @@ public class BookController {
     @PostMapping("/{bookId}/book-copy")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BookCopyDto> createBookCopy(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long bookId,
             @Valid @RequestBody BookCopyCreateDto bookCopyCreateDto
     ) throws BookCopyIsbnNotUniqueException {
+        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
         BookCopy bookCopy = bookCopyMapper.map(bookCopyCreateDto);
+        bookCopy.setBuilding(new Building(buildingId));
         bookCopy.setBook(new Book(bookId));
-        // TODO: 7/18/2023 bookCopy.setBuilding(...);
         return new ResponseEntity<>(bookCopyMapper.map(bookService.createCopy(bookCopy)), HttpStatus.CREATED);
     }
 
@@ -138,14 +142,16 @@ public class BookController {
     @PutMapping("/{bookId}/book-copy/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookCopyDto> updateBookCopy(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long bookId,
             @PathVariable Long id,
             @Valid @RequestBody BookCopyUpdateDto bookCopyUpdateDto
     ) throws BookCopyIsbnNotUniqueException, BookCopyNotInBuildingException {
+        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
         BookCopy bookCopy = bookCopyMapper.map(bookCopyUpdateDto);
+        bookCopy.setBuilding(new Building(buildingId));
         bookCopy.setBook(new Book(bookId));
         bookCopy.setId(id);
-        // TODO: 7/19/2023 bookCopy.setBuilding(...)
         return ResponseEntity.ok(bookCopyMapper.map(bookService.updateCopy(bookCopy)));
     }
 
@@ -159,15 +165,14 @@ public class BookController {
     @DeleteMapping("/{bookId}/book-copy/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> discardBookCopy(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
             @PathVariable Long id,
             @RequestBody RowVersionDto rowVersionDto
     ) throws BookCopyNotInBuildingException {
-        // TODO: 7/19/2023 getBuilding();
-        Long buildingId = 1L;
-        var building = new Building(buildingId);
+        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
         var bookCopy = new BookCopy();
         bookCopy.setId(id);
-        bookCopy.setBuilding(building);
+        bookCopy.setBuilding(new Building(buildingId));
         bookCopy.setRowVersion(rowVersionDto.rowVersion());
         bookService.discardCopy(bookCopy);
         return new ResponseEntity<>(HttpStatus.OK);

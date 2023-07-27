@@ -19,28 +19,23 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(10) CHECK (gender in ('MALE', 'FEMALE'))")
     private Gender gender;
-    @Column(nullable = false, unique = true, columnDefinition = "varchar(30)")
-    private String username;
     @Column(nullable = false, columnDefinition = "varchar(320)")
     private String email;
-    @Column(nullable = false, columnDefinition = "nvarchar(72)")
-    private String password;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_employee_building"))
     private Building building;
+    @OneToOne
+    private UserProfile userProfile;
 
     public Employee() {
     }
 
-    public Employee(String idCardNumber, String firstname, String lastname, Gender gender, String username, String email, String password, Building building) {
+    public Employee(String idCardNumber, String firstname, String lastname, Gender gender, String email, Building building) {
         this.idCardNumber = idCardNumber;
         this.firstname = firstname;
         this.lastname = lastname;
         this.gender = gender;
-        this.username = username;
         this.email = email;
-        this.password = password;
         this.building = building;
     }
 
@@ -92,14 +87,6 @@ public class Employee {
         this.gender = gender;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -108,19 +95,19 @@ public class Employee {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public Building getBuilding() {
         return building;
     }
 
     public void setBuilding(Building building) {
         this.building = building;
+    }
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
 }
