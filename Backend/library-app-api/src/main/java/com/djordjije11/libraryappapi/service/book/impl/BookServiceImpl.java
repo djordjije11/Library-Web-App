@@ -81,7 +81,7 @@ public class BookServiceImpl implements BookService {
     }
 
     private Publisher fetchPublisher(Long id) {
-        if (publisherRepository.existsById(id) == false) {
+        if (id == null || publisherRepository.existsById(id) == false) {
             throw new RecordNotFoundException(Publisher.class, id);
         }
         return publisherRepository.getReferenceById(id);
@@ -91,7 +91,7 @@ public class BookServiceImpl implements BookService {
         List<Author> dbAuthors = new LinkedList<>();
         for (Author author :
                 authors) {
-            if (authorRepository.existsById(author.getId()) == false) {
+            if (author.getId() == null || authorRepository.existsById(author.getId()) == false) {
                 throw new RecordNotFoundException(Author.class, author.getId());
             }
             dbAuthors.add(authorRepository.getReferenceById(author.getId()));

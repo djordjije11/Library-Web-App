@@ -41,6 +41,13 @@ public class Book {
         this.id = id;
     }
 
+    public Book(String title, String description, String imageUrl, Integer pagesNumber) {
+        this.title = title;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.pagesNumber = pagesNumber;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }
