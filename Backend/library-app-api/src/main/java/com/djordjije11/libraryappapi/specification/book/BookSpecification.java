@@ -15,12 +15,13 @@ public final class BookSpecification {
             if (StringUtils.isBlank(search)) {
                 return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
             }
-            Join<Book, Author> bookAuthorJoin = root.join(Book_.AUTHORS);
+            final Join<Book, Author> bookAuthorJoin = root.join(Book_.AUTHORS);
+            final String searchAsLike = CriteriaBuilderHelper.containsAsSqlLike(search);
             return criteriaBuilder.or(
-                    criteriaBuilder.like(root.get(Book_.TITLE), CriteriaBuilderHelper.containsAsSqlLike(search)),
-                    criteriaBuilder.like(root.get(Book_.PUBLISHER).get(Publisher_.NAME), CriteriaBuilderHelper.containsAsSqlLike(search)),
-                    criteriaBuilder.like(bookAuthorJoin.get(Author_.FIRSTNAME), CriteriaBuilderHelper.containsAsSqlLike(search)),
-                    criteriaBuilder.like(bookAuthorJoin.get(Author_.LASTNAME), CriteriaBuilderHelper.containsAsSqlLike(search))
+                    criteriaBuilder.like(root.get(Book_.TITLE), searchAsLike),
+                    criteriaBuilder.like(root.get(Book_.PUBLISHER).get(Publisher_.NAME), searchAsLike),
+                    criteriaBuilder.like(bookAuthorJoin.get(Author_.FIRSTNAME), searchAsLike),
+                    criteriaBuilder.like(bookAuthorJoin.get(Author_.LASTNAME), searchAsLike)
             );
         };
     }

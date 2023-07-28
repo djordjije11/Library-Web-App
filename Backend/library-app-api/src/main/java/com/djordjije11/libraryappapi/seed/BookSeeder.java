@@ -50,6 +50,9 @@ public class BookSeeder {
         this.buildings = buildings;
         seedPublishers(publishers);
         seedBooks(books, bookCopiesMax);
+        if(bookCopies.isEmpty()){
+            return bookCopyRepository.findAll();
+        }
         return bookCopies;
     }
 
@@ -132,6 +135,9 @@ public class BookSeeder {
     }
 
     private void seedBooks(int count, int bookCopiesMaxCount) throws IOException, CsvValidationException {
+        if (bookRepository.count() != 0) {
+            return;
+        }
         int counter = 0;
         CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(BOOKS_DATASET_PATH))
                 .withSkipLines(1)
@@ -162,6 +168,9 @@ public class BookSeeder {
     }
 
     private void seedPublishers(int count) {
+        if (publisherRepository.count() != 0) {
+            return;
+        }
         for (int i = 0; i < count; i++) {
             generatePublisher();
         }

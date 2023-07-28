@@ -6,6 +6,7 @@ import com.djordjije11.libraryappapi.model.*;
 import com.djordjije11.libraryappapi.repository.BookCopyRepository;
 import com.djordjije11.libraryappapi.repository.LendingRepository;
 import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +55,9 @@ public class LendingSeeder {
     }
 
     public List<Lending> seed(List<Member> members, List<BookCopy> bookCopies, int lendings) {
+        if (lendingRepository.count() != 0) {
+            return lendingRepository.findAll();
+        }
         var lendingsList = new LinkedList<Lending>();
         for (int i = 0; i < lendings; i++) {
             lendingsList.add(seedLending(RandomUtil.getOne(random, members), RandomUtil.getOne(random, bookCopies)));

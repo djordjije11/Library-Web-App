@@ -12,9 +12,10 @@ import org.springframework.data.domain.Pageable;
 public interface BookService {
     Page<Book> get(String search, Pageable pageable);
 
-    Page<BookCopy> getCopiesInBuilding(Long bookId, Long buildingId, String search, Pageable pageable);
+    Page<BookCopy> getCopiesAvailableInBuilding(Long bookId, Long buildingId, String search, Pageable pageable);
 
     Page<BookCopy> getCopiesByStatus(Long bookId, BookCopyStatus status, String search, Pageable pageable);
+    Page<BookCopy> getAllBooksCopiesAvailableInBuilding(Long buildingId, String search, Pageable pageable);
 
     Book get(Long id);
 

@@ -25,6 +25,9 @@ public class MemberSeeder {
     }
 
     public List<Member> seed(int members){
+        if(memberRepository.count() != 0){
+            return memberRepository.findAll();
+        }
         var membersList = new LinkedList<Member>();
         for (int i = 0; i < members; i++){
             membersList.add(seedMember());

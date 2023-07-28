@@ -19,7 +19,8 @@ public class BookCopyRequestSortingParamsParser extends RequestSortingParamsPars
                 BookCopy_.ID,
                 BookCopy_.ISBN,
                 BookCopy_.STATUS,
-                formatNestedObjectProperty(BookCopy_.BOOK, Book_.TITLE)
+                formatNestedObjectProperty(BookCopy_.BOOK, Book_.TITLE),
+                formatNestedObjectProperty(BookCopy_.BOOK, Book_.PUBLISHER, Publisher_.NAME)
         );
     }
 

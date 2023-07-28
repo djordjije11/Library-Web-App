@@ -42,11 +42,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookCopy> getCopiesInBuilding(Long bookId, Long buildingId, String search, Pageable pageable) {
+    public Page<BookCopy> getCopiesAvailableInBuilding(Long bookId, Long buildingId, String search, Pageable pageable) {
         return bookCopyRepository.findAll(
                 BookCopySpecification.byBook(bookId)
                         .and(BookCopySpecification.byBuilding(buildingId))
-                        .and(BookCopySpecification.bySearch(search)),
+                        .and(BookCopySpecification.byOneBookSearch(search))
+                        .and(BookCopySpecification.byStatus(BookCopyStatus.AVAILABLE)),
                 pageable);
     }
 
@@ -54,7 +55,16 @@ public class BookServiceImpl implements BookService {
         return bookCopyRepository.findAll(
                 BookCopySpecification.byBook(bookId)
                         .and(BookCopySpecification.byStatus(status))
-                        .and(BookCopySpecification.bySearch(search)),
+                        .and(BookCopySpecification.byOneBookSearch(search)),
+                pageable);
+    }
+
+    @Override
+    public Page<BookCopy> getAllBooksCopiesAvailableInBuilding(Long buildingId, String search, Pageable pageable) {
+        return bookCopyRepository.findAll(
+                BookCopySpecification.byStatus(BookCopyStatus.AVAILABLE)
+                        .and(BookCopySpecification.byBuilding(buildingId))
+                        .and(BookCopySpecification.byAllBooksSearch(search)),
                 pageable);
     }
 

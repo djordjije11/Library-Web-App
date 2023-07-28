@@ -76,7 +76,7 @@ public class BookController {
             @RequestParam(required = false) String search
     ) {
         Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
-        Page<BookCopy> page = bookService.getCopiesInBuilding(bookId, buildingId, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
+        Page<BookCopy> page = bookService.getCopiesAvailableInBuilding(bookId, buildingId, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
         return ResponseEntity.ok().headers(httpHeaders).body(bookCopyDtos);
@@ -173,4 +173,17 @@ public class BookController {
         bookService.discardCopy(bookCopy);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/all/book-copy")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<BookCopyDto>> getAllAvailableBooksCopiesInBuilding(
+            @Valid RequestPagingAndSortingParams pagingAndSortingParams,
+            @RequestParam(required = false) String search
+    ){
+        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
+        Page<BookCopy> page = bookService.getAllBooksCopiesAvailableInBuilding(buildingId, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
+        HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
+        return ResponseEntity.ok().headers(httpHeaders).body(page.map(bookCopyMapper::map).toList());
+    }
+
 }

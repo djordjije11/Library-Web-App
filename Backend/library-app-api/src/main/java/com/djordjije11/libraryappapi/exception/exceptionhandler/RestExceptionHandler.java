@@ -21,7 +21,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String RESPONSE_FIELD_MESSAGES = "messages";
 
 
-
     @ExceptionHandler(RequestNotAuthorizedException.class)
     protected ResponseEntity<Object> hanldeRequestNotAuthorized(RequestNotAuthorizedException ex, WebRequest request){
         var responseBody = new HashMap<String, Object>();

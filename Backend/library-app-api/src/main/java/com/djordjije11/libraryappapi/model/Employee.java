@@ -39,6 +39,16 @@ public class Employee {
         this.building = building;
     }
 
+    public Employee(String idCardNumber, String firstname, String lastname, Gender gender, String email, Building building, UserProfile userProfile) {
+        this.idCardNumber = idCardNumber;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.gender = gender;
+        this.email = email;
+        this.building = building;
+        this.userProfile = userProfile;
+    }
+
     public long getRowVersion() {
         return rowVersion;
     }

@@ -9,6 +9,7 @@ import com.djordjije11.libraryappapi.repository.BuildingRepository;
 import com.djordjije11.libraryappapi.repository.CityRepository;
 import com.github.javafaker.Faker;
 import org.springframework.stereotype.Component;
+
 import java.util.*;
 
 @Component
@@ -31,20 +32,23 @@ public class BuildingSeeder {
         this.addresses = new LinkedList<>();
     }
 
-    public List<Building> seed(int buildings, int cities){
+    public List<Building> seed(int buildings, int cities) {
+        if (buildingRepository.count() != 0) {
+            return buildingRepository.findAll();
+        }
         seedCities(cities);
         seedAddresses(buildings);
         return seedBuildings();
     }
 
-    private void generateCity(){
+    private void generateCity() {
         com.github.javafaker.Address fakeAddress = faker.address();
         City city = new City(fakeAddress.cityName(), fakeAddress.zipCode());
         cities.add(city);
     }
 
-    private void generateAddress(){
-        if(cities.isEmpty()){
+    private void generateAddress() {
+        if (cities.isEmpty()) {
             throw new RuntimeException("There are no generated cities for addresses to be generated.");
         }
         com.github.javafaker.Address fakeAddress = faker.address();
@@ -53,26 +57,26 @@ public class BuildingSeeder {
         addresses.add(address);
     }
 
-    private void seedCities(int count){
-        for (int i = 0; i < count; i++){
+    private void seedCities(int count) {
+        for (int i = 0; i < count; i++) {
             generateCity();
         }
         cityRepository.saveAll(cities);
     }
 
-    private void seedAddresses(int count){
-        for (int i = 0; i < count; i++){
+    private void seedAddresses(int count) {
+        for (int i = 0; i < count; i++) {
             generateAddress();
         }
         addressRepository.saveAll(addresses);
     }
 
-    private List<Building> seedBuildings(){
-        if(addresses.isEmpty()){
+    private List<Building> seedBuildings() {
+        if (addresses.isEmpty()) {
             throw new RuntimeException("There are no generated addresses for buildings to be generated.");
         }
         List<Building> buildings = new LinkedList<>();
-        for (Address address:
+        for (Address address :
                 addresses) {
             Building building = new Building(address);
             buildingRepository.save(building);
