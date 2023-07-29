@@ -120,9 +120,9 @@ public class BookServiceImpl implements BookService {
         }
 
         Publisher publisher = book.getPublisher();
-        if (publisher == null || publisher.getId() == null) {
+        if(publisher == null){
             dbBook.setPublisher(null);
-        } else if (dbBook.getPublisher() == null || publisher.getId().equals(dbBook.getPublisher().getId()) == false) {
+        } else {
             dbBook.setPublisher(fetchPublisher(publisher.getId()));
         }
 
@@ -168,7 +168,7 @@ public class BookServiceImpl implements BookService {
         return bookCopyRepository.save(bookCopy);
     }
 
-    @Transactional(Transactional.TxType.MANDATORY)
+    //    @Transactional(Transactional.TxType.MANDATORY)
     private BookCopy fetchBookCopy(Long id) {
         return bookCopyRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(BookCopy.class, id));

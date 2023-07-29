@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class BookServiceImplTest extends BookServiceTest {
 
-
     @BeforeEach
     public void init() {
         bookService = new BookServiceImpl(bookRepository, bookCopyRepository, buildingRepository, publisherRepository, authorRepository);
