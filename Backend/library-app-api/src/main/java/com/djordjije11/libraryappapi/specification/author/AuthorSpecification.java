@@ -1,6 +1,6 @@
 package com.djordjije11.libraryappapi.specification.author;
 
-import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
+import com.djordjije11.libraryappapi.helper.criteriabuilder.util.CriteriaBuilderUtil;
 import com.djordjije11.libraryappapi.model.Author;
 import com.djordjije11.libraryappapi.model.Author_;
 import jakarta.persistence.criteria.*;
@@ -16,14 +16,14 @@ public class AuthorSpecification {
             @Override
             public Predicate toPredicate(Root<Author> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 if (StringUtils.isBlank(search)) {
-                    return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
+                    return CriteriaBuilderUtil.alwaysTruePredicate(criteriaBuilder);
                 }
                 String[] names = search.split(StringUtils.SPACE, 2);
                 Expression<String> authorsFirstname = criteriaBuilder.upper(root.get(Author_.FIRSTNAME));
                 Expression<String> authorsLastname = criteriaBuilder.upper(root.get(Author_.LASTNAME));
                 if (names.length == 2) {
-                    String name1AsSqlLike = CriteriaBuilderHelper.containsAsSqlLike(names[0]);
-                    String name2AsSqlLike = CriteriaBuilderHelper.containsAsSqlLike(names[1]);
+                    String name1AsSqlLike = CriteriaBuilderUtil.containsAsSqlLike(names[0]);
+                    String name2AsSqlLike = CriteriaBuilderUtil.containsAsSqlLike(names[1]);
                     return criteriaBuilder.or(
                             criteriaBuilder.and(
                                     criteriaBuilder.like(authorsFirstname, name1AsSqlLike),
@@ -35,7 +35,7 @@ public class AuthorSpecification {
                             )
                     );
                 }
-                String nameAsSqlLike = CriteriaBuilderHelper.containsAsSqlLike(names[0].toUpperCase());
+                String nameAsSqlLike = CriteriaBuilderUtil.containsAsSqlLike(names[0].toUpperCase());
                 return criteriaBuilder.or(
                         criteriaBuilder.like(authorsFirstname, nameAsSqlLike),
                         criteriaBuilder.like(authorsLastname, nameAsSqlLike)

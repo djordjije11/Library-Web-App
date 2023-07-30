@@ -2,7 +2,7 @@ package com.djordjije11.libraryappapi.service.lending.impl;
 
 import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.exception.lending.BookCopyNotAvailableForLendingException;
-import com.djordjije11.libraryappapi.exception.lending.BookCopyNotInBuildingForLending;
+import com.djordjije11.libraryappapi.exception.lending.BookCopyNotInBuildingForLendingException;
 import com.djordjije11.libraryappapi.exception.lending.LendingAlreadyReturnedException;
 import com.djordjije11.libraryappapi.exception.lending.LendingReturnedNotByMemberException;
 import com.djordjije11.libraryappapi.model.*;
@@ -48,7 +48,7 @@ public class LendingServiceImpl implements LendingService {
                 lendingsIds) {
             final Lending lending = lendingRepository.findById(lendingId)
                     .orElseThrow(() -> new RecordNotFoundException(Lending.class, lendingId));
-            if(lending.getMember().getId().equals(memberId) == false){
+            if (lending.getMember().getId().equals(memberId) == false) {
                 throw new LendingReturnedNotByMemberException(lendingId, memberId);
             }
             if (lending.getReturnDate() != null) {
@@ -64,7 +64,7 @@ public class LendingServiceImpl implements LendingService {
     }
 
     @Override
-    public List<Lending> createLendings(Iterable<Long> bookCopiesIds, Long memberId, Long buildingId) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLending {
+    public List<Lending> createLendings(Iterable<Long> bookCopiesIds, Long memberId, Long buildingId) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLendingException {
         if (memberRepository.existsById(memberId) == false) {
             throw new RecordNotFoundException(Member.class, memberId);
         }
@@ -75,8 +75,8 @@ public class LendingServiceImpl implements LendingService {
                 bookCopiesIds) {
             final BookCopy bookCopy = bookCopyRepository.findById(bookCopyId)
                     .orElseThrow(() -> new RecordNotFoundException(BookCopy.class, bookCopyId));
-            if(bookCopy.getBuilding().getId().equals(buildingId) == false){
-                throw new BookCopyNotInBuildingForLending(bookCopyId, buildingId);
+            if (bookCopy.getBuilding() == null || bookCopy.getBuilding().getId() == null || bookCopy.getBuilding().getId().equals(buildingId) == false) {
+                throw new BookCopyNotInBuildingForLendingException(bookCopyId, buildingId);
             }
             if (bookCopy.getStatus() != BookCopyStatus.AVAILABLE) {
                 throw new BookCopyNotAvailableForLendingException(bookCopyId);

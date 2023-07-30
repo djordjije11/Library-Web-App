@@ -1,6 +1,6 @@
 package com.djordjije11.libraryappapi.specification.bookcopy;
 
-import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
+import com.djordjije11.libraryappapi.helper.criteriabuilder.util.CriteriaBuilderUtil;
 import com.djordjije11.libraryappapi.model.*;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.criteria.Join;
@@ -13,11 +13,11 @@ public class BookCopySpecification {
     public static Specification<BookCopy> byAllBooksSearch(String search){
         return (root, query, criteriaBuilder) -> {
             if(StringUtils.isBlank(search)){
-                return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
+                return CriteriaBuilderUtil.alwaysTruePredicate(criteriaBuilder);
             }
             final Join<BookCopy, Book> bookCopyBookJoin = root.join(BookCopy_.BOOK);
             final Join<Book, Author> bookAuthorJoin = bookCopyBookJoin.join(Book_.AUTHORS);
-            final String searchAsLike = CriteriaBuilderHelper.containsAsSqlLike(search);
+            final String searchAsLike = CriteriaBuilderUtil.containsAsSqlLike(search);
             return criteriaBuilder.or(
                     criteriaBuilder.like(root.get(BookCopy_.ISBN), searchAsLike),
                     criteriaBuilder.like(bookCopyBookJoin.get(Book_.TITLE), searchAsLike),
@@ -31,9 +31,9 @@ public class BookCopySpecification {
     public static Specification<BookCopy> byOneBookSearch(String search){
         return (root, query, criteriaBuilder) -> {
             if(StringUtils.isBlank(search)){
-                return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
+                return CriteriaBuilderUtil.alwaysTruePredicate(criteriaBuilder);
             }
-            return criteriaBuilder.like(root.get(BookCopy_.ISBN), CriteriaBuilderHelper.containsAsSqlLike(search));
+            return criteriaBuilder.like(root.get(BookCopy_.ISBN), CriteriaBuilderUtil.containsAsSqlLike(search));
         };
     }
 
@@ -48,7 +48,7 @@ public class BookCopySpecification {
     public static Specification<BookCopy> byStatus(BookCopyStatus status){
         return (root, query, criteriaBuilder) -> {
             if(status == null){
-                return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
+                return CriteriaBuilderUtil.alwaysTruePredicate(criteriaBuilder);
             }
             return criteriaBuilder.equal(root.get(BookCopy_.STATUS), status);
         };

@@ -10,7 +10,7 @@ import com.djordjije11.libraryappapi.dto.lending.LendingByMemberDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsCreateDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsReturnDto;
 import com.djordjije11.libraryappapi.exception.lending.BookCopyNotAvailableForLendingException;
-import com.djordjije11.libraryappapi.exception.lending.BookCopyNotInBuildingForLending;
+import com.djordjije11.libraryappapi.exception.lending.BookCopyNotInBuildingForLendingException;
 import com.djordjije11.libraryappapi.exception.lending.LendingAlreadyReturnedException;
 import com.djordjije11.libraryappapi.exception.lending.LendingReturnedNotByMemberException;
 import com.djordjije11.libraryappapi.mapper.lending.LendingMapper;
@@ -57,7 +57,7 @@ public class LendingController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createLendings(@RequestBody @Valid LendingsCreateDto lendingsCreateDto) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLending {
+    public ResponseEntity<Object> createLendings(@RequestBody @Valid LendingsCreateDto lendingsCreateDto) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLendingException {
         final EmployeeClaim employeeClaim = employeeClaimHolder.getEmployeeClaim();
         final List<Lending> lendings = lendingService.createLendings(lendingsCreateDto.bookCopiesIds(), lendingsCreateDto.memberId(), employeeClaim.buildingId());
         lendingEnroller.enrollLendings(employeeClaim, lendings, lendingsCreateDto.memberId());

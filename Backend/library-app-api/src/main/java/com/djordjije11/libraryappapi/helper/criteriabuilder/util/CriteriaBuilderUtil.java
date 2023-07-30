@@ -1,11 +1,11 @@
-package com.djordjije11.libraryappapi.helper.criteriabuilder;
+package com.djordjije11.libraryappapi.helper.criteriabuilder.util;
 
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
 
-public final class CriteriaBuilderHelper {
-    private CriteriaBuilderHelper() {
+public final class CriteriaBuilderUtil {
+    private CriteriaBuilderUtil() {
     }
 
     public static String containsAsSqlLike(String value) {

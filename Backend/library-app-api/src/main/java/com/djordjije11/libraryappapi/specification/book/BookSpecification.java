@@ -1,6 +1,6 @@
 package com.djordjije11.libraryappapi.specification.book;
 
-import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
+import com.djordjije11.libraryappapi.helper.criteriabuilder.util.CriteriaBuilderUtil;
 import com.djordjije11.libraryappapi.model.*;
 import jakarta.persistence.criteria.Join;
 import org.apache.commons.lang3.StringUtils;
@@ -13,10 +13,10 @@ public final class BookSpecification {
     public static Specification<Book> bySearch(String search) {
         return (root, query, criteriaBuilder) -> {
             if (StringUtils.isBlank(search)) {
-                return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
+                return CriteriaBuilderUtil.alwaysTruePredicate(criteriaBuilder);
             }
             final Join<Book, Author> bookAuthorJoin = root.join(Book_.AUTHORS);
-            final String searchAsLike = CriteriaBuilderHelper.containsAsSqlLike(search);
+            final String searchAsLike = CriteriaBuilderUtil.containsAsSqlLike(search);
             return criteriaBuilder.or(
                     criteriaBuilder.like(root.get(Book_.TITLE), searchAsLike),
                     criteriaBuilder.like(root.get(Book_.PUBLISHER).get(Publisher_.NAME), searchAsLike),

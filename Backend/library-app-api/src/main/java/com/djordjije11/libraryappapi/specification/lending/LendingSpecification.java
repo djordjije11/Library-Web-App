@@ -1,6 +1,6 @@
 package com.djordjije11.libraryappapi.specification.lending;
 
-import com.djordjije11.libraryappapi.helper.criteriabuilder.CriteriaBuilderHelper;
+import com.djordjije11.libraryappapi.helper.criteriabuilder.util.CriteriaBuilderUtil;
 import com.djordjije11.libraryappapi.model.*;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,16 +20,16 @@ public final class LendingSpecification {
     public static Specification<Lending> bySearch(String search) {
         return (root, query, criteriaBuilder) -> {
             if (StringUtils.isBlank(search)) {
-                return CriteriaBuilderHelper.alwaysTruePredicate(criteriaBuilder);
+                return CriteriaBuilderUtil.alwaysTruePredicate(criteriaBuilder);
             }
             return criteriaBuilder.or(
                     criteriaBuilder.like(
                             root.get(Lending_.BOOK_COPY).get(BookCopy_.ISBN),
-                            CriteriaBuilderHelper.containsAsSqlLike(search)
+                            CriteriaBuilderUtil.containsAsSqlLike(search)
                     ),
                     criteriaBuilder.like(
                             criteriaBuilder.upper(root.get(Lending_.BOOK_COPY).get(BookCopy_.BOOK).get(Book_.TITLE)),
-                            CriteriaBuilderHelper.containsAsSqlLike(search.toUpperCase())
+                            CriteriaBuilderUtil.containsAsSqlLike(search.toUpperCase())
                     )
             );
         };

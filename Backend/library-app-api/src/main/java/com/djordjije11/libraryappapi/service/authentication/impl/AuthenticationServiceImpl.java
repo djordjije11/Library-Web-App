@@ -3,6 +3,7 @@ package com.djordjije11.libraryappapi.service.authentication.impl;
 import com.djordjije11.libraryappapi.controller.request.authentication.AuthenticationRequest;
 import com.djordjije11.libraryappapi.controller.response.authentication.AuthenticationResponse;
 import com.djordjije11.libraryappapi.config.authentication.EmployeeClaim;
+import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
 import com.djordjije11.libraryappapi.model.UserProfile;
 import com.djordjije11.libraryappapi.model.UserRole;
 import com.djordjije11.libraryappapi.repository.EmployeeRepository;
@@ -33,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private String generateToken(UserProfile userProfile){
         var employee = employeeRepository.findByUserProfile_Id(userProfile.getId())
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("An employee with username: %s does not exist.", userProfile.getUsername())));
+                .orElseThrow(() -> new RecordNotFoundException(String.format("An Employee with username: %s does not exist.", userProfile.getUsername())));
         var employeeClaim = new EmployeeClaim(
                 employee.getId(),
                 employee.getIdCardNumber(),
