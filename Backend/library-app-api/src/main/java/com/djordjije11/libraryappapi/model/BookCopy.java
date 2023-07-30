@@ -36,6 +36,10 @@ public class BookCopy {
     public BookCopy() {
     }
 
+    public BookCopy(Long id) {
+        this.id = id;
+    }
+
     public BookCopy(String isbn, BookCopyStatus status, Book book, Building building) {
         this.isbn = isbn;
         this.status = status;

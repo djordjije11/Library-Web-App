@@ -2,6 +2,7 @@ package com.djordjije11.libraryappapi.service.book;
 
 import com.djordjije11.libraryappapi.exception.RecordNotCurrentVersionException;
 import com.djordjije11.libraryappapi.exception.RecordNotFoundException;
+import com.djordjije11.libraryappapi.exception.book.BookCopyIsbnNotUniqueException;
 import com.djordjije11.libraryappapi.exception.book.BookCopyNotInBuildingException;
 import com.djordjije11.libraryappapi.exception.book.BookWithCopiesDeleteException;
 import com.djordjije11.libraryappapi.model.*;
@@ -197,7 +198,7 @@ public abstract class BookServiceTest {
         var dbBook = bookRepository.save(book);
         var updateBook = new Book("Title 2", null, "imageUrl", 220);
         updateBook.setId(dbBook.getId());
-        updateBook.setRowVersion(10L);
+        updateBook.setRowVersion(dbBook.getRowVersion() - 1);
 
         assertThrows(RecordNotCurrentVersionException.class, () -> bookService.update(updateBook));
     }
@@ -289,7 +290,11 @@ public abstract class BookServiceTest {
     public void discardCopy() {
         var book = new Book("Title", "Description", null, 110);
         var dbBook = bookRepository.save(book);
-        var building = new Building(new Address("StreetName 1", 10, new City("City 1", "11000")));
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy);
@@ -310,15 +315,247 @@ public abstract class BookServiceTest {
     }
 
     @Test
-    public void discardCopy_when_copy_does_not_exist(){
-        fail();
+    public void discardCopy_when_copy_does_not_exist_throws_RecordNotFoundException() {
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+
+        assertThrows(RecordNotFoundException.class, () -> bookService.discardCopy(bookCopy));
     }
 
-//    @Test
-//    void createCopy() {
-//    }
-//
-//    @Test
-//    void updateCopy() {
-//    }
+    @Test
+    public void discardCopy_when_copy_is_not_in_the_building_throws_BookCopyNotInBuildingException() {
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city1 = new City("City 1", "11000");
+        var city2 = new City("City 2", "22000");
+        cityRepository.save(city1);
+        cityRepository.save(city2);
+        var address1 = new Address("StreetName 1", 10, city1);
+        var address2 = new Address("StreetName 2", 20, city2);
+        addressRepository.save(address1);
+        addressRepository.save(address2);
+        var building1 = new Building(address1);
+        var building2 = new Building(address2);
+        buildingRepository.save(building1);
+        buildingRepository.save(building2);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building1);
+        bookCopyRepository.save(bookCopy);
+        var bookCopyToDiscard = new BookCopy(bookCopy.getId());
+        bookCopyToDiscard.setBuilding(building2);
+
+        assertThrows(BookCopyNotInBuildingException.class, () -> bookService.discardCopy(bookCopyToDiscard));
+    }
+
+    @Test
+    public void discardCopy_when_RowVersion_is_not_valid_throws_RecordNotCurrentVersionException() {
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        bookCopyRepository.save(bookCopy);
+        var bookCopyToDiscard = new BookCopy(bookCopy.getId());
+        bookCopyToDiscard.setBuilding(building);
+        bookCopyToDiscard.setRowVersion(bookCopy.getRowVersion() - 1);
+
+        assertThrows(RecordNotCurrentVersionException.class, () -> bookService.discardCopy(bookCopyToDiscard));
+    }
+
+    @Test
+    public void updateCopy(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        bookCopyRepository.save(bookCopy);
+        bookCopy.setIsbn("123456789");
+
+        try {
+            bookService.updateCopy(bookCopy);
+        } catch (BookCopyIsbnNotUniqueException e) {
+            fail();
+        } catch (BookCopyNotInBuildingException e) {
+            throw new RuntimeException(e);
+        }
+
+        var maybeDbBookCopy = bookCopyRepository.findById(bookCopy.getId());
+        if(maybeDbBookCopy.isEmpty()){
+            fail();
+        }
+        var dbBookCopy = maybeDbBookCopy.get();
+
+        assertNotNull(dbBookCopy);
+        assertEquals(bookCopy.getIsbn(), dbBookCopy.getIsbn());
+    }
+
+    @Test
+    public void updateCopy_when_copy_does_not_exist_throws_RecordNotFoundException(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+
+        assertThrows(RecordNotFoundException.class, () -> bookService.updateCopy(bookCopy));
+    }
+
+    @Test
+    public void updateCopy_when_copy_is_not_in_the_building_throws_BookCopyNotInBuildingException(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city1 = new City("City 1", "11000");
+        var city2 = new City("City 2", "22000");
+        cityRepository.save(city1);
+        cityRepository.save(city2);
+        var address1 = new Address("StreetName 1", 10, city1);
+        var address2 = new Address("StreetName 2", 20, city2);
+        addressRepository.save(address1);
+        addressRepository.save(address2);
+        var building1 = new Building(address1);
+        var building2 = new Building(address2);
+        buildingRepository.save(building1);
+        buildingRepository.save(building2);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building1);
+        bookCopyRepository.save(bookCopy);
+        var bookCopyToUpdate = new BookCopy(bookCopy.getId());
+        bookCopyToUpdate.setBuilding(building2);
+        bookCopyToUpdate.setIsbn("123456789");
+
+        assertThrows(BookCopyNotInBuildingException.class, () -> bookService.updateCopy(bookCopyToUpdate));
+    }
+
+    @Test
+    public void updateCopy_when_RowVersion_is_not_valid_throws_RecordNotCurrentVersionException(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        bookCopyRepository.save(bookCopy);
+        var bookCopyToUpdate = new BookCopy(bookCopy.getId());
+        bookCopyToUpdate.setIsbn("123456789");
+        bookCopyToUpdate.setBuilding(building);
+        bookCopyToUpdate.setRowVersion(bookCopy.getRowVersion() - 1);
+
+        assertThrows(RecordNotCurrentVersionException.class, () -> bookService.updateCopy(bookCopyToUpdate));
+    }
+
+    @Test
+    public void updateCopy_when_ISBN_is_not_unique_throws_BookCopyIsbnNotUniqueException(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy1 = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy2 = new BookCopy("123456781", BookCopyStatus.AVAILABLE, dbBook, building);
+        bookCopyRepository.save(bookCopy1);
+        bookCopyRepository.save(bookCopy2);
+
+        bookCopy1.setIsbn(bookCopy2.getIsbn());
+        assertThrows(BookCopyIsbnNotUniqueException.class, () -> bookService.updateCopy(bookCopy1));
+    }
+
+    @Test
+    public void createCopy(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+
+        try {
+            bookService.createCopy(bookCopy);
+        } catch (BookCopyIsbnNotUniqueException e) {
+            fail();
+        }
+
+        var maybeDbBookCopy = bookCopyRepository.findById(bookCopy.getId());
+        if(maybeDbBookCopy.isEmpty()){
+            fail();
+        }
+        var dbBookCopy = maybeDbBookCopy.get();
+
+        assertNotNull(dbBookCopy);
+        assertEquals(bookCopy.getIsbn(), dbBookCopy.getIsbn());
+        assertEquals(bookCopy.getStatus(), dbBookCopy.getStatus());
+        assertEquals(bookCopy.getBook(), dbBookCopy.getBook());
+        assertEquals(bookCopy.getBuilding(), dbBookCopy.getBuilding());
+    }
+
+    @Test
+    public void createCopy_when_book_does_not_exist_throws_RecordNotFoundException(){
+        var book = new Book("Title", "Description", null, 110);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, book, building);
+
+        assertThrows(RecordNotFoundException.class, () -> bookService.createCopy(bookCopy));
+    }
+
+    @Test
+    public void createCopy_when_building_does_not_exist_throws_RecordNotFoundException(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+
+        assertThrows(RecordNotFoundException.class, () -> bookService.createCopy(bookCopy));
+    }
+
+    @Test
+    public void createCopy_when_ISBN_is_not_unique_throws_BookCopyIsbnNotUniqueException(){
+        var book = new Book("Title", "Description", null, 110);
+        var dbBook = bookRepository.save(book);
+        var city = new City("City", "11000");
+        cityRepository.save(city);
+        var address = new Address("StreetName", 10, city);
+        addressRepository.save(address);
+        var building = new Building(address);
+        buildingRepository.save(building);
+        var bookCopy1 = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy2 = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        bookCopyRepository.save(bookCopy1);
+
+        assertThrows(BookCopyIsbnNotUniqueException.class, () -> bookService.createCopy(bookCopy2));
+    }
 }

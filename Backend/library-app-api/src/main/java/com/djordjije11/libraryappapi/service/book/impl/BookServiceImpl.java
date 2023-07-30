@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @GlobalTransactional
 @Service
@@ -120,7 +121,7 @@ public class BookServiceImpl implements BookService {
         }
 
         Publisher publisher = book.getPublisher();
-        if(publisher == null){
+        if (publisher == null) {
             dbBook.setPublisher(null);
         } else {
             dbBook.setPublisher(fetchPublisher(publisher.getId()));
@@ -148,10 +149,16 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookCopy createCopy(BookCopy bookCopy) throws BookCopyIsbnNotUniqueException {
+        if (bookCopy.getBook() == null || bookCopy.getBook().getId() == null) {
+            throw new RecordNotFoundException(Book.class);
+        }
         if (bookRepository.existsById(bookCopy.getBook().getId()) == false) {
             throw new RecordNotFoundException(Book.class, bookCopy.getBook().getId());
         }
 
+        if (bookCopy.getBuilding() == null || bookCopy.getBuilding().getId() == null) {
+            throw new RecordNotFoundException(Building.class);
+        }
         if (buildingRepository.existsById(bookCopy.getBuilding().getId()) == false) {
             throw new RecordNotFoundException(Building.class, bookCopy.getBuilding().getId());
         }
@@ -170,6 +177,9 @@ public class BookServiceImpl implements BookService {
 
     //    @Transactional(Transactional.TxType.MANDATORY)
     private BookCopy fetchBookCopy(Long id) {
+        if (id == null) {
+            throw new RecordNotFoundException(BookCopy.class);
+        }
         return bookCopyRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(BookCopy.class, id));
     }
@@ -178,8 +188,7 @@ public class BookServiceImpl implements BookService {
     public BookCopy updateCopy(BookCopy bookCopy) throws BookCopyIsbnNotUniqueException, BookCopyNotInBuildingException {
         BookCopy dbBookCopy = fetchBookCopy(bookCopy.getId());
 
-        if (bookCopy.getBuilding() != null && dbBookCopy.getBuilding() != null
-                && dbBookCopy.getBuilding().getId().equals(bookCopy.getBuilding().getId()) == false) {
+        if (Objects.equals(dbBookCopy.getBuilding(), bookCopy.getBuilding()) == false) {
             throw new BookCopyNotInBuildingException(dbBookCopy.getId());
         }
         if (bookCopy.getRowVersion() != dbBookCopy.getRowVersion()) {
@@ -197,7 +206,7 @@ public class BookServiceImpl implements BookService {
     public void discardCopy(BookCopy bookCopy) throws BookCopyNotInBuildingException {
         BookCopy dbBookCopy = fetchBookCopy(bookCopy.getId());
 
-        if (dbBookCopy.getBuilding().getId().equals(bookCopy.getBuilding().getId()) == false) {
+        if (Objects.equals(dbBookCopy.getBuilding(), bookCopy.getBuilding()) == false) {
             throw new BookCopyNotInBuildingException(bookCopy.getId());
         }
         if (bookCopy.getRowVersion() != dbBookCopy.getRowVersion()) {

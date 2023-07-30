@@ -13,6 +13,9 @@ public class RecordNotFoundException extends RuntimeException {
     public <T> RecordNotFoundException(Class<T> resource, long id){
         super(String.format("%s with Id: %d is not found.", resource.getSimpleName(), id));
     }
+    public <T> RecordNotFoundException(Class<T> resource){
+        super(String.format("%s is not found.", resource.getSimpleName()));
+    }
     public RecordNotFoundException(String message) {
         super(message);
     }
