@@ -1,5 +1,6 @@
 ##### MY GITINGORE FILES #####
 application.properties
+*.db
 ##########
 
 ##### JAVA GITHUB #####
