@@ -75,7 +75,8 @@ public class LendingServiceImpl implements LendingService {
                 bookCopiesIds) {
             final BookCopy bookCopy = bookCopyRepository.findById(bookCopyId)
                     .orElseThrow(() -> new RecordNotFoundException(BookCopy.class, bookCopyId));
-            if (bookCopy.getBuilding() == null || bookCopy.getBuilding().getId() == null || bookCopy.getBuilding().getId().equals(buildingId) == false) {
+            if (bookCopy.getBuilding() == null || bookCopy.getBuilding().getId() == null
+                    || bookCopy.getBuilding().getId().equals(buildingId) == false) {
                 throw new BookCopyNotInBuildingForLendingException(bookCopyId, buildingId);
             }
             if (bookCopy.getStatus() != BookCopyStatus.AVAILABLE) {

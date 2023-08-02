@@ -1,8 +1,9 @@
 package com.djordjije11.libraryappapi.service.enroll.impl;
 
-import com.djordjije11.libraryappapi.config.authentication.EmployeeClaim;
+import com.djordjije11.libraryappapi.config.authentication.AuthClaimsHolder;
+import com.djordjije11.libraryappapi.config.authentication.claim.BuildingClaim;
+import com.djordjije11.libraryappapi.config.authentication.claim.EmployeeClaim;
 import com.djordjije11.libraryappapi.model.*;
-import com.djordjije11.libraryappapi.repository.BuildingRepository;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
 import com.djordjije11.libraryappapi.service.enroll.LendingEnroller;
 import org.slf4j.Logger;
@@ -16,33 +17,66 @@ import java.util.Optional;
 @Service
 public class LendingEnrollerImpl implements LendingEnroller {
     private final MemberRepository memberRepository;
-    private final BuildingRepository buildingRepository;
     private final Logger logger = LoggerFactory.getLogger(LendingEnrollerImpl.class);
 
-    public LendingEnrollerImpl(MemberRepository memberRepository, BuildingRepository buildingRepository) {
+    public LendingEnrollerImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.buildingRepository = buildingRepository;
     }
 
-    private boolean writeEmployeeMemberBuilding(StringBuilder stringBuilder, EmployeeClaim employeeClaim, Long memberId) {
-        boolean error = false;
+    @Override
+    public void enrollLendings(AuthClaimsHolder authClaimsHolder, List<Lending> lendings, Long memberId) {
+        writeLendingsEnrollment(authClaimsHolder, lendings, memberId, "LENDINGS ENROLLMENT", "LENT");
+    }
+
+    @Override
+    public void enrollReturnedLendings(AuthClaimsHolder authClaimsHolder, List<Lending> lendings, Long memberId) {
+        writeLendingsEnrollment(authClaimsHolder, lendings, memberId, "RETURNED LENDINGS ENROLLMENT", "RETURNED");
+    }
+
+    private void writeLendingsEnrollment(AuthClaimsHolder authClaimsHolder, List<Lending> lendings, Long memberId, String title, String action) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(title);
+        stringBuilder.append(System.lineSeparator());
+        writeEmployee(stringBuilder, authClaimsHolder.getEmployeeClaim());
+        writeBuilding(stringBuilder, authClaimsHolder.getBuildingClaim());
+        final boolean error = writeMember(stringBuilder, memberId);
+        stringBuilder.append(String.format("On date: %s", LocalDate.now()));
+        stringBuilder.append(System.lineSeparator());
+        stringBuilder.append(action);
+        stringBuilder.append(System.lineSeparator());
+        writeLendingsBooks(stringBuilder, lendings);
+        if (error) {
+            logger.error(stringBuilder.toString());
+        } else {
+            logger.info(stringBuilder.toString());
+        }
+    }
+
+    private void writeEmployee(StringBuilder stringBuilder, EmployeeClaim employeeClaim) {
         stringBuilder.append("Employee:");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append(employeeClaim.toString());
+        stringBuilder.append(String.format("%s %s, email: %s", employeeClaim.firstname(), employeeClaim.lastname(), employeeClaim.email()));
         stringBuilder.append(System.lineSeparator());
+        stringBuilder.append(
+                String.format(
+                        "ID: %d, ID card number: %s, User Profile ID: %d",
+                        employeeClaim.id(), employeeClaim.idCardNumber(), employeeClaim.userProfileId()
+                )
+        );
+        stringBuilder.append(System.lineSeparator());
+    }
+
+    private void writeBuilding(StringBuilder stringBuilder, BuildingClaim buildingClaim) {
         stringBuilder.append("Building:");
         stringBuilder.append(System.lineSeparator());
-        Optional<Building> maybeBuilding = buildingRepository.findById(employeeClaim.buildingId());
-        if (maybeBuilding.isEmpty()) {
-            error = true;
-            stringBuilder.append(String.format("NOT IN THE DATABASE, ID: %d", employeeClaim.buildingId()));
-        } else {
-            final Building building = maybeBuilding.get();
-            final Address address = building.getAddress();
-            final City city = address.getCity();
-            stringBuilder.append(String.format("%s %s, %s, %s", address.getStreetName(), address.getStreetNumber(), city.getName(), city.getZipcode()));
-        }
+        stringBuilder.append(String.format("%s, %s", buildingClaim.street(), buildingClaim.city()));
         stringBuilder.append(System.lineSeparator());
+        stringBuilder.append(String.format("ID: %d", buildingClaim.id()));
+        stringBuilder.append(System.lineSeparator());
+    }
+
+    private boolean writeMember(StringBuilder stringBuilder, Long memberId) {
+        boolean error = false;
         stringBuilder.append("Member:");
         stringBuilder.append(System.lineSeparator());
         Optional<Member> maybeMember = memberRepository.findById(memberId);
@@ -51,7 +85,7 @@ public class LendingEnrollerImpl implements LendingEnroller {
             stringBuilder.append(String.format("NOT IN THE DATABASE, ID: %d", memberId));
         } else {
             final Member member = maybeMember.get();
-            stringBuilder.append(String.format("Member %s %s, email: %s", member.getFirstname(), member.getLastname(), member.getEmail()));
+            stringBuilder.append(String.format("%s %s, email: %s", member.getFirstname(), member.getLastname(), member.getEmail()));
             stringBuilder.append(System.lineSeparator());
             stringBuilder.append(String.format("ID: %d, ID card number: %s", member.getId(), member.getIdCardNumber()));
         }
@@ -59,44 +93,14 @@ public class LendingEnrollerImpl implements LendingEnroller {
         return error;
     }
 
-    private void writeLendings(StringBuilder stringBuilder, List<Lending> lendings) {
+    private void writeLendingsBooks(StringBuilder stringBuilder, List<Lending> lendings) {
+        stringBuilder.append("Books:");
+        stringBuilder.append(System.lineSeparator());
         lendings.forEach(lending -> {
             final BookCopy bookCopy = lending.getBookCopy();
             final Book book = bookCopy.getBook();
             stringBuilder.append(String.format("ISBN: %s, %s, published by %s", bookCopy.getIsbn(), book.getTitle(), book.getPublisher().getName()));
             stringBuilder.append(System.lineSeparator());
         });
-    }
-
-    @Override
-    public void enrollLendings(EmployeeClaim employeeClaim, List<Lending> lendings, Long memberId) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("LENDINGS ENROLLMENT");
-        stringBuilder.append(System.lineSeparator());
-        final boolean error = writeEmployeeMemberBuilding(stringBuilder, employeeClaim, memberId);
-        stringBuilder.append(String.format("On date %s lent books:", LocalDate.now()));
-        stringBuilder.append(System.lineSeparator());
-        writeLendings(stringBuilder, lendings);
-        if (error) {
-            logger.error(stringBuilder.toString());
-        } else {
-            logger.info(stringBuilder.toString());
-        }
-    }
-
-    @Override
-    public void enrollReturnedLendings(EmployeeClaim employeeClaim, List<Lending> lendings, Long memberId) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("RETURNED LENDINGS ENROLLMENT");
-        stringBuilder.append(System.lineSeparator());
-        final boolean error = writeEmployeeMemberBuilding(stringBuilder, employeeClaim, memberId);
-        stringBuilder.append(String.format("On date %s returned lent books:", LocalDate.now()));
-        stringBuilder.append(System.lineSeparator());
-        writeLendings(stringBuilder, lendings);
-        if (error) {
-            logger.error(stringBuilder.toString());
-        } else {
-            logger.info(stringBuilder.toString());
-        }
     }
 }

@@ -1,7 +1,6 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.config.authentication.EmployeeClaim;
-import com.djordjije11.libraryappapi.config.authentication.EmployeeClaimHolder;
+import com.djordjije11.libraryappapi.config.authentication.AuthClaimsHolder;
 import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
 import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.request.lending.LendingRequestSortingParser;
@@ -34,13 +33,13 @@ public class LendingController {
     private final LendingEnroller lendingEnroller;
     private final LendingMapper mapper = Mappers.getMapper(LendingMapper.class);
     private final RequestSortingParamsParser sortingParamsParser;
-    private final EmployeeClaimHolder employeeClaimHolder;
+    private final AuthClaimsHolder authClaimsHolder;
 
-    public LendingController(LendingService lendingService, LendingEnroller lendingEnroller, LendingRequestSortingParser sortingParamsParser, EmployeeClaimHolder employeeClaimHolder) {
+    public LendingController(LendingService lendingService, LendingEnroller lendingEnroller, LendingRequestSortingParser sortingParamsParser, AuthClaimsHolder authClaimsHolder) {
         this.lendingService = lendingService;
         this.lendingEnroller = lendingEnroller;
         this.sortingParamsParser = sortingParamsParser;
-        this.employeeClaimHolder = employeeClaimHolder;
+        this.authClaimsHolder = authClaimsHolder;
     }
 
     @PutMapping("/return")
@@ -48,19 +47,16 @@ public class LendingController {
     public ResponseEntity<Object> returnLendings(
             @RequestBody @Valid LendingsReturnDto lendingsReturnDto
     ) throws LendingAlreadyReturnedException, LendingReturnedNotByMemberException {
-        final EmployeeClaim employeeClaim = employeeClaimHolder.getEmployeeClaim();
-        final Long buildingId = employeeClaim.buildingId();
-        final List<Lending> lendings = lendingService.returnLendings(lendingsReturnDto.lendingsIds(), lendingsReturnDto.memberId(), buildingId);
-        lendingEnroller.enrollReturnedLendings(employeeClaim, lendings, lendingsReturnDto.memberId());
+        final List<Lending> lendings = lendingService.returnLendings(lendingsReturnDto.lendingsIds(), lendingsReturnDto.memberId(), authClaimsHolder.getBuildingClaim().id());
+        lendingEnroller.enrollReturnedLendings(authClaimsHolder, lendings, lendingsReturnDto.memberId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> createLendings(@RequestBody @Valid LendingsCreateDto lendingsCreateDto) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLendingException {
-        final EmployeeClaim employeeClaim = employeeClaimHolder.getEmployeeClaim();
-        final List<Lending> lendings = lendingService.createLendings(lendingsCreateDto.bookCopiesIds(), lendingsCreateDto.memberId(), employeeClaim.buildingId());
-        lendingEnroller.enrollLendings(employeeClaim, lendings, lendingsCreateDto.memberId());
+        final List<Lending> lendings = lendingService.createLendings(lendingsCreateDto.bookCopiesIds(), lendingsCreateDto.memberId(), authClaimsHolder.getBuildingClaim().id());
+        lendingEnroller.enrollLendings(authClaimsHolder, lendings, lendingsCreateDto.memberId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

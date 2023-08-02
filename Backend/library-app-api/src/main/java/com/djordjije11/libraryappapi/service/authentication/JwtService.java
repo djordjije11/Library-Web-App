@@ -1,6 +1,8 @@
 package com.djordjije11.libraryappapi.service.authentication;
 
-import com.djordjije11.libraryappapi.config.authentication.EmployeeClaim;
+import com.djordjije11.libraryappapi.config.authentication.AuthClaimsHolder;
+import com.djordjije11.libraryappapi.config.authentication.claim.BuildingClaim;
+import com.djordjije11.libraryappapi.config.authentication.claim.EmployeeClaim;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,8 +18,10 @@ public interface JwtService {
     <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
     String generateToken(Map<String, Object> extraClaims, UserDetails userDetails);
     String generateToken(UserDetails userDetails);
-    String generateToken(EmployeeClaim employeeClaim, UserDetails userDetails);
+    String generateToken(EmployeeClaim employeeClaim, BuildingClaim buildingClaim, UserDetails userDetails);
     EmployeeClaim extractEmployeeClaim(String token);
+    BuildingClaim extractBuildingClaim(String token);
+    void setUpAuthClaimsHolder(AuthClaimsHolder authClaimsHolder, String token);
     boolean isTokenValid(String token, UserDetails userDetails);
     Date extractExpiration(String token);
     default Optional<String> getTokenFromHeader(String authHeader){

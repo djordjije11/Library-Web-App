@@ -1,9 +1,9 @@
 package com.djordjije11.libraryappapi.service.authentication;
 
-import com.djordjije11.libraryappapi.controller.request.authentication.AuthenticationRequest;
-import com.djordjije11.libraryappapi.controller.response.authentication.AuthenticationResponse;
+import com.djordjije11.libraryappapi.dto.authentication.LoginDto;
+import com.djordjije11.libraryappapi.dto.authentication.JwtTokenDto;
 
 public interface AuthenticationService {
-    AuthenticationResponse register(AuthenticationRequest request);
-    AuthenticationResponse login(AuthenticationRequest request);
+    JwtTokenDto register(LoginDto request);
+    JwtTokenDto login(LoginDto request);
 }

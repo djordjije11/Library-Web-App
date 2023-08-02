@@ -1,6 +1,6 @@
 package com.djordjije11.libraryappapi.controller;
 
-import com.djordjije11.libraryappapi.config.authentication.EmployeeClaimHolder;
+import com.djordjije11.libraryappapi.config.authentication.AuthClaimsHolder;
 import com.djordjije11.libraryappapi.controller.request.RequestPagingAndSortingParams;
 import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.request.book.BookRequestSortingParamsParser;
@@ -39,13 +39,13 @@ public class BookController {
     private final BookCopyMapper bookCopyMapper = Mappers.getMapper(BookCopyMapper.class);
     private final RequestSortingParamsParser bookSortingParamsParser;
     private final RequestSortingParamsParser bookCopySortingParamsParser;
-    private final EmployeeClaimHolder employeeClaimHolder;
+    private final AuthClaimsHolder authClaimsHolder;
 
-    public BookController(BookService bookService, BookRequestSortingParamsParser bookSortingParamsParser, BookCopyRequestSortingParamsParser bookCopySortingParamsParser, EmployeeClaimHolder employeeClaimHolder) {
+    public BookController(BookService bookService, BookRequestSortingParamsParser bookSortingParamsParser, BookCopyRequestSortingParamsParser bookCopySortingParamsParser, AuthClaimsHolder authClaimsHolder) {
         this.bookService = bookService;
         this.bookSortingParamsParser = bookSortingParamsParser;
         this.bookCopySortingParamsParser = bookCopySortingParamsParser;
-        this.employeeClaimHolder = employeeClaimHolder;
+        this.authClaimsHolder = authClaimsHolder;
     }
 
     @GetMapping
@@ -75,7 +75,7 @@ public class BookController {
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search
     ) {
-        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
+        Long buildingId = authClaimsHolder.getBuildingClaim().id();
         Page<BookCopy> page = bookService.getCopiesAvailableInBuilding(bookId, buildingId, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         List<BookCopyDto> bookCopyDtos = page.map(bookCopyMapper::map).toList();
@@ -118,7 +118,7 @@ public class BookController {
             @PathVariable Long bookId,
             @Valid @RequestBody BookCopyCreateDto bookCopyCreateDto
     ) throws BookCopyIsbnNotUniqueException {
-        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
+        Long buildingId = authClaimsHolder.getBuildingClaim().id();
         BookCopy bookCopy = bookCopyMapper.map(bookCopyCreateDto);
         bookCopy.setBuilding(new Building(buildingId));
         bookCopy.setBook(new Book(bookId));
@@ -144,7 +144,7 @@ public class BookController {
             @PathVariable Long id,
             @Valid @RequestBody BookCopyUpdateDto bookCopyUpdateDto
     ) throws BookCopyIsbnNotUniqueException, BookCopyNotInBuildingException {
-        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
+        Long buildingId = authClaimsHolder.getBuildingClaim().id();
         BookCopy bookCopy = bookCopyMapper.map(bookCopyUpdateDto);
         bookCopy.setBuilding(new Building(buildingId));
         bookCopy.setBook(new Book(bookId));
@@ -165,7 +165,7 @@ public class BookController {
             @PathVariable Long id,
             @RequestBody RowVersionDto rowVersionDto
     ) throws BookCopyNotInBuildingException {
-        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
+        Long buildingId = authClaimsHolder.getBuildingClaim().id();
         var bookCopy = new BookCopy();
         bookCopy.setId(id);
         bookCopy.setBuilding(new Building(buildingId));
@@ -180,7 +180,7 @@ public class BookController {
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search
     ){
-        Long buildingId = employeeClaimHolder.getEmployeeClaim().buildingId();
+        Long buildingId = authClaimsHolder.getBuildingClaim().id();
         Page<BookCopy> page = bookService.getAllBooksCopiesAvailableInBuilding(buildingId, search, pagingAndSortingParams.createPageable(bookCopySortingParamsParser));
         HttpHeaders httpHeaders = ResponseHeadersFactory.createWithPagination(pagingAndSortingParams.pageNumber(), pagingAndSortingParams.pageSize(), page.getTotalPages(), page.getTotalElements());
         return ResponseEntity.ok().headers(httpHeaders).body(page.map(bookCopyMapper::map).toList());

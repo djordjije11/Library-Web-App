@@ -1,6 +1,8 @@
 package com.djordjije11.libraryappapi.service.authentication.impl;
 
-import com.djordjije11.libraryappapi.config.authentication.EmployeeClaim;
+import com.djordjije11.libraryappapi.config.authentication.AuthClaimsHolder;
+import com.djordjije11.libraryappapi.config.authentication.claim.BuildingClaim;
+import com.djordjije11.libraryappapi.config.authentication.claim.EmployeeClaim;
 import com.djordjije11.libraryappapi.service.authentication.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -23,6 +25,7 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
     private final String EMPLOYEE_CLAIM_KEY = "employee";
+    private final String BUILDING_CLAIM_KEY = "building";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -42,9 +45,10 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateToken(EmployeeClaim employeeClaim, UserDetails userDetails) {
+    public String generateToken(EmployeeClaim employeeClaim, BuildingClaim buildingClaim, UserDetails userDetails) {
         var extraClaims = new HashMap<String, Object>();
         extraClaims.put(EMPLOYEE_CLAIM_KEY, objectMapper.convertValue(employeeClaim, Map.class));
+        extraClaims.put(BUILDING_CLAIM_KEY, objectMapper.convertValue(buildingClaim, Map.class));
         return generateToken(extraClaims, userDetails);
     }
 
@@ -53,6 +57,22 @@ public class JwtServiceImpl implements JwtService {
         Claims claims = extractAllClaims(token);
         var employeeClaim = claims.get(EMPLOYEE_CLAIM_KEY, Map.class);
         return objectMapper.convertValue(employeeClaim, EmployeeClaim.class);
+    }
+
+    @Override
+    public BuildingClaim extractBuildingClaim(String token) {
+        Claims claims = extractAllClaims(token);
+        var buildingClaim = claims.get(BUILDING_CLAIM_KEY, Map.class);
+        return objectMapper.convertValue(buildingClaim, BuildingClaim.class);
+    }
+
+    @Override
+    public void setUpAuthClaimsHolder(AuthClaimsHolder authClaimsHolder, String token){
+        Claims claims = extractAllClaims(token);
+        var employeeClaim = claims.get(EMPLOYEE_CLAIM_KEY, Map.class);
+        var buildingClaim = claims.get(BUILDING_CLAIM_KEY, Map.class);
+        authClaimsHolder.setEmployeeClaim(objectMapper.convertValue(employeeClaim, EmployeeClaim.class));
+        authClaimsHolder.setBuildingClaim(objectMapper.convertValue(buildingClaim, BuildingClaim.class));
     }
 
     @Override

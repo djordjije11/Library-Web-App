@@ -54,11 +54,11 @@ public class EmployeeSeeder {
     private List<Employee> seedManualEmployees(List<Building> buildings) {
         var employees = new LinkedList<Employee>();
 
-        var userProfile1 = new UserProfile("Djole10", passwordEncoder.encode("djole10"), UserRole.EMPLOYEE);
+        var userProfile1 = new UserProfile("Djole10", passwordEncoder.encode("DjoleDjole10"), UserRole.EMPLOYEE);
         userProfileRepository.save(userProfile1);
-        var userProfile2 = new UserProfile("Mica333", passwordEncoder.encode("Mica333"), UserRole.EMPLOYEE);
+        var userProfile2 = new UserProfile("Mica333", passwordEncoder.encode("Micaa333"), UserRole.EMPLOYEE);
         userProfileRepository.save(userProfile2);
-        var userProfile3 = new UserProfile("AcaAca", passwordEncoder.encode("RadnaSkela"), UserRole.EMPLOYEE);
+        var userProfile3 = new UserProfile("AcaAca", passwordEncoder.encode("RadnaSkela10"), UserRole.EMPLOYEE);
         userProfileRepository.save(userProfile3);
 
         employees.add(
