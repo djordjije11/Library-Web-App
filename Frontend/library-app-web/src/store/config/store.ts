@@ -1,4 +1,4 @@
-import { AnyAction, ThunkDispatch, configureStore } from '@reduxjs/toolkit'
+import { AnyAction, ThunkAction, ThunkDispatch, configureStore } from '@reduxjs/toolkit'
 import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
 import authSlice from '../authentication/authSlice';
 import membersSlice from '../member/membersSlice';
@@ -19,3 +19,4 @@ export default store;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export type TypedDispatch<T> = ThunkDispatch<T, any, AnyAction>;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>

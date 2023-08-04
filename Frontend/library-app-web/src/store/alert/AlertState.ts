@@ -1,4 +1,4 @@
-import AlertError from "../../models/alert/AlertError";
+import AlertError from "../../models/error/AlertError";
 
 export default interface AlertState {
     show: boolean,

@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
-import { getAuthToken } from "./services/authentication/authTokenService";
 import { useAppDispatch, useAppSelector } from "./store/config/hooks";
-import { authActions } from "./store/authentication/authSlice";
 import HomePage from "./pages/HomePage";
-import Loader from "./components/shared/Loader";
 import { loaderActions } from "./store/loader/loaderSlice";
+import { loginThunk } from "./store/authentication/authThunks";
 
 function App() {
   // const [loading, setLoading] = useState<boolean>();
@@ -17,10 +15,7 @@ function App() {
   function setUpLogin() {
     // setLoading(true);
     dispatch(loaderActions.show(true));
-    const authToken = getAuthToken();
-    if (authToken !== null) {
-      dispatch(authActions.loggedIn(authToken));
-    }
+    dispatch(loginThunk());
     // setLoading(false);
     setChecked(true);
     dispatch(loaderActions.show(false));

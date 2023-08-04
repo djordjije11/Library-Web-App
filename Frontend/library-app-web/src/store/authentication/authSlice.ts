@@ -1,40 +1,46 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { decodeAuthToken, removeAuthToken, saveAuthToken } from "../../services/authentication/authTokenService"
-import AuthState from "./AuthState"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import AuthState from "./AuthState";
+import AuthClaims from "../../models/authentication/claims/AuthClaims";
+import { loginAsyncThunk } from "./authThunks";
 
 const initialState: AuthState = {
-    loggedIn: false
-}
+  loggedIn: false,
+  isError: false,
+  loading: false,
+};
 
 const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers: {
-        loggedIn: (state, action: PayloadAction<string>) => {
-            const authClaims = decodeAuthToken(action.payload);
-            if(authClaims === null) {
-                return;
-            }
-            saveAuthToken(action.payload);
-            state.loggedIn = true;
-            state.authClaims = authClaims;
-            // state = {
-            //     loggedIn: true,
-            //     employee: action.payload.employeeClaim,
-            //     building: action.payload.buildingClaim
-            // } as AuthUser;
-        },
-        loggedOut: (state) =>{
-            removeAuthToken();
-            state.loggedIn = false;
-            state.authClaims = undefined;
-            // state = {
-            //     loggedIn: false,
-            // } as AuthUser;
-        }
-    }
+  name: "auth",
+  initialState,
+  reducers: {
+    loggedIn: (state, action: PayloadAction<AuthClaims>) => {
+      state.loggedIn = true;
+      state.authClaims = action.payload;
+      state.isError = false;
+      state.error = undefined;
+    },
+    loggedOut: (state) => {
+      state.loggedIn = false;
+      state.authClaims = undefined;
+      state.isError = false;
+      state.error = undefined;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loginAsyncThunk.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(loginAsyncThunk.rejected, (state, action) => {
+      state.isError = true;
+      state.error = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(loginAsyncThunk.fulfilled, (state, action) => {
+      authSlice.caseReducers.loggedIn(state, action);
+      state.loading = false;
+    });
+  },
 });
-
 
 export default authSlice.reducer;
 export const authActions = authSlice.actions;

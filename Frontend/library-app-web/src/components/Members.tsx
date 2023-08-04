@@ -35,8 +35,8 @@ export default function Members() {
     dispatch(loaderActions.show(true));
     setTimeout(async () => {
       try {
-        //const members = await getMembersAsync();
-        //setMembers(members);
+        const members = await getMembersAsync();
+        setMembers(members);
       } catch (error) {
       } finally {
         //setLoading(false);

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import AlertState from "./AlertState";
-import AlertError from "../../models/alert/AlertError";
+import AlertError from "../../models/error/AlertError";
 
 const initialState : AlertState = {
     show: false
