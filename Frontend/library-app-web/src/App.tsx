@@ -1,58 +1,42 @@
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import Login from "./Login";
-import { JsxElement } from "typescript";
-import Members from "./Members";
-import jwtDecode from "jwt-decode";
-
-interface User {
-  id: number;
-  idCardNumber: string;
-  firstname: string;
-  lastname: string;
-  email: string;
-  buildingId: number;
-  userProfile: number;
-}
+import LoginPage from "./pages/LoginPage";
+import { getAuthToken } from "./services/authentication/authTokenService";
+import { useAppDispatch, useAppSelector } from "./store/config/hooks";
+import { authActions } from "./store/authentication/authSlice";
+import HomePage from "./pages/HomePage";
+import Loader from "./components/shared/Loader";
+import { loaderActions } from "./store/loader/loaderSlice";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<User>();
+  // const [loading, setLoading] = useState<boolean>();
+  const userLoggedIn: boolean = useAppSelector((state) => state.auth.loggedIn);
+  const dispatch = useAppDispatch();
+  const [checked, setChecked] = useState(false);
 
-  useEffect(() => {
-    const token: string | null = localStorage.getItem("token");
-    if (token !== null) {
-      setLoggedIn(true);
+  function setUpLogin() {
+    // setLoading(true);
+    dispatch(loaderActions.show(true));
+    const authToken = getAuthToken();
+    if (authToken !== null) {
+      dispatch(authActions.loggedIn(authToken));
     }
-  }, []);
-
-  function render(): ReactElement {
-    if (loggedIn === false) {
-      return (
-        <Login
-          loggedIn={loggedIn}
-          setLoggedIn={setLoggedIn}
-          user={user}
-          setUser={setUser}
-        />
-      );
-    }
-    return (
-      <>
-        <Members />
-        <button
-          onClick={() => {
-            localStorage.removeItem("token");
-            setLoggedIn(false);
-          }}
-        >
-          LOGOUT
-        </button>
-      </>
-    );
+    // setLoading(false);
+    setChecked(true);
+    dispatch(loaderActions.show(false));
   }
 
-  return render();
+  useEffect(setUpLogin, []);
+
+  // if (loading) {
+  //   return <Loader />;
+  // }
+
+  if (checked === false) {
+    return <></>;
+  }
+
+  return userLoggedIn ? <HomePage /> : <LoginPage />;
 }
 
 export default App;
