@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <Alert />
+      {/* <Alert /> */}
       <form onSubmit={handleLoginAsync}>
         <input
           type="text"
