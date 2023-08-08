@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../store/config/hooks";
 import { Navigate, useLocation, Location } from "react-router-dom";
-import { LOGIN_PAGE } from "./routesUrls";
+import { LOGIN_PAGE } from "./AppRouter";
 
 export interface LocationState {
   from: Location;

@@ -1,17 +1,16 @@
 import { Fragment } from "react";
 import "../../App.css";
-import LoginPage from "../../pages/LoginPage";
-import HomePage from "../../pages/HomePage";
+import LoginPage from "../login/LoginPage";
+import HomePage from "../home/HomePage";
 import { Route, Routes } from "react-router-dom";
-import {
-  ADD_MEMBER_PAGE,
-  HOME_PAGE,
-  LOGIN_PAGE,
-  UNSPECIFIED_LINK,
-} from "../../components/nav/routesUrls";
-import AuthenticatedRoute from "../../components/nav/AuthenticatedRoute";
-import UnauthenticatedRoute from "../../components/nav/UnauthenticatedRoute";
-import UnspecifiedRoute from "../../components/nav/UnspecifiedRoute";
+import AuthenticatedRoute from "./AuthenticatedRoute";
+import UnauthenticatedRoute from "./UnauthenticatedRoute";
+import UnspecifiedRoute from "./UnspecifiedRoute";
+
+export const LOGIN_PAGE = "/login";
+export const HOME_PAGE = "/";
+export const ADD_MEMBER_PAGE = "/member";
+export const UNSPECIFIED_LINK = "/*";
 
 export default function AppRouter() {
   return (

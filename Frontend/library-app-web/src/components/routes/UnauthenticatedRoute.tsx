@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../store/config/hooks";
-import { HOME_PAGE } from "./routesUrls";
+import { HOME_PAGE } from "./AppRouter";
 import { Navigate } from "react-router-dom";
 
 export default function UnauthenticatedRoute({
