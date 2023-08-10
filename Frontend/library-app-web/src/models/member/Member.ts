@@ -7,4 +7,5 @@ export default interface Member {
   lastname: string;
   gender: Gender;
   email: string;
+  birthday: string;
 }

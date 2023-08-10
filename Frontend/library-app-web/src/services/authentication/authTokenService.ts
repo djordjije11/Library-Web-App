@@ -33,6 +33,10 @@ export function removeAuthToken() {
 function decodeAuthToken(token: string): AuthClaims | null {
   try {
     const claims: any = jwtDecode(token);
+    if (Date.now() >= claims.exp * 1000) {
+      removeAuthToken();
+      return null;
+    }
     return {
       employeeClaim: claims.employee as EmployeeClaim,
       buildingClaim: claims.building as BuildingClaim,

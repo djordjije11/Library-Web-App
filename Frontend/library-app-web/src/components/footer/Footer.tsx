@@ -16,7 +16,7 @@ export default function Footer() {
 
     return (
       <Typography className="font-normal">
-        {`${authClaims.buildingClaim.street} , ${authClaims.buildingClaim.city}`}
+        {`${authClaims.buildingClaim.street}, ${authClaims.buildingClaim.city}`}
       </Typography>
     );
   }

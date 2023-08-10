@@ -15,12 +15,16 @@ import FormField from "../form/FormField";
 import { Gender } from "../../models/enums/Gender";
 import { addMemberAsyncThunk } from "../../store/member-add/memberAddThunks";
 import { useAppDispatch } from "../../store/config/hooks";
+import FormDate from "../form/FormDate";
 
 export default function MemberAddForm() {
   const [memberInput, setMemberInput] = useState<Member>({} as Member);
   const [memberInputResults, setMemberInputResults] =
     useState<MemberInputResults>({} as MemberInputResults);
   const dispatch = useAppDispatch();
+
+  const maxBirthdayDate = new Date();
+  maxBirthdayDate.setDate(maxBirthdayDate.getDate() - 365 * 16);
 
   function validateForm(): boolean {
     const idCardNumberResult = validateIdCardNumber(memberInput.idCardNumber);
@@ -50,13 +54,18 @@ export default function MemberAddForm() {
     if (formValid === false) {
       return;
     }
-    console.log(memberInput);
     await dispatch(addMemberAsyncThunk(memberInput));
   }
 
   function handleGenderChanged(gender: Gender) {
     setMemberInput((prev) => {
       return { ...prev, gender };
+    });
+  }
+
+  function handleBirthdayChanged(birthday: Date) {
+    setMemberInput((prev) => {
+      return { ...prev, birthday: birthday.toISOString().split("T")[0] };
     });
   }
 
@@ -128,6 +137,13 @@ export default function MemberAddForm() {
               type="email"
               value={memberInput.email}
               onChange={handlePropertyChanged}
+            />
+          </FormField>
+          <FormField name="birthday" label="Birthday">
+            <FormDate
+              title="Birthday"
+              onChange={handleBirthdayChanged}
+              maxDate={maxBirthdayDate}
             />
           </FormField>
         </CardBody>
