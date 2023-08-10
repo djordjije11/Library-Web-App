@@ -1,6 +1,6 @@
 import axios from "axios";
 import Member from "../../models/member/Member";
-import { GET_MEMBERS_URL } from "../apiUrls";
+import { ADD_MEMBER_URL, GET_MEMBERS_URL } from "../apiUrls";
 import { getHeaders } from "../requestHeaders";
 
 export async function getMembersAsync(): Promise<Member[]> {
@@ -8,4 +8,11 @@ export async function getMembersAsync(): Promise<Member[]> {
     headers: getHeaders(),
   });
   return response.data as Member[];
+}
+
+export async function addMemberAsync(member: Member): Promise<Member> {
+  const response = await axios.post(ADD_MEMBER_URL, member, {
+    headers: getHeaders(),
+  });
+  return response.data as Member;
 }

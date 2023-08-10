@@ -8,10 +8,7 @@ import { LocationState } from "../routes/AuthenticatedRoute";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 
 export default function LoginForm() {
-  const [loginInput, setLoginInput] = useState<LoginInput>({
-    username: "",
-    password: "",
-  });
+  const [loginInput, setLoginInput] = useState<LoginInput>({} as LoginInput);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,7 +57,7 @@ export default function LoginForm() {
             size="lg"
             label="Username"
             name="username"
-            value={loginInput.username}
+            value={loginInput.username || ""}
             onChange={handlePropertyChange}
           />
           <Input
@@ -68,7 +65,7 @@ export default function LoginForm() {
             size="lg"
             label="Password"
             name="password"
-            value={loginInput.password}
+            value={loginInput.password || ""}
             onChange={handlePropertyChange}
           />
         </div>

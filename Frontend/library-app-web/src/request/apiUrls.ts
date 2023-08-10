@@ -11,3 +11,4 @@ const MEMBER = "member";
 
 export const LOGIN_URL = getUrl(LOGIN);
 export const GET_MEMBERS_URL = getUrl(MEMBER);
+export const ADD_MEMBER_URL = getUrl(MEMBER);

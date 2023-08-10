@@ -1,20 +1,12 @@
 import DailyQuoteParagraph from "./DailyQuoteParagraph";
-import homePageBackground from "../../images/home-page-background-3.jpg";
+import BackgroundImage from "./BackgroundImage";
 
 export default function HomePage() {
   return (
-    <div
-      style={{
-        backgroundImage: `url(${homePageBackground})`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        opacity: 0.92,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <DailyQuoteParagraph />
-    </div>
+    <BackgroundImage>
+      <div className="h-full flex justify-center items-center">
+        <DailyQuoteParagraph />
+      </div>
+    </BackgroundImage>
   );
 }

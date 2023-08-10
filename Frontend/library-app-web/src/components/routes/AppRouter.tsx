@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import UnspecifiedRoute from "./UnspecifiedRoute";
+import MemberAddPage from "../member/MemberAddPage";
 
 export const LOGIN_PAGE = "/login";
 export const HOME_PAGE = "/";
@@ -36,7 +37,7 @@ export default function AppRouter() {
           path={ADD_MEMBER_PAGE}
           element={
             <AuthenticatedRoute>
-              <div>HELLO</div>
+              <MemberAddPage />
             </AuthenticatedRoute>
           }
         />
