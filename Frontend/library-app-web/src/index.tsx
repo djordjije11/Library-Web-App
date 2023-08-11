@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store/config/store";
 import { ThemeProvider } from "@material-tailwind/react";
 
-const strictMode: boolean = true;
+const strictMode: boolean = false;
 
 function renderAppWithStrictModeConfig(): JSX.Element {
   if (strictMode) {
