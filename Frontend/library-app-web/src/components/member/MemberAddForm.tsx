@@ -2,7 +2,7 @@ import { useState, FormEvent } from "react";
 import { Button, Card, CardBody, CardFooter } from "@material-tailwind/react";
 import Member from "../../models/member/Member";
 import FormInput from "../form/FormInput";
-import MemberInputResults from "../../models/member/MemberInputResults";
+import { MemberInputResults } from "../../models/member/Member";
 import { allValid } from "../../models/validation/ValidationResult";
 import {
   validateEmail,

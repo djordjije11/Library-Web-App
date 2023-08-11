@@ -54,8 +54,29 @@ export function validateEmail(email: string): ValidationResult {
     return getResultError("Email is required.");
   }
   const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  if (regex.test(String(email).toLowerCase()) === false) {
+  if (regex.test(email.toLowerCase()) === false) {
     return getResultError("Email must be valid.");
+  }
+  return getResultValid();
+}
+
+export function validateUsername(username: string): ValidationResult {
+  if (checkNotBlank(username) === false) {
+    return getResultError("Username is required.");
+  }
+  if (checkBetweenInclusive(username.length, 3, 30) === false) {
+    return getResultError("Username must be between 3 and 30 characters.");
+  }
+  return getResultValid();
+}
+
+export function validatePassword(password: string): ValidationResult {
+  if (checkNotBlank(password) === false) {
+    return getResultError("Password is required.");
+  }
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  if (regex.test(password) === false) {
+    return getResultError("Password must be valid.");
   }
   return getResultValid();
 }

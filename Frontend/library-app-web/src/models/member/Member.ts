@@ -1,4 +1,12 @@
 import { Gender } from "../enums/Gender";
+import FormInputResult from "../validation/ValidationResult";
+
+export interface MemberInputResults {
+  idCardNumberResult: FormInputResult;
+  firstnameResult: FormInputResult;
+  lastnameResult: FormInputResult;
+  emailResult: FormInputResult;
+}
 
 export default interface Member {
   id: number;

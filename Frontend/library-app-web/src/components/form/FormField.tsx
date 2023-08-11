@@ -4,13 +4,26 @@ import ValidationResult from "../../models/validation/ValidationResult";
 
 export interface FormFieldProps {
   name: string;
-  label: string;
+  label?: string;
   result?: ValidationResult;
   children: JSX.Element;
 }
 
 export default function FormField(props: FormFieldProps) {
   const { name, label, result } = props;
+
+  function renderLabel(): JSX.Element {
+    return (
+      <label
+        htmlFor={name}
+        className="font-semibold capitalize"
+        style={{ visibility: label === undefined ? "hidden" : "visible" }}
+      >
+        {label || "Input field"}
+      </label>
+    );
+  }
+
   function renderError(): JSX.Element {
     if (result === undefined || result.isValid) {
       return <></>;
@@ -21,9 +34,7 @@ export default function FormField(props: FormFieldProps) {
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="flex justify-between">
-        <label htmlFor={name} className="font-semibold capitalize">
-          {label}
-        </label>
+        {renderLabel()}
         <AnimatePresence mode="wait" initial={false}>
           {renderError()}
         </AnimatePresence>
@@ -32,6 +43,7 @@ export default function FormField(props: FormFieldProps) {
     </div>
   );
 }
+
 const InputError = ({ message }: { message?: string }) => {
   return (
     <motion.p
