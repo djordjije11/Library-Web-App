@@ -30,7 +30,7 @@ export const loginAsyncThunk = createAsyncThunk<
   }
 });
 
-export const loginThunk = (): AppThunk => (dispatch, getState) => {
+export const loginFromLocalThunk = (): AppThunk => (dispatch, getState) => {
   const authClaims = getDecodedAuthToken();
   if (authClaims === null) {
     return;

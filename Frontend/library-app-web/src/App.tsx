@@ -1,19 +1,29 @@
 import "./App.css";
 import { useAppDispatch } from "./store/config/hooks";
-import { loginThunk } from "./store/authentication/authThunks";
+import { loginFromLocalThunk } from "./store/authentication/authThunks";
 import AppRouter from "./components/routes/AppRouter";
 import { BrowserRouter } from "react-router-dom";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useAppDispatch();
 
-  dispatch(loginThunk());
+  dispatch(loginFromLocalThunk());
 
   return (
     <BrowserRouter>
-      {/* <Loader /> */}
+      <ToastContainer
+        position="top-right"
+        autoClose={1000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        theme="colored"
+      />
       <div
         className="min-h-screen"
         style={{

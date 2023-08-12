@@ -1,4 +1,3 @@
-import { Gender } from "../models/enums/Gender";
 import ValidationResult, {
   getResultError,
   getResultValid,

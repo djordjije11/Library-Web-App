@@ -7,7 +7,6 @@ import {
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import authSlice from "../authentication/authSlice";
 import membersSlice from "../member/membersSlice";
-import alertSlice from "../alert/alertSlice";
 import loaderSlice from "../loader/loaderSlice";
 import memberAddSlice from "../member-add/memberAddSlice";
 
@@ -15,7 +14,6 @@ const store: ToolkitStore = configureStore({
   reducer: {
     auth: authSlice,
     members: membersSlice,
-    alert: alertSlice,
     loader: loaderSlice,
     memberAdd: memberAddSlice,
   },

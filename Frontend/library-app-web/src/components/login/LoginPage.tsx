@@ -1,4 +1,3 @@
-import Alert from "../Alert";
 import LoginForm from "./LoginForm";
 import LoginBackgroundImage from "./LoginBackgroundImage";
 import useMediaQuery from "../shared/useMediaQuery";
@@ -32,17 +31,14 @@ export default function LoginPage() {
   }
 
   return (
-    <>
-      {/* <Alert /> */}
-      <div className="flex justify-center items-center h-full">
-        <div
-          className="flex justify-evenly items-stretch w-full"
-          style={{ height: "364px" }}
-        >
-          {renderLoginForm()}
-          {renderBackgroundImage()}
-        </div>
+    <div className="flex justify-center items-center h-full">
+      <div
+        className="flex justify-evenly items-stretch w-full"
+        style={{ height: "364px" }}
+      >
+        {renderLoginForm()}
+        {renderBackgroundImage()}
       </div>
-    </>
+    </div>
   );
 }

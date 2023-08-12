@@ -16,6 +16,8 @@ import { Gender } from "../../models/enums/Gender";
 import { addMemberAsyncThunk } from "../../store/member-add/memberAddThunks";
 import { useAppDispatch } from "../../store/config/hooks";
 import FormDate from "../form/FormDate";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export default function MemberAddForm() {
   const [memberInput, setMemberInput] = useState<Member>({} as Member);
@@ -48,13 +50,28 @@ export default function MemberAddForm() {
     );
   }
 
+  function clearFormFields() {
+    setMemberInput({} as Member);
+  }
+
   async function handleSubmitAsync(event: FormEvent) {
     event.preventDefault();
     const formValid = validateForm();
     if (formValid === false) {
       return;
     }
-    await dispatch(addMemberAsyncThunk(memberInput));
+    try {
+      await dispatch(addMemberAsyncThunk(memberInput)).unwrap();
+      clearFormFields();
+      toast.success("Successfully completed.");
+    } catch (error) {
+      Swal.fire({
+        title: "Invalid request",
+        text: "ID Card Number is already being used by another member in the system.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   }
 
   function handleGenderChanged(gender: Gender) {
@@ -79,78 +96,80 @@ export default function MemberAddForm() {
   }
 
   return (
-    <form onSubmit={handleSubmitAsync} noValidate autoComplete="off">
-      <Card className="mt-10 w-full bg-blue-gray-50">
-        <CardBody>
-          <div className="flex justify-center font-bold">
-            <h3>Add a new member</h3>
-          </div>
-          <FormField
-            name="idCardNumber"
-            label="ID Card Number"
-            result={memberInputResults.idCardNumberResult}
-          >
-            <FormInput
+    <div>
+      <form onSubmit={handleSubmitAsync} noValidate autoComplete="off">
+        <Card className="mt-10 w-full bg-blue-gray-50">
+          <CardBody>
+            <div className="flex justify-center font-bold">
+              <h3>Add a new member</h3>
+            </div>
+            <FormField
               name="idCardNumber"
-              type="text"
-              value={memberInput.idCardNumber}
-              onChange={handlePropertyChanged}
-            />
-          </FormField>
-          <FormField
-            name="firstname"
-            label="Firstname"
-            result={memberInputResults.firstnameResult}
-          >
-            <FormInput
+              label="ID Card Number"
+              result={memberInputResults.idCardNumberResult}
+            >
+              <FormInput
+                name="idCardNumber"
+                type="text"
+                value={memberInput.idCardNumber}
+                onChange={handlePropertyChanged}
+              />
+            </FormField>
+            <FormField
               name="firstname"
-              type="text"
-              value={memberInput.firstname}
-              onChange={handlePropertyChanged}
-            />
-          </FormField>
-          <FormField
-            name="lastname"
-            label="Lastname"
-            result={memberInputResults.lastnameResult}
-          >
-            <FormInput
+              label="Firstname"
+              result={memberInputResults.firstnameResult}
+            >
+              <FormInput
+                name="firstname"
+                type="text"
+                value={memberInput.firstname}
+                onChange={handlePropertyChanged}
+              />
+            </FormField>
+            <FormField
               name="lastname"
-              type="text"
-              value={memberInput.lastname}
-              onChange={handlePropertyChanged}
-            />
-          </FormField>
-          <FormField name="gender" label="Gender">
-            <GenderRadioGroup
-              value={memberInput.gender}
-              onChange={handleGenderChanged}
-            />
-          </FormField>
-          <FormField
-            name="email"
-            label="Email"
-            result={memberInputResults.emailResult}
-          >
-            <FormInput
+              label="Lastname"
+              result={memberInputResults.lastnameResult}
+            >
+              <FormInput
+                name="lastname"
+                type="text"
+                value={memberInput.lastname}
+                onChange={handlePropertyChanged}
+              />
+            </FormField>
+            <FormField name="gender" label="Gender">
+              <GenderRadioGroup
+                value={memberInput.gender}
+                onChange={handleGenderChanged}
+              />
+            </FormField>
+            <FormField
               name="email"
-              type="email"
-              value={memberInput.email}
-              onChange={handlePropertyChanged}
-            />
-          </FormField>
-          <FormField name="birthday" label="Birthday">
-            <FormDate
-              title="Birthday"
-              onChange={handleBirthdayChanged}
-              maxDate={maxBirthdayDate}
-            />
-          </FormField>
-        </CardBody>
-        <CardFooter className="pt-0">
-          <Button type="submit">Submit</Button>
-        </CardFooter>
-      </Card>
-    </form>
+              label="Email"
+              result={memberInputResults.emailResult}
+            >
+              <FormInput
+                name="email"
+                type="email"
+                value={memberInput.email}
+                onChange={handlePropertyChanged}
+              />
+            </FormField>
+            <FormField name="birthday" label="Birthday">
+              <FormDate
+                title="Birthday"
+                onChange={handleBirthdayChanged}
+                maxDate={maxBirthdayDate}
+              />
+            </FormField>
+          </CardBody>
+          <CardFooter className="pt-0 flex justify-start items-center gap-2">
+            <Button type="submit">Submit</Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </div>
   );
 }
