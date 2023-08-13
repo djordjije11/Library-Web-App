@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import Member from "../models/member/Member";
 import { getMembersAsync } from "../request/member/memberRequests";
-import Loader from "./shared/Loader";
-import { loaderActions } from "../store/loader/loaderSlice";
 import { useAppDispatch } from "../store/config/hooks";
 
 export default function Members() {
@@ -32,7 +30,7 @@ export default function Members() {
 
   async function loadMembersAsync() {
     // setLoading(true);
-    dispatch(loaderActions.show(true));
+    // dispatch(loaderActions.show(true));
     setTimeout(async () => {
       try {
         const members = await getMembersAsync();
@@ -40,7 +38,7 @@ export default function Members() {
       } catch (error) {
       } finally {
         //setLoading(false);
-        dispatch(loaderActions.show(false));
+        // dispatch(loaderActions.show(false));
       }
     }, 0);
   }
