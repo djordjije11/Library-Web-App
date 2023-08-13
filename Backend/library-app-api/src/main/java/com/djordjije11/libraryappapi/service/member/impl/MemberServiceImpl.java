@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member update(Member member) throws RequestNotValidException, RecordNotFoundException {
+    public Member update(Member member) throws MemberIdCardNotUniqueException, RecordNotFoundException {
         var dbMember = memberRepository.findById(member.getId())
                 .orElseThrow(() -> new RecordNotFoundException(Member.class, member.getId()));
 
