@@ -24,7 +24,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * A unique member's identification card number. Should not be longer than 20 characters.
+     * A unique person's identity card number. Should not be longer than 20 characters.
      */
     @Column(unique = true, columnDefinition = "varchar(20)")
     private String idCardNumber;
@@ -113,7 +113,7 @@ public class Member {
     }
 
     /**
-     * Returns the unique member's identification card number.
+     * Returns the unique person's identity card number.
      * @return idCardNumber
      */
     public String getIdCardNumber() {
@@ -121,7 +121,7 @@ public class Member {
     }
 
     /**
-     * Sets the unique member's identification card number. Should not be longer than 20 characters.
+     * Sets the unique person's identity card number. Should not be longer than 20 characters.
      * @param idCardNumber
      */
     public void setIdCardNumber(String idCardNumber) {
