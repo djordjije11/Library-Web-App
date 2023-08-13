@@ -46,9 +46,9 @@ public class AuthorController {
     }
 
     // TODO: 7/23/2023 NEEDS TO BE IMPROVED IF BEING USED, IMPLEMENT PAGINATION AND FILTERING
-    @GetMapping("/{id}/books")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<BookShortDto>> getBooksByAuthor(@PathVariable Long id) {
-        return ResponseEntity.ok(authorService.getAllBooksByAuthor(id).stream().map(bookMapper::mapShort).toList());
-    }
+//    @GetMapping("/{id}/books")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseEntity<List<BookShortDto>> getBooksByAuthor(@PathVariable Long id) {
+//        return ResponseEntity.ok(authorService.getAllBooksByAuthor(id).stream().map(bookMapper::mapShort).toList());
+//    }
 }

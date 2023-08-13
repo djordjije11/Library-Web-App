@@ -47,7 +47,21 @@ public interface LendingService {
      */
     List<Lending> createLendings(Iterable<Long> bookCopiesIds, Long memberId, Long buildingId) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLendingException;
 
+    /**
+     * Returns the page of lendings by the member filtered by search text and selected by options of Pageable instance.
+     * @param memberId the id of the member which the lendings are.
+     * @param search by book's title or book copy's ISBN.
+     * @param pageable contains options for skipping and taking database records and sorting them.
+     * @return page of lendings by the member filtered by search text and selected by options of Pageable instance.
+     */
     Page<Lending> getLendingsByMember(Long memberId, String search, Pageable pageable);
 
+    /**
+     * Returns the page of unreturned lendings by the member filtered by search text and selected by options of Pageable instance.
+     * @param memberId the id of the member which the lendings are.
+     * @param search by book's title or book copy's ISBN.
+     * @param pageable contains options for skipping and taking database records and sorting them.
+     * @return page of unreturned lendings by the member filtered by search text and selected by options of Pageable instance.
+     */
     Page<Lending> getUnreturnedLendingsByMember(Long memberId, String search, Pageable pageable);
 }

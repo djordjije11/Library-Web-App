@@ -20,5 +20,5 @@ public interface AuthorService {
      */
     Page<Author> get(String search, Pageable pageable);
 
-    List<Book> getAllBooksByAuthor(Long id);
+//    List<Book> getAllBooksByAuthor(Long id);
 }

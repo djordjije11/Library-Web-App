@@ -28,10 +28,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     // TODO: 7/23/2023 NEEDS TO BE IMPROVED IF BEING USED, IMPLEMENT PAGINATION AND FILTERING
-    @Override
-    public List<Book> getAllBooksByAuthor(Long id) {
-        Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException(Author.class, id));
-        return author.getBooks();
-    }
+//    @Override
+//    public List<Book> getAllBooksByAuthor(Long id) {
+//        Author author = authorRepository.findById(id)
+//                .orElseThrow(() -> new RecordNotFoundException(Author.class, id));
+//        return author.getBooks();
+//    }
 }

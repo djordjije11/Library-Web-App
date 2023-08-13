@@ -45,13 +45,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     // TODO: 7/27/2023 NEEDS TO BE FIXED, IF IT WILL BE EVEN USED
-    @Override
-    public JwtTokenDto register(LoginDto request) {
-        var userProfile = new UserProfile(request.username(), passwordEncoder.encode(request.password()), UserRole.EMPLOYEE);
-        userProfileRepository.save(userProfile);
-        String jwtToken = generateToken(userProfile);
-        return new JwtTokenDto(jwtToken);
-    }
+//    @Override
+//    public JwtTokenDto register(LoginDto request) {
+//        var userProfile = new UserProfile(request.username(), passwordEncoder.encode(request.password()), UserRole.EMPLOYEE);
+//        userProfileRepository.save(userProfile);
+//        String jwtToken = generateToken(userProfile);
+//        return new JwtTokenDto(jwtToken);
+//    }
 
     @Override
     public JwtTokenDto login(LoginDto request) {

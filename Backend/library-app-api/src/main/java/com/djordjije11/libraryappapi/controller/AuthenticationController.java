@@ -25,8 +25,8 @@ public class AuthenticationController {
     }
 
     // TODO: 7/27/2023 NEEDS TO BE FIXED, IF IT WILL BE EVEN USED
-    @PostMapping("/register")
-    public ResponseEntity<JwtTokenDto> register(@RequestBody @Valid LoginDto loginDto){
-        return ResponseEntity.ok(authenticationService.register(loginDto));
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<JwtTokenDto> register(@RequestBody @Valid LoginDto loginDto){
+//        return ResponseEntity.ok(authenticationService.register(loginDto));
+//    }
 }
