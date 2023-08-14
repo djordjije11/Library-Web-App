@@ -10,9 +10,14 @@ export default function DailyQuoteParagraph() {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const quoteFromApi = await getDailyQuoteAsync();
-      setDailyQuote(quoteFromApi);
-      setLoading(false);
+      try {
+        const quoteFromApi = await getDailyQuoteAsync();
+        setDailyQuote(quoteFromApi);
+      } catch (error) {
+        return;
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 

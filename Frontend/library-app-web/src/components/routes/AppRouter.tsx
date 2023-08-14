@@ -7,10 +7,13 @@ import AuthenticatedRoute from "./AuthenticatedRoute";
 import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import UnspecifiedRoute from "./UnspecifiedRoute";
 import MemberAddPage from "../member/MemberAddPage";
+import MemberListPage from "../member/MemberListPage";
 
 export const LOGIN_PAGE = "/login";
 export const HOME_PAGE = "/";
-export const ADD_MEMBER_PAGE = "/member";
+export const ADD_MEMBER_PAGE = "/member-add";
+export const LIST_MEMBER_PAGE = "member-list";
+export const UPDATE_MEMBER_PAGE = "/member/:id";
 export const UNSPECIFIED_LINK = "/*";
 
 export default function AppRouter() {
@@ -38,6 +41,14 @@ export default function AppRouter() {
           element={
             <AuthenticatedRoute>
               <MemberAddPage />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path={LIST_MEMBER_PAGE}
+          element={
+            <AuthenticatedRoute>
+              <MemberListPage />
             </AuthenticatedRoute>
           }
         />

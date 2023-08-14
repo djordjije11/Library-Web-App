@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, SetStateAction, Dispatch } from "react";
 import { Button, Card, CardBody, CardFooter } from "@material-tailwind/react";
 import Member from "../../models/member/Member";
 import FormInput from "../form/FormInput";
@@ -13,26 +13,31 @@ import {
 import GenderRadioGroup from "../form/GenderRadioGroup";
 import FormField from "../form/FormField";
 import { Gender } from "../../models/enums/Gender";
-import { addMemberAsyncThunk } from "../../store/member-add/memberAddThunks";
-import { useAppDispatch } from "../../store/config/hooks";
 import FormDate from "../form/FormDate";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import AlertError from "../../models/error/AlertError";
 
-export default function MemberAddForm() {
-  const [memberInput, setMemberInput] = useState<Member>({} as Member);
+export interface MemberFormProps {
+  member: Member;
+  setMember: Dispatch<SetStateAction<Member>>;
+  onSubmitAsync: (member: Member) => Promise<Member | AlertError>;
+}
+
+export default function MemberForm(props: MemberFormProps) {
+  const { member, setMember, onSubmitAsync } = props;
+
   const [memberInputResults, setMemberInputResults] =
     useState<MemberInputResults>({} as MemberInputResults);
-  const dispatch = useAppDispatch();
 
   const maxBirthdayDate = new Date();
   maxBirthdayDate.setDate(maxBirthdayDate.getDate() - 365 * 16);
 
   function validateForm(): boolean {
-    const idCardNumberResult = validateIdCardNumber(memberInput.idCardNumber);
-    const firstnameResult = validateFirstname(memberInput.firstname);
-    const lastnameResult = validateLastname(memberInput.lastname);
-    const emailResult = validateEmail(memberInput.email);
+    const idCardNumberResult = validateIdCardNumber(member.idCardNumber);
+    const firstnameResult = validateFirstname(member.firstname);
+    const lastnameResult = validateLastname(member.lastname);
+    const emailResult = validateEmail(member.email);
     setMemberInputResults((prev) => {
       return {
         ...prev,
@@ -50,10 +55,6 @@ export default function MemberAddForm() {
     );
   }
 
-  function clearFormFields() {
-    setMemberInput({} as Member);
-  }
-
   async function handleSubmitAsync(event: FormEvent) {
     event.preventDefault();
     const formValid = validateForm();
@@ -61,8 +62,7 @@ export default function MemberAddForm() {
       return;
     }
     try {
-      await dispatch(addMemberAsyncThunk(memberInput)).unwrap();
-      clearFormFields();
+      await onSubmitAsync(member);
       toast.success("Successfully completed.");
     } catch (error) {
       Swal.fire({
@@ -75,19 +75,19 @@ export default function MemberAddForm() {
   }
 
   function handleGenderChanged(gender: Gender) {
-    setMemberInput((prev) => {
+    setMember((prev) => {
       return { ...prev, gender };
     });
   }
 
   function handleBirthdayChanged(birthday: Date) {
-    setMemberInput((prev) => {
+    setMember((prev) => {
       return { ...prev, birthday: birthday.toISOString().split("T")[0] };
     });
   }
 
   function handlePropertyChanged(event: React.ChangeEvent<HTMLInputElement>) {
-    setMemberInput((prev) => {
+    setMember((prev) => {
       return {
         ...prev,
         [event.target.name]: event.target.value,
@@ -111,7 +111,7 @@ export default function MemberAddForm() {
               <FormInput
                 name="idCardNumber"
                 type="text"
-                value={memberInput.idCardNumber}
+                value={member.idCardNumber}
                 onChange={handlePropertyChanged}
               />
             </FormField>
@@ -123,7 +123,7 @@ export default function MemberAddForm() {
               <FormInput
                 name="firstname"
                 type="text"
-                value={memberInput.firstname}
+                value={member.firstname}
                 onChange={handlePropertyChanged}
               />
             </FormField>
@@ -135,13 +135,13 @@ export default function MemberAddForm() {
               <FormInput
                 name="lastname"
                 type="text"
-                value={memberInput.lastname}
+                value={member.lastname}
                 onChange={handlePropertyChanged}
               />
             </FormField>
             <FormField name="gender" label="Gender">
               <GenderRadioGroup
-                value={memberInput.gender}
+                value={member.gender}
                 onChange={handleGenderChanged}
               />
             </FormField>
@@ -153,7 +153,7 @@ export default function MemberAddForm() {
               <FormInput
                 name="email"
                 type="email"
-                value={memberInput.email}
+                value={member.email}
                 onChange={handlePropertyChanged}
               />
             </FormField>

@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { ADD_MEMBER_PAGE } from "../../routes/AppRouter";
+import { ADD_MEMBER_PAGE, LIST_MEMBER_PAGE } from "../../routes/AppRouter";
 import React from "react";
 import {
   Typography,
@@ -74,7 +74,7 @@ export function NavList() {
           {
             key: 2,
             label: "List of members",
-            link: "",
+            link: LIST_MEMBER_PAGE,
           },
         ]}
       />
