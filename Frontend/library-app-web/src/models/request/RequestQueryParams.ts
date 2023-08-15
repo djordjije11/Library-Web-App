@@ -22,7 +22,9 @@ export function constructRequestQuery(
     }
   }
   if (checkNotBlank(requestQueryParams.search)) {
-    queries.push(`search=${requestQueryParams.search}`);
+    if (requestQueryParams.search !== undefined) {
+      queries.push(`search=${encodeURI(requestQueryParams.search)}`);
+    }
   }
   return "?" + queries.join("&");
 }

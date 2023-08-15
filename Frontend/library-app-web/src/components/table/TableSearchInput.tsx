@@ -1,4 +1,5 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { FormEvent } from "react";
 
 export interface TableSearchInputProps {
   search: string;
@@ -9,7 +10,10 @@ export default function TableSearchInput(props: TableSearchInputProps) {
   const { search, onSearchChange } = props;
 
   return (
-    <form className="max-w-sm px-2">
+    <form
+      className="max-w-sm px-2"
+      onSubmit={(event: FormEvent) => event.preventDefault()}
+    >
       <div className="relative">
         <MagnifyingGlassIcon
           className="absolute top-0 bottom-0 my-auto text-gray-400 left-3"
