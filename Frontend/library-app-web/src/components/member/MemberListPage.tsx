@@ -6,7 +6,7 @@ export default function MemberListPage() {
   return (
     <BackgroundImage>
       <div className="flex items-center justify-center">
-        <div className="w-3/4">
+        <div className="w-3/4 my-4">
           <Card>
             <MemberTable />
           </Card>

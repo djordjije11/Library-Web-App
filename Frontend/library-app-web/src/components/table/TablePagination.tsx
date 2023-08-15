@@ -4,13 +4,7 @@ import {
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 import { Button, IconButton } from "@material-tailwind/react";
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 
 export interface TablePaginationProps {
   currentPage: number;

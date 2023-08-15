@@ -1,35 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
-import { Column, useSortBy, useTable } from "react-table";
+import { useMemo, useState, useEffect } from "react";
+import { Column, Row } from "react-table";
 import Member from "../../models/member/Member";
-import { Typography } from "@material-tailwind/react";
-import {
-  ChevronDownIcon,
-  ChevronUpDownIcon,
-  ChevronUpIcon,
-} from "@heroicons/react/24/solid";
-import TablePagination from "../table/TablePagination";
 import { useAppDispatch, useAppSelector } from "../../store/config/hooks";
 import MembersState from "../../store/member/MembersState";
 import { getMembersAsyncThunk } from "../../store/member/membersThunks";
+import RequestQueryParams from "../../models/request/RequestQueryParams";
+import CompleteTable from "../table/CompleteTable";
+import { IconButton, Tooltip } from "@material-tailwind/react";
+import { PencilIcon } from "@heroicons/react/24/outline";
+import { Modal, Box } from "@mui/material";
+import MemberUpdateContainer from "./MemberUpdateContainer";
 
 export default function MemberTable() {
   const membersState: MembersState = useAppSelector((state) => state.members);
   const dispatch = useAppDispatch();
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
-  async function loadDataAsync() {
-    await dispatch(
-      getMembersAsyncThunk({ pageNumber: currentPage, pageSize: 10 })
-    );
-  }
-
-  useEffect(() => {
-    loadDataAsync();
-  }, []);
-
-  useEffect(() => {
-    loadDataAsync();
-  }, [currentPage]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [memberForUpdate, setMemberForUpdate] = useState<Member>({} as Member);
 
   const columns = useMemo(
     (): Column[] => [
@@ -62,97 +48,51 @@ export default function MemberTable() {
     [membersState.members]
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data,
-      },
-      useSortBy
+  async function loadDataAsync(requestQueryParams: RequestQueryParams) {
+    await dispatch(getMembersAsyncThunk(requestQueryParams));
+  }
+
+  function rowActions(row: Row<{}>): JSX.Element {
+    const member: Member = row.original as Member;
+    return (
+      <>
+        <Tooltip content="Edit">
+          <IconButton
+            variant="text"
+            onClick={() => {
+              setMemberForUpdate(member);
+              setShowModal(true);
+            }}
+          >
+            <PencilIcon color="gray" className="h-4 w-4" />
+          </IconButton>
+        </Tooltip>
+      </>
     );
+  }
 
   return (
-    <div className="flex flex-col items-stretch">
-      <table
-        {...getTableProps()}
-        className="mt-4 w-full min-w-max table-auto text-left"
+    <>
+      <Modal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        className="flex justify-center"
       >
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  {...column.getHeaderProps(
-                    (column as any).getSortByToggleProps()
-                  )}
-                  className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
-                  >
-                    {column.render("Header")}
-                    <span>
-                      {(column as any).isSorted ? (
-                        (column as any).isSortedDesc ? (
-                          <ChevronDownIcon
-                            strokeWidth={2}
-                            className="h-4 w-4"
-                          />
-                        ) : (
-                          <ChevronUpIcon strokeWidth={2} className="h-4 w-4" />
-                        )
-                      ) : (
-                        <ChevronUpDownIcon
-                          strokeWidth={2}
-                          className="h-4 w-4"
-                        />
-                      )}
-                    </span>
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, index) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      className={`p-4 ${
-                        index === rows.length - 1
-                          ? "border-b border-blue-gray-200"
-                          : "border-b border-blue-gray-100"
-                      }`}
-                    >
-                      {
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {cell.render("Cell")}
-                        </Typography>
-                      }
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <TablePagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        pagesCount={membersState.totalPages}
+        <Box sx={{ width: "50%" }}>
+          <MemberUpdateContainer
+            member={memberForUpdate}
+            setMember={setMemberForUpdate}
+            close={() => setShowModal(false)}
+          />
+        </Box>
+      </Modal>
+      <CompleteTable
+        columns={columns}
+        data={data}
+        loadDataAsync={loadDataAsync}
+        totalPages={membersState.totalPages}
+        rowActions={rowActions}
       />
-    </div>
+    </>
   );
 }

@@ -3,16 +3,17 @@ import Member from "../../models/member/Member";
 import { getMembersAsync } from "../../request/member/memberRequests";
 import AlertError, { constructAlertError } from "../../models/error/AlertError";
 import ResponseError from "../../request/ResponseError";
+import RequestQueryParams from "../../models/request/RequestQueryParams";
 
 export const getMembersAsyncThunk = createAsyncThunk<
   { members: Member[]; totalPages: number },
-  { pageNumber: number; pageSize: number },
+  RequestQueryParams,
   { rejectValue: AlertError }
 >(
   "members/getMembersAsync",
-  async ({ pageNumber, pageSize }, { rejectWithValue }) => {
+  async (requestQueryParams, { rejectWithValue }) => {
     try {
-      return getMembersAsync(pageNumber, pageSize);
+      return getMembersAsync(requestQueryParams);
     } catch (error) {
       return rejectWithValue(constructAlertError(error as ResponseError));
     }

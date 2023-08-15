@@ -3,7 +3,7 @@ import ValidationResult, {
   getResultValid,
 } from "../models/validation/ValidationResult";
 
-export function checkNotBlank(value: string): boolean {
+export function checkNotBlank(value?: string): boolean {
   return value !== null && value !== undefined && value.length > 0;
 }
 
