@@ -11,19 +11,20 @@ export interface TablePaginationProps {
   setCurrentPage: Dispatch<SetStateAction<number>>;
   pagesCount: number;
   totalItemsCount?: number;
+  pageItemsAroundCurrentCount?: number;
+  pageItemsOnEndsCount?: number;
 }
 
 export default function TablePagination(props: TablePaginationProps) {
   const { currentPage, setCurrentPage, pagesCount, totalItemsCount } = props;
+  const pageItemsAroundCurrentCount = props.pageItemsAroundCurrentCount || 4;
+  const pageItemsOnEndsCount = props.pageItemsOnEndsCount || 3;
 
   const disablePrevious = useMemo(() => currentPage === 1, [currentPage]);
   const disableNext = useMemo(
     () => currentPage === pagesCount,
     [currentPage, pagesCount]
   );
-
-  const pageItemsAroundCurrentCount = 2;
-  const pageItemsOnEndsCount = 3;
 
   function spaceExistsBetweenStartAndCurrentPageRange(): boolean {
     return currentPage - pageItemsAroundCurrentCount - pageItemsOnEndsCount > 1;
@@ -127,7 +128,7 @@ export default function TablePagination(props: TablePaginationProps) {
     const renders: JSX.Element[] = [];
     for (
       let pageIndex = Math.max(
-        currentPage + pageItemsOnEndsCount,
+        currentPage + pageItemsAroundCurrentCount + 1,
         pagesCount - pageItemsOnEndsCount + 1
       );
       pageIndex <= pagesCount;

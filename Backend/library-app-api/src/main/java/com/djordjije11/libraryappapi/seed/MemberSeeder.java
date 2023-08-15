@@ -1,5 +1,6 @@
 package com.djordjije11.libraryappapi.seed;
 
+import com.djordjije11.libraryappapi.helper.random.util.RandomUtil;
 import com.djordjije11.libraryappapi.model.Gender;
 import com.djordjije11.libraryappapi.model.Member;
 import com.djordjije11.libraryappapi.repository.MemberRepository;
@@ -46,7 +47,7 @@ public class MemberSeeder {
     private Member seedMember(){
         Name fakeName = faker.name();
         Gender gender = Gender.values()[random.nextInt(Gender.values().length)];
-        var member = new Member(faker.idNumber().valid(), fakeName.firstName(), fakeName.lastName(), gender, faker.internet().emailAddress(), generateBirthday());
+        var member = new Member(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), fakeName.firstName(), fakeName.lastName(), gender, faker.internet().emailAddress(), generateBirthday());
         return memberRepository.save(member);
     }
 
@@ -54,13 +55,13 @@ public class MemberSeeder {
         var members = new LinkedList<Member>();
 
         members.add(
-                new Member("20190162", "Đorđije", "Radović", Gender.MALE, "djordjo@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7))
+                new Member(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), "Đorđije", "Radović", Gender.MALE, "djordjo@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7))
         );
         members.add(
-                new Member("20190126", "Milica", "Pantić", Gender.FEMALE, "mica@gmail.com", LocalDate.of(2000, Month.AUGUST, 10))
+                new Member(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), "Milica", "Pantić", Gender.FEMALE, "mica@gmail.com", LocalDate.of(2000, Month.AUGUST, 10))
         );
         members.add(
-                new Member("20195326", "Aleksandar", "Nikolić", Gender.MALE, "coa@gmail.com", LocalDate.of(2000, Month.MAY,2))
+                new Member(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), "Aleksandar", "Nikolić", Gender.MALE, "coa@gmail.com", LocalDate.of(2000, Month.MAY,2))
         );
 
         return memberRepository.saveAll(members);

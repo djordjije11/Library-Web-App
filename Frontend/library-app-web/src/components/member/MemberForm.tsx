@@ -1,10 +1,9 @@
-import { useState, FormEvent, SetStateAction, Dispatch } from "react";
+import { useState, FormEvent } from "react";
 import { Button, Card, CardBody, CardFooter } from "@material-tailwind/react";
-import Member from "../../models/member/Member";
 import FormInput from "../form/FormInput";
-import { MemberInputResults } from "../../models/member/Member";
 import { allValid } from "../../models/validation/ValidationResult";
 import {
+  validateBirthday,
   validateEmail,
   validateFirstname,
   validateIdCardNumber,
@@ -14,19 +13,28 @@ import GenderRadioGroup from "../form/GenderRadioGroup";
 import FormField from "../form/FormField";
 import { Gender } from "../../models/enums/Gender";
 import FormDate from "../form/FormDate";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
 import AlertError from "../../models/error/AlertError";
+import MemberDetail from "../../models/member/MemberDetail";
+import MemberInputResults from "../../models/member/MemberInputResults";
+import { successAlert } from "../../services/alert/successHandler";
+import { handleMemberFormError } from "../../services/alert/errorHandler";
+import {
+  convertDateToJsonDate,
+  convertJsonDateToDate,
+} from "../../models/parsers/dateParser";
 
 export interface MemberFormProps {
-  member: Member;
-  setMember: Dispatch<SetStateAction<Member>>;
-  onSubmitAsync: (member: Member) => Promise<Member | AlertError>;
+  member?: MemberDetail;
+  onSubmitAsync: (member: MemberDetail) => Promise<MemberDetail>;
+  clearOnSubmit: boolean;
+  formHeader: JSX.Element;
 }
 
 export default function MemberForm(props: MemberFormProps) {
-  const { member, setMember, onSubmitAsync } = props;
-
+  const { onSubmitAsync, clearOnSubmit, formHeader } = props;
+  const [member, setMember] = useState<MemberDetail>(
+    props.member || ({} as MemberDetail)
+  );
   const [memberInputResults, setMemberInputResults] =
     useState<MemberInputResults>({} as MemberInputResults);
 
@@ -38,6 +46,7 @@ export default function MemberForm(props: MemberFormProps) {
     const firstnameResult = validateFirstname(member.firstname);
     const lastnameResult = validateLastname(member.lastname);
     const emailResult = validateEmail(member.email);
+    const birthdayResult = validateBirthday(member.birthday);
     setMemberInputResults((prev) => {
       return {
         ...prev,
@@ -45,14 +54,20 @@ export default function MemberForm(props: MemberFormProps) {
         firstnameResult,
         lastnameResult,
         emailResult,
+        birthdayResult,
       };
     });
     return allValid(
       idCardNumberResult,
       firstnameResult,
       lastnameResult,
-      emailResult
+      emailResult,
+      birthdayResult
     );
+  }
+
+  function clearFormFields() {
+    setMember({} as MemberDetail);
   }
 
   async function handleSubmitAsync(event: FormEvent) {
@@ -63,14 +78,12 @@ export default function MemberForm(props: MemberFormProps) {
     }
     try {
       await onSubmitAsync(member);
-      toast.success("Successfully completed.");
+      if (clearOnSubmit) {
+        clearFormFields();
+      }
+      successAlert();
     } catch (error) {
-      Swal.fire({
-        title: "Invalid request",
-        text: "ID Card Number is already being used by another member in the system.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      handleMemberFormError(error as AlertError);
     }
   }
 
@@ -82,7 +95,7 @@ export default function MemberForm(props: MemberFormProps) {
 
   function handleBirthdayChanged(birthday: Date) {
     setMember((prev) => {
-      return { ...prev, birthday: birthday.toISOString().split("T")[0] };
+      return { ...prev, birthday: convertDateToJsonDate(birthday) };
     });
   }
 
@@ -91,85 +104,86 @@ export default function MemberForm(props: MemberFormProps) {
       return {
         ...prev,
         [event.target.name]: event.target.value,
-      } as Member;
+      } as MemberDetail;
     });
   }
 
   return (
-    <div>
+    <Card className="my-4 w-full bg-blue-gray-50">
       <form onSubmit={handleSubmitAsync} noValidate autoComplete="off">
-        <Card className="mt-10 w-full bg-blue-gray-50">
-          <CardBody>
-            <div className="flex justify-center font-bold">
-              <h3>Add a new member</h3>
-            </div>
-            <FormField
+        <CardBody>
+          <div>{formHeader}</div>
+          <FormField
+            name="idCardNumber"
+            label="ID Card Number"
+            result={memberInputResults.idCardNumberResult}
+          >
+            <FormInput
               name="idCardNumber"
-              label="ID Card Number"
-              result={memberInputResults.idCardNumberResult}
-            >
-              <FormInput
-                name="idCardNumber"
-                type="text"
-                value={member.idCardNumber}
-                onChange={handlePropertyChanged}
-              />
-            </FormField>
-            <FormField
+              type="text"
+              value={member.idCardNumber}
+              onChange={handlePropertyChanged}
+            />
+          </FormField>
+          <FormField
+            name="firstname"
+            label="Firstname"
+            result={memberInputResults.firstnameResult}
+          >
+            <FormInput
               name="firstname"
-              label="Firstname"
-              result={memberInputResults.firstnameResult}
-            >
-              <FormInput
-                name="firstname"
-                type="text"
-                value={member.firstname}
-                onChange={handlePropertyChanged}
-              />
-            </FormField>
-            <FormField
+              type="text"
+              value={member.firstname}
+              onChange={handlePropertyChanged}
+            />
+          </FormField>
+          <FormField
+            name="lastname"
+            label="Lastname"
+            result={memberInputResults.lastnameResult}
+          >
+            <FormInput
               name="lastname"
-              label="Lastname"
-              result={memberInputResults.lastnameResult}
-            >
-              <FormInput
-                name="lastname"
-                type="text"
-                value={member.lastname}
-                onChange={handlePropertyChanged}
-              />
-            </FormField>
-            <FormField name="gender" label="Gender">
-              <GenderRadioGroup
-                value={member.gender}
-                onChange={handleGenderChanged}
-              />
-            </FormField>
-            <FormField
+              type="text"
+              value={member.lastname}
+              onChange={handlePropertyChanged}
+            />
+          </FormField>
+          <FormField name="gender" label="Gender">
+            <GenderRadioGroup
+              value={member.gender}
+              onChange={handleGenderChanged}
+            />
+          </FormField>
+          <FormField
+            name="email"
+            label="Email"
+            result={memberInputResults.emailResult}
+          >
+            <FormInput
               name="email"
-              label="Email"
-              result={memberInputResults.emailResult}
-            >
-              <FormInput
-                name="email"
-                type="email"
-                value={member.email}
-                onChange={handlePropertyChanged}
-              />
-            </FormField>
-            <FormField name="birthday" label="Birthday">
-              <FormDate
-                title="Birthday"
-                onChange={handleBirthdayChanged}
-                maxDate={maxBirthdayDate}
-              />
-            </FormField>
-          </CardBody>
-          <CardFooter className="pt-0 flex justify-start items-center gap-2">
-            <Button type="submit">Submit</Button>
-          </CardFooter>
-        </Card>
+              type="email"
+              value={member.email}
+              onChange={handlePropertyChanged}
+            />
+          </FormField>
+          <FormField
+            name="birthday"
+            label="Birthday"
+            result={memberInputResults.birthdayResult}
+          >
+            <FormDate
+              title="Birthday"
+              defaultDate={convertJsonDateToDate(member.birthday)}
+              onChange={handleBirthdayChanged}
+              maxDate={maxBirthdayDate}
+            />
+          </FormField>
+        </CardBody>
+        <CardFooter className="pt-0 flex justify-start items-center gap-2">
+          <Button type="submit">Submit</Button>
+        </CardFooter>
       </form>
-    </div>
+    </Card>
   );
 }

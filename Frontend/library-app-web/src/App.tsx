@@ -29,7 +29,7 @@ function App() {
         style={{
           display: "grid",
           gridAutoFlow: "row",
-          gridTemplateRows: "8% auto 8%",
+          gridTemplateRows: "9% auto 8%",
         }}
       >
         <Header />

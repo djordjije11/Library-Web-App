@@ -6,14 +6,16 @@ import {
 } from "@reduxjs/toolkit";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 import authSlice from "../authentication/authSlice";
-import membersSlice from "../member/membersSlice";
-import memberAddSlice from "../member-add/memberAddSlice";
+import membersSlice from "../member/table/membersSlice";
+import memberAddSlice from "../member/add/memberAddSlice";
+import memberUpdateSlice from "../member/update/memberUpdateSlice";
 
 const store: ToolkitStore = configureStore({
   reducer: {
     auth: authSlice,
     members: membersSlice,
     memberAdd: memberAddSlice,
+    memberUpdate: memberUpdateSlice,
   },
 });
 

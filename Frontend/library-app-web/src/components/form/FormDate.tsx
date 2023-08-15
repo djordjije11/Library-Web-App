@@ -4,6 +4,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import DatePicker from "tailwind-datepicker-react";
+import { IOptions } from "tailwind-datepicker-react/types/Options";
 
 export interface FormDateProps {
   title: string;
@@ -23,7 +24,7 @@ export default function FormDate(props: FormDateProps) {
     return defaultMinDate;
   }
 
-  const options = {
+  const options: IOptions = {
     title,
     autoHide: true,
     todayBtn: false,
@@ -46,7 +47,7 @@ export default function FormDate(props: FormDateProps) {
       next: () => <ArrowUturnRightIcon height="20px" color="black" />,
     },
     datepickerClassNames: "top-12",
-    defaultDate: defaultDate || maxDate || new Date(),
+    defaultDate: defaultDate || maxDate,
     language: "en",
   };
 

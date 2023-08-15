@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import MembersState from "./MembersState";
 import { getMembersAsyncThunk } from "./membersThunks";
-import Member from "../../models/member/Member";
+import MemberShort from "../../../models/member/MemberShort";
 
-const initialState: MembersState = { members: [] as Member[] } as MembersState;
+const initialState: MembersState = {
+  members: [] as MemberShort[],
+} as MembersState;
 
 const membersSlice = createSlice({
   name: "members",

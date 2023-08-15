@@ -16,6 +16,7 @@ public record MemberCreateDto(
         @NotBlank(message = "Email is mandatory.")
         @Email(message = "Email must be valid.")
         String email,
+        @NotNull(message = "Birthday is mandatory.")
         @Before(years = 16, message = "Member must be at least 16 years old.")
         LocalDate birthday
 ) {

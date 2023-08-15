@@ -11,4 +11,7 @@ const MEMBER = "member";
 
 export const LOGIN_URL = getUrl(LOGIN);
 export const GET_MEMBERS_URL = getUrl(MEMBER);
+export const GET_MEMBER_URL = (id: number) => `${getUrl(MEMBER)}/${id}`;
 export const ADD_MEMBER_URL = getUrl(MEMBER);
+export const UPDATE_MEMBER_URL = (id: number) => `${getUrl(MEMBER)}/${id}`;
+export const DELETE_MEMBER_URL = (id: number) => `${getUrl(MEMBER)}/${id}`;

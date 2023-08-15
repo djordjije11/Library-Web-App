@@ -1,12 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import Member from "../../models/member/Member";
-import { getMembersAsync } from "../../request/member/memberRequests";
-import AlertError, { constructAlertError } from "../../models/error/AlertError";
-import ResponseError from "../../request/ResponseError";
-import RequestQueryParams from "../../models/request/RequestQueryParams";
+import { getMembersAsync } from "../../../request/member/memberRequests";
+import AlertError, {
+  constructAlertError,
+} from "../../../models/error/AlertError";
+import ResponseError from "../../../request/ResponseError";
+import RequestQueryParams from "../../../models/request/RequestQueryParams";
+import MemberShort from "../../../models/member/MemberShort";
 
 export const getMembersAsyncThunk = createAsyncThunk<
-  { members: Member[]; totalPages: number },
+  { members: MemberShort[]; totalPages: number },
   RequestQueryParams,
   { rejectValue: AlertError }
 >(

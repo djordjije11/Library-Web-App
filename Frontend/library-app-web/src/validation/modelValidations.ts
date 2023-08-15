@@ -59,6 +59,10 @@ export function validateEmail(email: string): ValidationResult {
   return getResultValid();
 }
 
+export function validateBirthday(birthday: string): ValidationResult {
+  return validateRequired("Birthday", birthday);
+}
+
 export function validateUsername(username: string): ValidationResult {
   if (checkNotBlank(username) === false) {
     return getResultError("Username is required.");

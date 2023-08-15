@@ -2,7 +2,7 @@ import { Gender } from "../../models/enums/Gender";
 import { ChangeEvent } from "react";
 
 export interface GenderRadioGroupProps {
-  value: Gender;
+  value?: Gender;
   onChange: (gender: Gender) => void;
 }
 

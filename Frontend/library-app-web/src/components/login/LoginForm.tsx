@@ -15,7 +15,7 @@ import {
 } from "../../validation/modelValidations";
 import { allValid } from "../../models/validation/ValidationResult";
 import AuthState from "../../store/authentication/AuthState";
-import Swal from "sweetalert2";
+import { handleLoginFormError } from "../../services/alert/errorHandler";
 
 export default function LoginForm() {
   const authState: AuthState = useAppSelector((state) => state.auth);
@@ -56,12 +56,7 @@ export default function LoginForm() {
       await dispatch(loginAsyncThunk(loginInput)).unwrap();
       navigateOnLogin();
     } catch (error) {
-      Swal.fire({
-        title: "Invalid request",
-        text: "Invalid username and password.",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      handleLoginFormError();
     }
   }
 
@@ -75,50 +70,42 @@ export default function LoginForm() {
   }
 
   return (
-    <div>
-      <Card color="transparent" shadow={false}>
-        <Typography variant="h4" color="blue-gray">
-          Log in
-        </Typography>
-        <Typography color="gray" className="mt-1 font-normal">
-          Enter your details to log in.
-        </Typography>
-        <form
-          className="mt-3 mb-2 w-80 max-w-screen-lg sm:w-96"
-          onSubmit={handleLoginAsync}
-        >
-          <div className="mb-4 flex flex-col gap-1">
-            <FormField
+    <Card color="transparent" shadow={false}>
+      <Typography variant="h4" color="blue-gray">
+        Log in
+      </Typography>
+      <Typography color="gray" className="mt-1 font-normal">
+        Enter your details to log in.
+      </Typography>
+      <form
+        className="mt-3 mb-2 w-80 max-w-screen-lg sm:w-96"
+        onSubmit={handleLoginAsync}
+      >
+        <div className="mb-4 flex flex-col gap-1">
+          <FormField name="username" result={loginInputResults.usernameResult}>
+            <Input
+              size="lg"
+              label="Username"
               name="username"
-              result={loginInputResults.usernameResult}
-            >
-              <Input
-                size="lg"
-                label="Username"
-                name="username"
-                value={loginInput.username || ""}
-                onChange={handlePropertyChange}
-              />
-            </FormField>
-            <FormField
+              value={loginInput.username || ""}
+              onChange={handlePropertyChange}
+            />
+          </FormField>
+          <FormField name="password" result={loginInputResults.passwordResult}>
+            <Input
+              type="password"
+              size="lg"
+              label="Password"
               name="password"
-              result={loginInputResults.passwordResult}
-            >
-              <Input
-                type="password"
-                size="lg"
-                label="Password"
-                name="password"
-                value={loginInput.password || ""}
-                onChange={handlePropertyChange}
-              />
-            </FormField>
-          </div>
-          <Button className="mt-6" fullWidth type="submit">
-            Log in
-          </Button>
-        </form>
-      </Card>
-    </div>
+              value={loginInput.password || ""}
+              onChange={handlePropertyChange}
+            />
+          </FormField>
+        </div>
+        <Button className="mt-6" fullWidth type="submit">
+          Log in
+        </Button>
+      </form>
+    </Card>
   );
 }

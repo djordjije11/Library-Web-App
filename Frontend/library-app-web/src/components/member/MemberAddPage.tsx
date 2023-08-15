@@ -1,22 +1,23 @@
-import Member from "../../models/member/Member";
 import BackgroundImage from "../home/BackgroundImage";
-import { addMemberAsyncThunk } from "../../store/member-add/memberAddThunks";
+import { addMemberAsyncThunk } from "../../store/member/add/memberAddThunks";
 import { useAppDispatch } from "../../store/config/hooks";
 import MemberForm from "./MemberForm";
-import { useState } from "react";
+import MemberDetail from "../../models/member/MemberDetail";
+import MemberAdd from "../../models/member/MemberAdd";
 
 export default function MemberAddPage() {
-  const [memberInput, setMemberInput] = useState<Member>({} as Member);
   const dispatch = useAppDispatch();
 
-  function clearFormFields() {
-    setMemberInput({} as Member);
+  async function onSubmitAsync(member: MemberDetail): Promise<MemberDetail> {
+    return await dispatch(addMemberAsyncThunk(member as MemberAdd)).unwrap();
   }
 
-  async function onSubmitAsync(member: Member): Promise<Member> {
-    const result = await dispatch(addMemberAsyncThunk(member)).unwrap();
-    clearFormFields();
-    return result;
+  function MemberAddFormHeader(): JSX.Element {
+    return (
+      <div className="flex justify-center font-bold">
+        <h3>Add a new member</h3>
+      </div>
+    );
   }
 
   return (
@@ -24,9 +25,9 @@ export default function MemberAddPage() {
       <div className="flex items-center justify-center">
         <div className="w-2/4">
           <MemberForm
-            member={memberInput}
-            setMember={setMemberInput}
             onSubmitAsync={onSubmitAsync}
+            clearOnSubmit={true}
+            formHeader={<MemberAddFormHeader />}
           />
         </div>
       </div>

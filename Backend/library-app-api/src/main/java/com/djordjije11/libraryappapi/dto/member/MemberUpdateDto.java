@@ -2,10 +2,8 @@ package com.djordjije11.libraryappapi.dto.member;
 
 import com.djordjije11.libraryappapi.model.Gender;
 import com.djordjije11.libraryappapi.validation.before.Before;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
 public record MemberUpdateDto(
@@ -21,6 +19,7 @@ public record MemberUpdateDto(
         @NotBlank(message = "Email is mandatory.")
         @Email(message = "Email must be valid.")
         String email,
+        @NotNull(message = "Birthday is mandatory.")
         @Before(years = 16, message = "Member must be at least 16 years old.")
         LocalDate birthday
 ) {

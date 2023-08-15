@@ -47,7 +47,7 @@ public class EmployeeSeeder {
         UserProfile dbUserProfile = userProfileRepository.save(userProfile);
         Gender gender = Gender.values()[random.nextInt(Gender.values().length)];
         Building building = RandomUtil.getOne(random, buildings);
-        var employee = new Employee(faker.idNumber().valid(), fakeName.firstName(), fakeName.lastName(), gender, faker.internet().emailAddress(), building, dbUserProfile);
+        var employee = new Employee(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), fakeName.firstName(), fakeName.lastName(), gender, faker.internet().emailAddress(), building, dbUserProfile);
         return employeeRepository.save(employee);
     }
 
@@ -62,17 +62,17 @@ public class EmployeeSeeder {
         userProfileRepository.save(userProfile3);
 
         employees.add(
-                new Employee("20190162", "Đorđije", "Radović", Gender.MALE, "djordjo@gmail.com",
+                new Employee(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), "Đorđije", "Radović", Gender.MALE, "djordjo@gmail.com",
                         RandomUtil.getOne(random, buildings),
                         userProfile1)
         );
         employees.add(
-                new Employee("20190126", "Milica", "Pantić", Gender.FEMALE, "mica@gmail.com",
+                new Employee(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), "Milica", "Pantić", Gender.FEMALE, "mica@gmail.com",
                         RandomUtil.getOne(random, buildings),
                         userProfile2)
         );
         employees.add(
-                new Employee("20195326", "Aleksandar", "Nikolić", Gender.MALE, "coa@gmail.com",
+                new Employee(RandomUtil.getDigitsString(random, random.nextInt(10, 21)), "Aleksandar", "Nikolić", Gender.MALE, "coa@gmail.com",
                         RandomUtil.getOne(random, buildings),
                         userProfile3)
         );
