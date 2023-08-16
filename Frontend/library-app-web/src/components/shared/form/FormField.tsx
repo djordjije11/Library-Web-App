@@ -7,10 +7,11 @@ export interface FormFieldProps {
   label?: string;
   result?: ValidationResult;
   children: JSX.Element;
+  wrapperClasses?: string;
 }
 
 export default function FormField(props: FormFieldProps) {
-  const { name, label, result } = props;
+  const { name, label, result, wrapperClasses } = props;
 
   function renderLabel(): JSX.Element {
     return (
@@ -32,7 +33,7 @@ export default function FormField(props: FormFieldProps) {
   }
 
   return (
-    <div className="flex flex-col w-full gap-2">
+    <div className={`flex flex-col w-full gap-2 ${wrapperClasses}`}>
       <div className="flex justify-between">
         {renderLabel()}
         <AnimatePresence mode="wait" initial={false}>

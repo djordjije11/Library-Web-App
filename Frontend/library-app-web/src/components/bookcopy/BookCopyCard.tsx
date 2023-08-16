@@ -2,14 +2,16 @@ import { Card, CardBody } from "@material-tailwind/react";
 import { BookCopyDisplay } from "../../models/bookcopy/BookCopyDisplay";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { color } from "@material-tailwind/react/types/components/alert";
+import { MouseEventHandler } from "react";
 
 export interface BookCopyCardProps {
   bookCopy: BookCopyDisplay;
+  onClose: MouseEventHandler<HTMLButtonElement>;
   color?: color;
 }
 
 export default function BookCopyCard(props: BookCopyCardProps) {
-  const { bookCopy, color } = props;
+  const { bookCopy, onClose, color } = props;
 
   function CardHeader() {
     return (
@@ -42,7 +44,7 @@ export default function BookCopyCard(props: BookCopyCardProps) {
             gridTemplateRows: "50% 50%",
           }}
         >
-          <button className="w-fit h-fit" type="button" onClick={() => {}}>
+          <button className="w-fit h-fit" type="button" onClick={onClose}>
             <XCircleIcon width={"20px"} />
           </button>
           <div></div>

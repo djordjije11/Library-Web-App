@@ -1,5 +1,5 @@
 import AlertError from "../../../models/error/AlertError";
-import LendingsAdd from "../../../models/lending/LendingsAdd";
+import { LendingsAdd } from "../../../models/lending/LendingsAdd";
 
 export default interface LendingsAddState {
   lendingsAdd: LendingsAdd;

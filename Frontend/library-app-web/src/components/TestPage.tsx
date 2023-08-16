@@ -10,6 +10,7 @@ export default function TestPage() {
         {Array.from(Array(10).keys()).map((i) => (
           <div className="flex">
             <BookCopyCard
+              onClose={() => {}}
               key={i}
               bookCopy={{
                 rowVersion: 1,
@@ -26,6 +27,7 @@ export default function TestPage() {
               color="cyan"
             />
             <BookCopyCard
+              onClose={() => {}}
               key={i}
               bookCopy={{
                 rowVersion: 1,

@@ -1,10 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import LendingsAddState from "./LendingsAddState";
 import { addLendingsAsyncThunk } from "./lendingsAddThunks";
-import LendingsAdd from "../../../models/lending/LendingsAdd";
+import { LendingsAdd } from "../../../models/lending/LendingsAdd";
+import { BookCopyDisplay } from "../../../models/bookcopy/BookCopyDisplay";
+import MemberShort from "../../../models/member/MemberShort";
 
 const initialState: LendingsAddState = {
-  lendingsAdd: {} as LendingsAdd,
+  lendingsAdd: {
+    bookCopies: [] as BookCopyDisplay[],
+  } as LendingsAdd,
 } as LendingsAddState;
 
 const lendingsAddSlice = createSlice({
@@ -14,8 +18,24 @@ const lendingsAddSlice = createSlice({
     setLendingsAdd: (state, action: PayloadAction<LendingsAdd>) => {
       state.lendingsAdd = action.payload;
     },
-    setMemberId: (state, action: PayloadAction<number>) => {
-      state.lendingsAdd.memberId = action.payload;
+    setMember: (state, action: PayloadAction<MemberShort>) => {
+      state.lendingsAdd.member = action.payload;
+    },
+    addBookCopy: (state, action: PayloadAction<BookCopyDisplay>) => {
+      let shouldAdd: boolean = true;
+      state.lendingsAdd.bookCopies.map((bookCopy) => {
+        if (bookCopy.id === action.payload.id) {
+          shouldAdd = false;
+        }
+      });
+      if (shouldAdd) {
+        state.lendingsAdd.bookCopies.push(action.payload);
+      }
+    },
+    removeBookCopy: (state, action: PayloadAction<number>) => {
+      state.lendingsAdd.bookCopies = state.lendingsAdd.bookCopies.filter(
+        (bookCopy) => bookCopy.id !== action.payload
+      );
     },
   },
   extraReducers: (builder) => {
@@ -28,7 +48,7 @@ const lendingsAddSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(addLendingsAsyncThunk.fulfilled, (state, action) => {
-      state.lendingsAdd = {} as LendingsAdd;
+      state.lendingsAdd = initialState.lendingsAdd;
       state.loading = false;
     });
   },

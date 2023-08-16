@@ -21,7 +21,7 @@ export default function FormInput(props: FormInputProps) {
       value={value || ""}
       onChange={onChange}
       onClick={onClick}
-      className={`w-full p-3 font-medium border rounded-md border-slate-300 placeholder:opacity-60 ${classes}`}
+      className={`w-full p-3 font-medium border rounded-md border-slate-300 placeholder:opacity-60 ${classes}"`}
       placeholder={placeholder}
     />
   );

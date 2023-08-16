@@ -7,6 +7,10 @@ export function checkNotBlank(value?: string): boolean {
   return value !== null && value !== undefined && value.length > 0;
 }
 
+export function checkNotEmpty(array: any[]): boolean {
+  return array != undefined && array !== null && array.length !== 0;
+}
+
 export function checkBetweenInclusive(
   value: number,
   min: number,
@@ -38,6 +42,24 @@ export function validateRequired(
   return checkNotBlank(propertyValue)
     ? getResultValid()
     : getResultError(`${propertyName} is required.`);
+}
+
+export function validateRequiredAny(
+  propertyName: string,
+  propertyValue: any
+): ValidationResult {
+  return propertyValue !== undefined && propertyValue !== null
+    ? getResultValid()
+    : getResultError(`${propertyName} is required.`);
+}
+
+export function validateRequiredArray(
+  propertyName: string,
+  propertyValue: any[]
+): ValidationResult {
+  return checkNotEmpty(propertyValue)
+    ? getResultValid()
+    : getResultError(`${propertyName} are required.`);
 }
 
 export function validateFirstname(firstname: string): ValidationResult {
