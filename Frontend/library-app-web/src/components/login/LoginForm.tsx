@@ -8,7 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { HOME_PAGE } from "../routes/AppRouter";
 import { LocationState } from "../routes/AuthenticatedRoute";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
-import FormField from "../form/FormField";
+import FormField from "../shared/form/FormField";
 import {
   validatePassword,
   validateUsername,

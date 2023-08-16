@@ -1,4 +1,4 @@
-import { Gender } from "../../models/enums/Gender";
+import { Gender } from "../../../models/enums/Gender";
 import { ChangeEvent } from "react";
 
 export interface GenderRadioGroupProps {

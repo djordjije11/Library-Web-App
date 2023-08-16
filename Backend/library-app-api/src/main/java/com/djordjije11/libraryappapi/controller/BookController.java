@@ -70,7 +70,7 @@ public class BookController {
 
     @GetMapping("/{bookId}/book-copy")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<BookCopyDto>> getAllCopiesInBuilding(
+    public ResponseEntity<List<BookCopyDto>> getAllCopiesAvailableInBuilding(
             @PathVariable Long bookId,
             @Valid RequestPagingAndSortingParams pagingAndSortingParams,
             @RequestParam(required = false) String search

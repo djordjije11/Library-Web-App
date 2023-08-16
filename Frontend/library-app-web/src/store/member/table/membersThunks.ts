@@ -4,20 +4,19 @@ import AlertError, {
   constructAlertError,
 } from "../../../models/error/AlertError";
 import ResponseError from "../../../request/ResponseError";
-import RequestQueryParams from "../../../models/request/RequestQueryParams";
 import MemberShort from "../../../models/member/MemberShort";
+import MembersState from "./MembersState";
+import { StoreState } from "../../config/store";
 
 export const getMembersAsyncThunk = createAsyncThunk<
   { members: MemberShort[]; totalPages: number },
-  RequestQueryParams,
+  void,
   { rejectValue: AlertError }
->(
-  "members/getMembersAsync",
-  async (requestQueryParams, { rejectWithValue }) => {
-    try {
-      return getMembersAsync(requestQueryParams);
-    } catch (error) {
-      return rejectWithValue(constructAlertError(error as ResponseError));
-    }
+>("members/getMembersAsync", async (_, { getState, rejectWithValue }) => {
+  const state: StoreState = getState() as StoreState;
+  try {
+    return await getMembersAsync(state.members.requestQueryParams);
+  } catch (error) {
+    return rejectWithValue(constructAlertError(error as ResponseError));
   }
-);
+});

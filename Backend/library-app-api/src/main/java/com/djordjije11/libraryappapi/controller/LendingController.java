@@ -6,6 +6,7 @@ import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsPars
 import com.djordjije11.libraryappapi.controller.request.lending.LendingRequestSortingParser;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.lending.LendingByMemberDto;
+import com.djordjije11.libraryappapi.dto.lending.LendingDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsCreateDto;
 import com.djordjije11.libraryappapi.dto.lending.LendingsReturnDto;
 import com.djordjije11.libraryappapi.exception.lending.BookCopyNotAvailableForLendingException;
@@ -44,20 +45,20 @@ public class LendingController {
 
     @PutMapping("/return")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> returnLendings(
+    public ResponseEntity<List<LendingByMemberDto>> returnLendings(
             @RequestBody @Valid LendingsReturnDto lendingsReturnDto
     ) throws LendingAlreadyReturnedException, LendingReturnedNotByMemberException {
         final List<Lending> lendings = lendingService.returnLendings(lendingsReturnDto.lendingsIds(), lendingsReturnDto.memberId(), authClaimsHolder.getBuildingClaim().id());
         lendingEnroller.enrollReturnedLendings(authClaimsHolder, lendings, lendingsReturnDto.memberId());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(lendings.stream().map(mapper::mapByMember).toList());
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createLendings(@RequestBody @Valid LendingsCreateDto lendingsCreateDto) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLendingException {
+    public ResponseEntity<List<LendingByMemberDto>> createLendings(@RequestBody @Valid LendingsCreateDto lendingsCreateDto) throws BookCopyNotAvailableForLendingException, BookCopyNotInBuildingForLendingException {
         final List<Lending> lendings = lendingService.createLendings(lendingsCreateDto.bookCopiesIds(), lendingsCreateDto.memberId(), authClaimsHolder.getBuildingClaim().id());
         lendingEnroller.enrollLendings(authClaimsHolder, lendings, lendingsCreateDto.memberId());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(lendings.stream().map(mapper::mapByMember).toList());
     }
 
     @GetMapping("/member/{memberId}")

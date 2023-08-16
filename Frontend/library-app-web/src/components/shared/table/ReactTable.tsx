@@ -4,23 +4,24 @@ import {
   ChevronUpIcon,
 } from "@heroicons/react/24/outline";
 import { Typography } from "@material-tailwind/react";
+import { MouseEvent } from "react";
 import { Row, TableInstance } from "react-table";
 
 export interface ReactTableProps {
   tableInstance: TableInstance;
-  rowActions: (row: Row<{}>) => JSX.Element;
+  rowActions?: (row: Row<{}>) => JSX.Element;
+  onSelectedRow?: (
+    event: MouseEvent<HTMLTableRowElement>,
+    row: Row<{}>
+  ) => void;
+  columnSortOptions: boolean[];
 }
 
 export default function ReactTable(props: ReactTableProps) {
-  const { tableInstance, rowActions } = props;
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-  } = tableInstance;
+  const { tableInstance, rowActions, onSelectedRow, columnSortOptions } = props;
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    tableInstance;
+
   return (
     <table
       {...getTableProps()}
@@ -29,11 +30,13 @@ export default function ReactTable(props: ReactTableProps) {
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
+            {headerGroup.headers.map((column, index) => (
               <th
-                {...column.getHeaderProps(
-                  (column as any).getSortByToggleProps()
-                )}
+                {...(columnSortOptions[index]
+                  ? column.getHeaderProps(
+                      (column as any).getSortByToggleProps()
+                    )
+                  : column.getHeaderProps())}
                 className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
               >
                 <Typography
@@ -42,17 +45,27 @@ export default function ReactTable(props: ReactTableProps) {
                   className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                 >
                   {column.render("Header")}
-                  <span>
-                    {(column as any).isSorted ? (
-                      (column as any).isSortedDesc ? (
-                        <ChevronDownIcon strokeWidth={2} className="h-4 w-4" />
+                  {columnSortOptions[index] ? (
+                    <span>
+                      {(column as any).isSorted ? (
+                        (column as any).isSortedDesc ? (
+                          <ChevronDownIcon
+                            strokeWidth={2}
+                            className="h-4 w-4"
+                          />
+                        ) : (
+                          <ChevronUpIcon strokeWidth={2} className="h-4 w-4" />
+                        )
                       ) : (
-                        <ChevronUpIcon strokeWidth={2} className="h-4 w-4" />
-                      )
-                    ) : (
-                      <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                    )}
-                  </span>
+                        <ChevronUpDownIcon
+                          strokeWidth={2}
+                          className="h-4 w-4"
+                        />
+                      )}
+                    </span>
+                  ) : (
+                    <></>
+                  )}
                 </Typography>
               </th>
             ))}
@@ -64,7 +77,16 @@ export default function ReactTable(props: ReactTableProps) {
         {rows.map((row, index) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr
+              {...row.getRowProps()}
+              {...(onSelectedRow === undefined
+                ? null
+                : {
+                    className: "cursor-pointer hover:bg-blue-gray-100",
+                    onClick: (event: MouseEvent<HTMLTableRowElement>) =>
+                      onSelectedRow(event, row),
+                  })}
+            >
               {row.cells.map((cell) => {
                 return (
                   <td
@@ -94,7 +116,7 @@ export default function ReactTable(props: ReactTableProps) {
                     : "border-b border-blue-gray-100"
                 }`}
               >
-                {rowActions(row)}
+                {rowActions === undefined ? <></> : rowActions(row)}
               </td>
             </tr>
           );

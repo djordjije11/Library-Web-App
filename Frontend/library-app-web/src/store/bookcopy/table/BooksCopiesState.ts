@@ -1,9 +1,9 @@
+import { BookCopyDisplay } from "../../../models/bookcopy/BookCopyDisplay";
 import AlertError from "../../../models/error/AlertError";
-import MemberShort from "../../../models/member/MemberShort";
 import RequestQueryParams from "../../../models/request/RequestQueryParams";
 
-export default interface MembersState {
-  members: MemberShort[];
+export default interface BooksCopiesState {
+  bookCopies: BookCopyDisplay[];
   totalPages: number;
   requestQueryParams: RequestQueryParams;
   loading: boolean;

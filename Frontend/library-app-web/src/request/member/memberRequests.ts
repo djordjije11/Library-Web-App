@@ -6,15 +6,13 @@ import {
   GET_MEMBER_URL,
   UPDATE_MEMBER_URL,
 } from "../apiUrls";
-import { getHeaders } from "../requestHeaders";
+import { HEADER_PAGINATION_TOTAL_PAGES, getHeaders } from "../requestHeaders";
 import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
 import MemberAdd from "../../models/member/MemberAdd";
 import MemberDetail from "../../models/member/MemberDetail";
 import MemberShort from "../../models/member/MemberShort";
-
-const HEADER_PAGINATION_TOTAL_PAGES = "x-pagination-total-pages";
 
 export async function getMembersAsync(
   requestQueryParams: RequestQueryParams

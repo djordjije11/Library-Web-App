@@ -1,5 +1,9 @@
 import { Fragment } from "react";
-import { ADD_MEMBER_PAGE, LIST_MEMBER_PAGE } from "../../routes/AppRouter";
+import {
+  ADD_LENDING_PAGE,
+  ADD_MEMBER_PAGE,
+  LIST_MEMBER_PAGE,
+} from "../../routes/AppRouter";
 import React from "react";
 import {
   Typography,
@@ -64,6 +68,7 @@ export function NavList() {
   return (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
       <NavListMenu
+        key={1}
         menuHandlerItem={{ label: "Members" }}
         menuListItems={[
           {
@@ -79,18 +84,20 @@ export function NavList() {
         ]}
       />
       <NavListMenu
+        key={2}
         menuHandlerItem={{ label: "Books" }}
         menuListItems={[
           { key: 1, label: "Add a new book", link: "" },
           { key: 2, label: "List of books", link: "" },
         ]}
       />
-      <NavListItem
-        navListItem={{
-          key: 2,
-          label: "Lendings",
-          link: "",
-        }}
+      <NavListMenu
+        key={3}
+        menuHandlerItem={{ label: "Lendings" }}
+        menuListItems={[
+          { key: 1, label: "Note book lendings", link: ADD_LENDING_PAGE },
+          { key: 2, label: "Note book returnments" },
+        ]}
       />
     </ul>
   );

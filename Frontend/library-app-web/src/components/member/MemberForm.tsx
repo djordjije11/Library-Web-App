@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { Button, Card, CardBody, CardFooter } from "@material-tailwind/react";
-import FormInput from "../form/FormInput";
+import FormInput from "../shared/form/FormInput";
 import { allValid } from "../../models/validation/ValidationResult";
 import {
   validateBirthday,
@@ -9,10 +9,10 @@ import {
   validateIdCardNumber,
   validateLastname,
 } from "../../validation/modelValidations";
-import GenderRadioGroup from "../form/GenderRadioGroup";
-import FormField from "../form/FormField";
+import GenderRadioGroup from "../shared/form/GenderRadioGroup";
+import FormField from "../shared/form/FormField";
 import { Gender } from "../../models/enums/Gender";
-import FormDate from "../form/FormDate";
+import FormDate from "../shared/form/FormDate";
 import AlertError from "../../models/error/AlertError";
 import MemberDetail from "../../models/member/MemberDetail";
 import MemberInputResults from "../../models/member/MemberInputResults";

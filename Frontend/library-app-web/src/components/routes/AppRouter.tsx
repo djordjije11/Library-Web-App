@@ -8,18 +8,22 @@ import UnauthenticatedRoute from "./UnauthenticatedRoute";
 import UnspecifiedRoute from "./UnspecifiedRoute";
 import MemberAddPage from "../member/MemberAddPage";
 import MemberListPage from "../member/MemberListPage";
+import LendingAddPage from "../lending/LendingAddPage";
+import TestPage from "../TestPage";
 
 export const LOGIN_PAGE = "/login";
 export const HOME_PAGE = "/";
-export const ADD_MEMBER_PAGE = "/member-add";
-export const LIST_MEMBER_PAGE = "member-list";
+export const ADD_MEMBER_PAGE = "/member/add";
+export const LIST_MEMBER_PAGE = "member/list";
 export const UPDATE_MEMBER_PAGE = "/member/:id";
+export const ADD_LENDING_PAGE = "/lending/add";
 export const UNSPECIFIED_LINK = "/*";
 
 export default function AppRouter() {
   return (
     <Routes>
       <Fragment>
+        <Route path="/test" element={<TestPage />} />
         <Route
           path={HOME_PAGE}
           element={
@@ -49,6 +53,14 @@ export default function AppRouter() {
           element={
             <AuthenticatedRoute>
               <MemberListPage />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path={ADD_LENDING_PAGE}
+          element={
+            <AuthenticatedRoute>
+              <LendingAddPage />
             </AuthenticatedRoute>
           }
         />

@@ -1,5 +1,7 @@
 import { getAuthToken } from "../services/authentication/authTokenService";
 
+export const HEADER_PAGINATION_TOTAL_PAGES = "x-pagination-total-pages";
+
 export interface AuthorizationHeader {
   Authorization: string;
 }
