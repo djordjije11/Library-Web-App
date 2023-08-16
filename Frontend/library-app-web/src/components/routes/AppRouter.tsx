@@ -14,7 +14,7 @@ import TestPage from "../TestPage";
 export const LOGIN_PAGE = "/login";
 export const HOME_PAGE = "/";
 export const ADD_MEMBER_PAGE = "/member/add";
-export const LIST_MEMBER_PAGE = "member/list";
+export const LIST_MEMBER_PAGE = "/member/list";
 export const UPDATE_MEMBER_PAGE = "/member/:id";
 export const ADD_LENDING_PAGE = "/lending/add";
 export const UNSPECIFIED_LINK = "/*";

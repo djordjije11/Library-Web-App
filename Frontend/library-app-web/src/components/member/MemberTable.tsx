@@ -57,7 +57,6 @@ export default function MemberTable(props: ModelTableProps) {
       totalPages={membersState.totalPages}
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
-      columnSortOptions={[true, true, true, true, true]}
     />
   );
 }

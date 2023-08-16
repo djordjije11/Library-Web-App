@@ -29,7 +29,7 @@ export interface CompleteTableProps {
     event: MouseEvent<HTMLTableRowElement>,
     row: Row<{}>
   ) => void;
-  columnSortOptions: boolean[];
+  columnSortOptions?: boolean[];
 }
 
 export default function CompleteTable(props: CompleteTableProps) {

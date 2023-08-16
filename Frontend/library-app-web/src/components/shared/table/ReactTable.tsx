@@ -14,13 +14,23 @@ export interface ReactTableProps {
     event: MouseEvent<HTMLTableRowElement>,
     row: Row<{}>
   ) => void;
-  columnSortOptions: boolean[];
+  columnSortOptions?: boolean[];
+}
+
+function getTrueArray(length: number): boolean[] {
+  const array: boolean[] = [];
+  for (let i = 0; i < length; i++) {
+    array.push(true);
+  }
+  return array;
 }
 
 export default function ReactTable(props: ReactTableProps) {
-  const { tableInstance, rowActions, onSelectedRow, columnSortOptions } = props;
+  const { tableInstance, rowActions, onSelectedRow } = props;
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
+  const columnSortOptions =
+    props.columnSortOptions || getTrueArray(headerGroups[0].headers.length);
 
   return (
     <table
