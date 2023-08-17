@@ -1,6 +1,6 @@
 import ValidationResult from "../validation/ValidationResult";
 
-export default interface LendingsAddInputResults {
+export interface LendingsReturnInputResults {
+  lendingsResult: ValidationResult;
   memberResult: ValidationResult;
-  bookCopiesResult: ValidationResult;
 }

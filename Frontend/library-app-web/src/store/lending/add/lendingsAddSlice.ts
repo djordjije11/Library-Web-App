@@ -22,13 +22,11 @@ const lendingsAddSlice = createSlice({
       state.lendingsAdd.member = action.payload;
     },
     addBookCopy: (state, action: PayloadAction<BookCopyDisplay>) => {
-      let shouldAdd: boolean = true;
-      state.lendingsAdd.bookCopies.map((bookCopy) => {
-        if (bookCopy.id === action.payload.id) {
-          shouldAdd = false;
-        }
-      });
-      if (shouldAdd) {
+      if (
+        state.lendingsAdd.bookCopies.some(
+          (bookCopy) => bookCopy.id === action.payload.id
+        ) === false
+      ) {
         state.lendingsAdd.bookCopies.push(action.payload);
       }
     },

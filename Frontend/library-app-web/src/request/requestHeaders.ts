@@ -1,6 +1,7 @@
+import { AxiosResponseHeaders } from "axios";
 import { getAuthToken } from "../services/authentication/authTokenService";
 
-export const HEADER_PAGINATION_TOTAL_PAGES = "x-pagination-total-pages";
+const HEADER_PAGINATION_TOTAL_PAGES = "x-pagination-total-pages";
 
 export interface AuthorizationHeader {
   Authorization: string;
@@ -19,4 +20,8 @@ export function getHeaders(): any {
     "Content-Type": "application/json",
     ...getAuthorizationHeader(),
   };
+}
+
+export function extractTotalPagesFromHeaders(headers: any): number {
+  return Number(headers[HEADER_PAGINATION_TOTAL_PAGES]);
 }

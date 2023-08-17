@@ -6,7 +6,7 @@ import {
   GET_MEMBER_URL,
   UPDATE_MEMBER_URL,
 } from "../apiUrls";
-import { HEADER_PAGINATION_TOTAL_PAGES, getHeaders } from "../requestHeaders";
+import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
 import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
@@ -24,9 +24,7 @@ export async function getMembersAsync(
     }
   );
   const members = response.data as MemberShort[];
-  const totalPages: number = Number(
-    response.headers[HEADER_PAGINATION_TOTAL_PAGES]
-  );
+  const totalPages: number = extractTotalPagesFromHeaders(response.headers);
   return { members, totalPages };
 }
 

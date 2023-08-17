@@ -1,6 +1,6 @@
 import axios from "axios";
 import { GET_ALL_BOOKS_COPIES_AVAILABLE_IN_BUILDING } from "../apiUrls";
-import { HEADER_PAGINATION_TOTAL_PAGES, getHeaders } from "../requestHeaders";
+import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
 import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
@@ -27,9 +27,7 @@ export async function getAllBooksCopiesAvailableInBuildingAsync(
     response.data as BookCopyDisplayFromServer[]
   );
 
-  const totalPages: number = Number(
-    response.headers[HEADER_PAGINATION_TOTAL_PAGES]
-  );
+  const totalPages: number = extractTotalPagesFromHeaders(response.headers);
   return {
     bookCopies,
     totalPages,

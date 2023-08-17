@@ -10,6 +10,7 @@ import MemberAddPage from "../member/MemberAddPage";
 import MemberListPage from "../member/MemberListPage";
 import LendingAddPage from "../lending/LendingAddPage";
 import TestPage from "../TestPage";
+import LendingReturnPage from "../lending/LendingReturnPage";
 
 export const LOGIN_PAGE = "/login";
 export const HOME_PAGE = "/";
@@ -17,6 +18,7 @@ export const ADD_MEMBER_PAGE = "/member/add";
 export const LIST_MEMBER_PAGE = "/member/list";
 export const UPDATE_MEMBER_PAGE = "/member/:id";
 export const ADD_LENDING_PAGE = "/lending/add";
+export const RETURN_LENDING_PAGE = "/lending/return";
 export const UNSPECIFIED_LINK = "/*";
 
 export default function AppRouter() {
@@ -61,6 +63,14 @@ export default function AppRouter() {
           element={
             <AuthenticatedRoute>
               <LendingAddPage />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path={RETURN_LENDING_PAGE}
+          element={
+            <AuthenticatedRoute>
+              <LendingReturnPage />
             </AuthenticatedRoute>
           }
         />

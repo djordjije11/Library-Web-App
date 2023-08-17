@@ -3,6 +3,7 @@ import {
   ADD_LENDING_PAGE,
   ADD_MEMBER_PAGE,
   LIST_MEMBER_PAGE,
+  RETURN_LENDING_PAGE,
 } from "../../routes/AppRouter";
 import React from "react";
 import {
@@ -96,7 +97,7 @@ export function NavList() {
         menuHandlerItem={{ label: "Lendings" }}
         menuListItems={[
           { key: 1, label: "Note book lendings", link: ADD_LENDING_PAGE },
-          { key: 2, label: "Note book returnments" },
+          { key: 2, label: "Note book returnments", link: RETURN_LENDING_PAGE },
         ]}
       />
     </ul>

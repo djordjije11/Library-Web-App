@@ -17,6 +17,10 @@ import MemberUpdateState from "../member/update/MemberUpdateState";
 import LendingsAddState from "../lending/add/LendingsAddState";
 import BooksCopiesState from "../bookcopy/table/BooksCopiesState";
 import booksCopiesSlice from "../bookcopy/table/booksCopiesSlice";
+import { LendingsReturnState } from "../lending/return/LendingsReturnState";
+import lendingsReturnSlice from "../lending/return/lendingsReturnSlice";
+import { LendingsUnreturnedState } from "../lending/table/unreturned/LendingsUnreturnedState";
+import lendingsUnreturnedSlice from "../lending/table/unreturned/lendingsUnreturnedSlice";
 
 export interface StoreState {
   auth: AuthState;
@@ -25,6 +29,8 @@ export interface StoreState {
   memberUpdate: MemberUpdateState;
   booksCopies: BooksCopiesState;
   lendingsAdd: LendingsAddState;
+  lendingsReturn: LendingsReturnState;
+  lendingsUnreturned: LendingsUnreturnedState;
 }
 
 const store: ToolkitStore = configureStore({
@@ -35,6 +41,8 @@ const store: ToolkitStore = configureStore({
     memberUpdate: memberUpdateSlice,
     booksCopies: booksCopiesSlice,
     lendingsAdd: lendingsAddSlice,
+    lendingsReturn: lendingsReturnSlice,
+    lendingsUnreturned: lendingsUnreturnedSlice,
   },
 });
 

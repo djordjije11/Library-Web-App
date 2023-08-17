@@ -179,6 +179,10 @@ export default function TablePagination(props: TablePaginationProps) {
     [currentPage, pagesCount]
   );
 
+  if (pagesCount === undefined || pagesCount === 0) {
+    return <></>;
+  }
+
   return (
     <div className="flex flex-row items-center justify-between gap-4">
       <div className="grid grid-flow-row grid-cols-7 gap-2 w-full">
