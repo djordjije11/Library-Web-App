@@ -13,6 +13,12 @@ const lendingsReturnSlice = createSlice({
   initialState,
   reducers: {
     setMember: (state, action: PayloadAction<MemberShort>) => {
+      if (
+        state.lendingsReturn.member !== undefined &&
+        state.lendingsReturn.member.id !== action.payload.id
+      ) {
+        state.lendingsReturn.lendings = [] as LendingIncludingBookCopy[];
+      }
       state.lendingsReturn.member = action.payload;
     },
     addLending: (state, action: PayloadAction<LendingIncludingBookCopy>) => {
