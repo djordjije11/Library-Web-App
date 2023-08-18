@@ -30,7 +30,7 @@ export function validateIdCardNumber(idCardNumber: string): ValidationResult {
   }
   const regex = /^\d{10,20}$/;
   if (regex.test(idCardNumber) === false) {
-    return getResultError("ID Card Number must be valid.");
+    return getResultError("ID Card Number is not valid.");
   }
   return getResultValid();
 }
@@ -76,7 +76,7 @@ export function validateEmail(email: string): ValidationResult {
   }
   const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   if (regex.test(email.toLowerCase()) === false) {
-    return getResultError("Email must be valid.");
+    return getResultError("Email is not valid.");
   }
   return getResultValid();
 }
@@ -101,7 +101,7 @@ export function validatePassword(password: string): ValidationResult {
   }
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   if (regex.test(password) === false) {
-    return getResultError("Password must be valid.");
+    return getResultError("Password is not valid.");
   }
   return getResultValid();
 }

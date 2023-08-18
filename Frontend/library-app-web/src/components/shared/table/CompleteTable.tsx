@@ -13,10 +13,7 @@ import { SortByColumn } from "../../../models/request/SortBy";
 import RequestQueryParams from "../../../models/request/RequestQueryParams";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../../store/config/hooks";
-
-export interface CompleteTableRef {
-  requestQueryParams: RequestQueryParams;
-}
+import Loader from "../Loader";
 
 export interface CompleteTableProps {
   columns: Column[];
@@ -24,12 +21,15 @@ export interface CompleteTableProps {
   loadDataAsync: () => Promise<void>;
   setRequestQueryParamsAction: ActionCreatorWithPayload<RequestQueryParams>;
   totalPages: number;
+  loading: boolean;
   rowActions?: (row: Row<{}>) => JSX.Element;
   onSelectedRow?: (
     event: MouseEvent<HTMLTableRowElement>,
     row: Row<{}>
   ) => void;
   columnSortOptions?: boolean[];
+  renderHeaderChildren?: (searchInputField: JSX.Element) => JSX.Element;
+  dependencies?: any[];
 }
 
 export default function CompleteTable(props: CompleteTableProps) {
@@ -39,10 +39,13 @@ export default function CompleteTable(props: CompleteTableProps) {
     loadDataAsync,
     setRequestQueryParamsAction,
     totalPages,
+    loading,
     rowActions,
     onSelectedRow,
     columnSortOptions,
+    renderHeaderChildren,
   } = props;
+  const dependencies = props.dependencies || [];
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [search, setSearch] = useState<string>("");
@@ -71,7 +74,7 @@ export default function CompleteTable(props: CompleteTableProps) {
 
   useEffect(() => {
     loadDataAsync();
-  }, [pageNumber, sortBy]);
+  }, [pageNumber, sortBy, ...dependencies]);
 
   const searchDebounce = useAsyncDebounce(() => {
     if (pageNumber !== 1) {
@@ -87,16 +90,30 @@ export default function CompleteTable(props: CompleteTableProps) {
   };
 
   return (
-    <div className="flex flex-col items-stretch">
-      <div className="mt-2">
-        <TableSearchInput search={search} onSearchChange={onSearchChange} />
+    <div className="flex flex-col items-stretch overflow-x-auto overflow-y-auto w-full h-full justify-between">
+      <div className="h-full w-full">
+        {renderHeaderChildren !== undefined ? (
+          renderHeaderChildren(
+            <TableSearchInput search={search} onSearchChange={onSearchChange} />
+          )
+        ) : (
+          <div className="mt-2 flex justify-between">
+            <TableSearchInput search={search} onSearchChange={onSearchChange} />
+          </div>
+        )}
+        {loading ? (
+          <div className="h-full w-full flex justify-center items-center">
+            <Loader />
+          </div>
+        ) : (
+          <ReactTable
+            tableInstance={tableInstance}
+            rowActions={rowActions}
+            onSelectedRow={onSelectedRow}
+            columnSortOptions={columnSortOptions}
+          />
+        )}
       </div>
-      <ReactTable
-        tableInstance={tableInstance}
-        rowActions={rowActions}
-        onSelectedRow={onSelectedRow}
-        columnSortOptions={columnSortOptions}
-      />
       <div className="my-2">
         <TablePagination
           currentPage={pageNumber}

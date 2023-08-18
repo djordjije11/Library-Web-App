@@ -8,6 +8,7 @@ public record BookCopyDto(
         Long id,
         String isbn,
         BookCopyStatus status,
-        BookShortDto book
+        BookShortDto book,
+        String building
 ) {
 }

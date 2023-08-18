@@ -64,8 +64,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<GetBookDto> getById(@PathVariable Long id) {
         BookDto bookDto = bookMapper.map(bookService.get(id));
-        Long availableBookCopiesCount = bookService.getAvailableBookCopiesCount(id);
-        return ResponseEntity.ok(new GetBookDto(bookDto, availableBookCopiesCount));
+        Long availableBookCopiesInBuildingCount = bookService.getAvailableBookCopiesInBuildingCount(id, authClaimsHolder.getBuildingClaim().id());
+        return ResponseEntity.ok(new GetBookDto(bookDto, availableBookCopiesInBuildingCount));
     }
 
     @GetMapping("/{bookId}/book-copy")

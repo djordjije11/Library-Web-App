@@ -15,19 +15,25 @@ import MembersState from "../member/table/MembersState";
 import MemberAddState from "../member/add/MemberAddState";
 import MemberUpdateState from "../member/update/MemberUpdateState";
 import LendingsAddState from "../lending/add/LendingsAddState";
-import BooksCopiesState from "../bookcopy/table/BooksCopiesState";
-import booksCopiesSlice from "../bookcopy/table/booksCopiesSlice";
+import BooksCopiesState from "../bookcopy/table/by-all-books-in-building/BooksCopiesState";
+import booksCopiesSlice from "../bookcopy/table/by-all-books-in-building/booksCopiesSlice";
 import { LendingsReturnState } from "../lending/return/LendingsReturnState";
 import lendingsReturnSlice from "../lending/return/lendingsReturnSlice";
 import { LendingsUnreturnedState } from "../lending/table/unreturned/LendingsUnreturnedState";
 import lendingsUnreturnedSlice from "../lending/table/unreturned/lendingsUnreturnedSlice";
+import BooksState from "../book/table/BooksState";
+import booksSlice from "../book/table/booksSlice";
+import BookCopiesState from "../bookcopy/table/by-book-all-buildings/BookCopiesState";
+import bookCopiesSlice from "../bookcopy/table/by-book-all-buildings/bookCopiesSlice";
 
 export interface StoreState {
   auth: AuthState;
   members: MembersState;
   memberAdd: MemberAddState;
   memberUpdate: MemberUpdateState;
+  books: BooksState;
   booksCopies: BooksCopiesState;
+  bookCopies: BookCopiesState;
   lendingsAdd: LendingsAddState;
   lendingsReturn: LendingsReturnState;
   lendingsUnreturned: LendingsUnreturnedState;
@@ -39,7 +45,9 @@ const store: ToolkitStore = configureStore({
     members: membersSlice,
     memberAdd: memberAddSlice,
     memberUpdate: memberUpdateSlice,
+    books: booksSlice,
     booksCopies: booksCopiesSlice,
+    bookCopies: bookCopiesSlice,
     lendingsAdd: lendingsAddSlice,
     lendingsReturn: lendingsReturnSlice,
     lendingsUnreturned: lendingsUnreturnedSlice,

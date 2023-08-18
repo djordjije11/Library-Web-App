@@ -65,3 +65,12 @@ export function handleMemberFormError(error: AlertError) {
     confirmButtonText: "OK",
   });
 }
+
+export function handleBookDeleteError() {
+  Swal.fire({
+    title: "Invalid request",
+    text: "There are copies of the book in the database and the book cannot be deleted.",
+    icon: "error",
+    confirmButtonText: "OK",
+  });
+}

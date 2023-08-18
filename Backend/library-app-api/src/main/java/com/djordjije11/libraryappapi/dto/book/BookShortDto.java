@@ -4,6 +4,7 @@ public record BookShortDto(
         Long id,
         String title,
         String publisher,
-        String authors
+        String authors,
+        Integer pagesNumber
 ) {
 }

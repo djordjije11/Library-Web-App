@@ -5,7 +5,6 @@ import AlertError, {
 } from "../../../models/error/AlertError";
 import ResponseError from "../../../request/ResponseError";
 import MemberShort from "../../../models/member/MemberShort";
-import MembersState from "./MembersState";
 import { StoreState } from "../../config/store";
 
 export const getMembersAsyncThunk = createAsyncThunk<

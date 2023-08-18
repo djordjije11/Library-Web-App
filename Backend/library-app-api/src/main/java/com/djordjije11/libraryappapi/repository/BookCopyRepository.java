@@ -12,5 +12,5 @@ public interface BookCopyRepository extends JpaRepository<BookCopy, Long>, JpaSp
 
     boolean existsByBook_Id(Long bookId);
 
-    Long countByBook_IdAndStatus(Long bookId, BookCopyStatus status);
+    Long countByBook_IdAndStatusAndBuildingId(Long bookId, BookCopyStatus status, Long buildingId);
 }

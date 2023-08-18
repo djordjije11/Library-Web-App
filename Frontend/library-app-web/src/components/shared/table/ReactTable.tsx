@@ -6,6 +6,7 @@ import {
 import { Typography } from "@material-tailwind/react";
 import { MouseEvent } from "react";
 import { Row, TableInstance } from "react-table";
+import Loader from "../Loader";
 
 export interface ReactTableProps {
   tableInstance: TableInstance;
@@ -31,6 +32,75 @@ export default function ReactTable(props: ReactTableProps) {
     tableInstance;
   const columnSortOptions =
     props.columnSortOptions || getTrueArray(headerGroups[0].headers.length);
+
+  function renderTableBodyContent(): JSX.Element {
+    if (rows.length === 0) {
+      return (
+        <tr>
+          <td colSpan={headerGroups[0].headers.length} align="center">
+            <div className="mt-2 text-lg">
+              There is not any records in the database.
+            </div>
+          </td>
+        </tr>
+      );
+    }
+    return (
+      <>
+        {rows.map((row, index) => {
+          prepareRow(row);
+          return (
+            <tr
+              {...row.getRowProps()}
+              {...(onSelectedRow === undefined
+                ? null
+                : {
+                    className: "cursor-pointer hover:bg-blue-gray-100",
+                    onClick: (event: MouseEvent<HTMLTableRowElement>) =>
+                      onSelectedRow(event, row),
+                  })}
+            >
+              {row.cells.map((cell) => {
+                return (
+                  <td
+                    {...cell.getCellProps()}
+                    className={`p-4 ${
+                      index === rows.length - 1
+                        ? "border-b border-blue-gray-200"
+                        : "border-b border-blue-gray-100"
+                    }`}
+                  >
+                    {
+                      <Typography
+                        variant="small"
+                        color="blue-gray"
+                        className="font-normal"
+                      >
+                        {cell.render("Cell")}
+                      </Typography>
+                    }
+                  </td>
+                );
+              })}
+              {rowActions === undefined ? (
+                <></>
+              ) : (
+                <td
+                  className={`p-4 ${
+                    index === rows.length - 1
+                      ? "border-b border-blue-gray-200"
+                      : "border-b border-blue-gray-100"
+                  }`}
+                >
+                  {rowActions(row)}
+                </td>
+              )}
+            </tr>
+          );
+        })}
+      </>
+    );
+  }
 
   return (
     <table
@@ -79,69 +149,15 @@ export default function ReactTable(props: ReactTableProps) {
                 </Typography>
               </th>
             ))}
-            <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors"></th>
+            {rowActions === undefined ? (
+              <></>
+            ) : (
+              <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors"></th>
+            )}
           </tr>
         ))}
       </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.length === 0 ? (
-          <tr>
-            <td colSpan={headerGroups[0].headers.length} align="justify">
-              <div className="my-2 mx-6 text-lg">
-                There is not any records in the database.
-              </div>
-            </td>
-          </tr>
-        ) : (
-          rows.map((row, index) => {
-            prepareRow(row);
-            return (
-              <tr
-                {...row.getRowProps()}
-                {...(onSelectedRow === undefined
-                  ? null
-                  : {
-                      className: "cursor-pointer hover:bg-blue-gray-100",
-                      onClick: (event: MouseEvent<HTMLTableRowElement>) =>
-                        onSelectedRow(event, row),
-                    })}
-              >
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      className={`p-4 ${
-                        index === rows.length - 1
-                          ? "border-b border-blue-gray-200"
-                          : "border-b border-blue-gray-100"
-                      }`}
-                    >
-                      {
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {cell.render("Cell")}
-                        </Typography>
-                      }
-                    </td>
-                  );
-                })}
-                <td
-                  className={`p-4 ${
-                    index === rows.length - 1
-                      ? "border-b border-blue-gray-200"
-                      : "border-b border-blue-gray-100"
-                  }`}
-                >
-                  {rowActions === undefined ? <></> : rowActions(row)}
-                </td>
-              </tr>
-            );
-          })
-        )}
-      </tbody>
+      <tbody {...getTableBodyProps()}>{renderTableBodyContent()}</tbody>
     </table>
   );
 }

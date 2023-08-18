@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllBooksCopiesAvailableInBuildingAsync } from "../../../request/bookcopy/bookCopyRequests";
-import { BookCopyDisplay } from "../../../models/bookcopy/BookCopyDisplay";
+import { getAllBooksCopiesAvailableInBuildingAsync } from "../../../../request/bookcopy/bookCopyRequests";
+import { BookCopyDisplay } from "../../../../models/bookcopy/BookCopyDisplay";
 import AlertError, {
   constructAlertError,
-} from "../../../models/error/AlertError";
-import ResponseError from "../../../request/ResponseError";
-import { StoreState } from "../../config/store";
+} from "../../../../models/error/AlertError";
+import ResponseError from "../../../../request/ResponseError";
+import { StoreState } from "../../../config/store";
 
 export const getAllBooksCopiesAvailableInBuildingAsyncThunk = createAsyncThunk<
   {

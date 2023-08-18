@@ -20,6 +20,12 @@ export const ADD_MEMBER_URL = getUrl(MEMBER);
 export const UPDATE_MEMBER_URL = (id: number) => getUrl(`${MEMBER}/${id}`);
 export const DELETE_MEMBER_URL = (id: number) => getUrl(`${MEMBER}/${id}`);
 
+export const GET_BOOKS_URL = getUrl(BOOK);
+export const GET_BOOK_URL = (id: number) => getUrl(`${BOOK}/${id}`);
+export const DELETE_BOOK_URL = (id: number) => getUrl(`${BOOK}/${id}`);
+
+export const GET_BOOK_COPIES_IN_ALL_BUILDINGS_URL = (bookId: number) =>
+  getUrl(`${BOOK}/${bookId}/${BOOK_COPY}/all-buildings`);
 export const GET_ALL_BOOKS_COPIES_AVAILABLE_IN_BUILDING = getUrl(
   `${BOOK}/all/${BOOK_COPY}`
 );

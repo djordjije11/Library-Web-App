@@ -1,6 +1,6 @@
 import { Card } from "@material-tailwind/react";
 import { Box, Modal } from "@mui/material";
-import BookCopyTable from "./BookCopyTable";
+import BooksCopiesTable from "./BooksCopiesTable";
 import { BookCopyDisplay } from "../../models/bookcopy/BookCopyDisplay";
 
 export interface ModalSelectBookCopyProps {
@@ -17,9 +17,16 @@ export default function ModalSelectBookCopy(props: ModalSelectBookCopyProps) {
       onClose={close}
       className="flex justify-center items-center"
     >
-      <Box sx={{ width: "80%", border: "none" }}>
-        <Card>
-          <BookCopyTable
+      <Box
+        sx={{
+          width: "80%",
+          border: "none",
+          minWidth: "min-content",
+          height: "54%",
+        }}
+      >
+        <Card className="h-full w-full">
+          <BooksCopiesTable
             onSelectedRow={(event, row) =>
               handleSelectedBookCopy(row.original as BookCopyDisplay)
             }

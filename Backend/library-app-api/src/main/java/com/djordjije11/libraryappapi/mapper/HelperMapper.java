@@ -2,6 +2,7 @@ package com.djordjije11.libraryappapi.mapper;
 
 import com.djordjije11.libraryappapi.model.Address;
 import com.djordjije11.libraryappapi.model.Author;
+import com.djordjije11.libraryappapi.model.Building;
 import com.djordjije11.libraryappapi.model.City;
 import org.mapstruct.Named;
 
@@ -12,6 +13,7 @@ public interface HelperMapper {
     String MAP_IDS_TO_AUTHORS = "mapIdsToAuthors";
     String MAP_ADDRESS_TO_STRING = "mapAddressToString";
     String MAP_CITY_TO_STRING = "mapCityToString";
+    String MAP_BUILDING_TO_STRING = "mapBuildingToString";
 
     @Named(MAP_AUTHORS_TO_STRING)
     default String mapAuthorsToString(List<Author> authors) {
@@ -34,5 +36,14 @@ public interface HelperMapper {
     @Named(MAP_CITY_TO_STRING)
     default String mapCityToString(City city){
         return String.format("%s (%s)", city.getName(), city.getZipcode());
+    }
+
+    @Named(MAP_BUILDING_TO_STRING)
+    default String mapBuildingToString(Building building) {
+        if(building == null){
+            return null;
+        }
+        final Address address = building.getAddress();
+        return String.format("%s %d, %s (%s)", address.getStreetName(), address.getStreetNumber(), address.getCity().getName(), address.getCity().getZipcode());
     }
 }

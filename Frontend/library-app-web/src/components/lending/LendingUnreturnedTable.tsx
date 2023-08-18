@@ -51,6 +51,7 @@ export default function LendingUnreturnedTable(props: ModelTableProps) {
       columns={columns}
       data={data}
       loadDataAsync={loadDataAsync}
+      loading={lendingsUnreturnedState.loading}
       setRequestQueryParamsAction={
         lendingsUnreturnedActions.setRequestQueryParams
       }

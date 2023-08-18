@@ -33,7 +33,22 @@ public class BookCopySpecification {
             if(StringUtils.isBlank(search)){
                 return CriteriaBuilderUtil.alwaysTruePredicate(criteriaBuilder);
             }
-            return criteriaBuilder.like(root.get(BookCopy_.ISBN), CriteriaBuilderUtil.containsAsSqlLike(search));
+            final String searchAsSqlLike = CriteriaBuilderUtil.containsAsSqlLike(search);
+            return criteriaBuilder.or(
+                    criteriaBuilder.like(root.get(BookCopy_.ISBN), searchAsSqlLike),
+                    criteriaBuilder.like(
+                            criteriaBuilder.concat(
+                                    criteriaBuilder.concat(
+                                            root.get(BookCopy_.BUILDING).get(Building_.ADDRESS).get(Address_.STREET_NAME),
+                                            " "
+                                    ),
+                                    root.get(BookCopy_.BUILDING).get(Building_.ADDRESS).get(Address_.STREET_NUMBER)
+                            ),
+                            searchAsSqlLike
+                    ),
+                    criteriaBuilder.like(root.get(BookCopy_.BUILDING).get(Building_.ADDRESS).get(Address_.CITY).get(City_.NAME), searchAsSqlLike),
+                    criteriaBuilder.like(root.get(BookCopy_.BUILDING).get(Building_.ADDRESS).get(Address_.CITY).get(City_.ZIPCODE), searchAsSqlLike)
+            );
         };
     }
 

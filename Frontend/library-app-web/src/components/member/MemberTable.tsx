@@ -1,4 +1,4 @@
-import { MouseEvent, useMemo } from "react";
+import { useMemo } from "react";
 import { Column, Row } from "react-table";
 import { useAppDispatch, useAppSelector } from "../../store/config/hooks";
 import MembersState from "../../store/member/table/MembersState";
@@ -9,7 +9,7 @@ import { membersActions } from "../../store/member/table/membersSlice";
 import ModelTableProps from "../shared/table/ModelTableProps";
 
 export default function MemberTable(props: ModelTableProps) {
-  const { rowActions, onSelectedRow } = props;
+  const { rowActions, onSelectedRow, renderHeaderChildren } = props;
   const membersState: MembersState = useAppSelector((state) => state.members);
   const dispatch = useAppDispatch();
 
@@ -53,10 +53,12 @@ export default function MemberTable(props: ModelTableProps) {
       columns={columns}
       data={data}
       loadDataAsync={loadDataAsync}
+      loading={membersState.loading}
       setRequestQueryParamsAction={membersActions.setRequestQueryParams}
       totalPages={membersState.totalPages}
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
+      renderHeaderChildren={renderHeaderChildren}
     />
   );
 }

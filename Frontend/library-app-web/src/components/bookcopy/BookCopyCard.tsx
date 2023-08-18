@@ -54,7 +54,7 @@ export default function BookCopyCard(props: BookCopyCardProps) {
   }
 
   return (
-    <Card color={color} className="w-fit text-xs">
+    <Card color={color} className="w-fit text-xs border border-gray-200">
       <CardBody className="p-3">
         <CardHeader />
         <div>

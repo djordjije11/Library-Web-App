@@ -1,4 +1,8 @@
-import { BookShort, BookShortFromServer } from "../book/BookShort";
+import {
+  BookShort,
+  BookShortFromServer,
+  constructBookShort,
+} from "../book/BookShort";
 import { BookCopyStatus } from "./BookCopyStatus";
 
 export interface BookCopyDisplayFromServer {
@@ -7,6 +11,7 @@ export interface BookCopyDisplayFromServer {
   isbn: string;
   status: BookCopyStatus;
   book: BookShortFromServer;
+  building: string;
 }
 
 export interface BookCopyDisplay {
@@ -15,6 +20,7 @@ export interface BookCopyDisplay {
   isbn: string;
   status: BookCopyStatus;
   book: BookShort;
+  building: string;
 }
 
 export function constructBookCopyDisplayArray(
@@ -28,19 +34,6 @@ export function constructBookCopyDisplay(
 ): BookCopyDisplay {
   return {
     ...bookCopy,
-    book: {
-      ...bookCopy.book,
-      authors: formatAuthors(bookCopy.book.authors),
-      publisher: { name: bookCopy.book.publisher },
-    },
+    book: constructBookShort(bookCopy.book),
   };
-}
-
-function formatAuthors(authors: string): string {
-  const authorsArray: string[] = authors.split(";", 4);
-  console.log(authorsArray);
-  if (authorsArray.length === 4) {
-    return authorsArray.join(";").concat("...");
-  }
-  return authors;
 }

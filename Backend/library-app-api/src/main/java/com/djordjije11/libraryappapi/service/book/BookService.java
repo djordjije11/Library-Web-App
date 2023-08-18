@@ -137,9 +137,10 @@ public interface BookService {
     void discardCopy(BookCopy bookCopy) throws BookCopyNotInBuildingException;
 
     /**
-     * Returns the count of book copies by the book's id that are available.
+     * Returns the count of book copies by the book's id that are available in the building.
      * @param bookId the book's id of which the copies are.
-     * @return count of book copies by the book's id that are available.
+     * @param buildingId the building's id where the copies are.
+     * @return count of book copies by the book's id that are available in the building.
      */
-    Long getAvailableBookCopiesCount(Long bookId);
+    Long getAvailableBookCopiesInBuildingCount(Long bookId, Long buildingId);
 }

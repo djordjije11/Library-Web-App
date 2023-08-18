@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import {
   ADD_LENDING_PAGE,
   ADD_MEMBER_PAGE,
+  LIST_BOOK_PAGE,
   LIST_MEMBER_PAGE,
   RETURN_LENDING_PAGE,
 } from "../../routes/AppRouter";
@@ -89,7 +90,7 @@ export function NavList() {
         menuHandlerItem={{ label: "Books" }}
         menuListItems={[
           { key: 1, label: "Add a new book", link: "" },
-          { key: 2, label: "List of books", link: "" },
+          { key: 2, label: "List of books", link: LIST_BOOK_PAGE },
         ]}
       />
       <NavListMenu

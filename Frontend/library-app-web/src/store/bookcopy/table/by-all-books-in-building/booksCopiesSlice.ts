@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import RequestQueryParams from "../../../models/request/RequestQueryParams";
+import RequestQueryParams from "../../../../models/request/RequestQueryParams";
 import BooksCopiesState from "./BooksCopiesState";
-import { BookCopyDisplay } from "../../../models/bookcopy/BookCopyDisplay";
+import { BookCopyDisplay } from "../../../../models/bookcopy/BookCopyDisplay";
 import { getAllBooksCopiesAvailableInBuildingAsyncThunk } from "./booksCopiesThunks";
 
 const initialState: BooksCopiesState = {

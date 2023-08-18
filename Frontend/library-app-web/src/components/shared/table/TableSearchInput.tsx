@@ -11,7 +11,7 @@ export default function TableSearchInput(props: TableSearchInputProps) {
 
   return (
     <form
-      className="max-w-sm px-2"
+      className="max-w-xs w-full px-2"
       onSubmit={(event: FormEvent) => event.preventDefault()}
     >
       <div className="relative">

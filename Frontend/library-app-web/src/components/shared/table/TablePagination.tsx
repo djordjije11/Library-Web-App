@@ -180,50 +180,48 @@ export default function TablePagination(props: TablePaginationProps) {
   );
 
   if (pagesCount === undefined || pagesCount === 0) {
-    return <></>;
+    return <div className="w-full"></div>;
   }
 
   return (
-    <div className="flex flex-row items-center justify-between gap-4">
-      <div className="grid grid-flow-row grid-cols-7 gap-2 w-full">
-        <div className="flex items-center justify-start">
-          <Button
-            variant="text"
-            className="flex items-center gap-2 rounded-full"
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            disabled={disablePrevious}
-          >
-            <ArrowLeftIcon color="gray" strokeWidth={2} className="h-4 w-4" />
-          </Button>
-        </div>
+    <div className="grid grid-flow-row grid-cols-7 gap-2 w-full">
+      <div className="flex items-center justify-start">
+        <Button
+          variant="text"
+          className="flex items-center gap-2 rounded-full"
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+          disabled={disablePrevious}
+        >
+          <ArrowLeftIcon color="gray" strokeWidth={2} className="h-4 w-4" />
+        </Button>
+      </div>
 
-        <div className="flex items-center justify-center">
-          {renderPageItemsOnStartMemo()}
-        </div>
-        <div className="flex items-center justify-center">
-          {renderPageSpaceItemBeforeCurrentPageMemo()}
-        </div>
-        <div className="flex items-center justify-center">
-          {renderPageItemsBeforeCurrentPageMemo()}
-          {renderCurrentPageItem()}
-          {renderPageItemsAfterCurrentPageMemo()}
-        </div>
-        <div className="flex items-center justify-center">
-          {renderPageSpaceItemAfterCurrentPageMemo()}
-        </div>
-        <div className="flex items-center justify-center">
-          {renderPageItemsOnEndMemo()}
-        </div>
-        <div className="flex items-center justify-end">
-          <Button
-            variant="text"
-            className="flex items-center gap-2 rounded-full"
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            disabled={disableNext}
-          >
-            <ArrowRightIcon color="gray" strokeWidth={2} className="h-4 w-4" />
-          </Button>
-        </div>
+      <div className="flex items-center justify-center">
+        {renderPageItemsOnStartMemo()}
+      </div>
+      <div className="flex items-center justify-center">
+        {renderPageSpaceItemBeforeCurrentPageMemo()}
+      </div>
+      <div className="flex items-center justify-center">
+        {renderPageItemsBeforeCurrentPageMemo()}
+        {renderCurrentPageItem()}
+        {renderPageItemsAfterCurrentPageMemo()}
+      </div>
+      <div className="flex items-center justify-center">
+        {renderPageSpaceItemAfterCurrentPageMemo()}
+      </div>
+      <div className="flex items-center justify-center">
+        {renderPageItemsOnEndMemo()}
+      </div>
+      <div className="flex items-center justify-end">
+        <Button
+          variant="text"
+          className="flex items-center gap-2 rounded-full"
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+          disabled={disableNext}
+        >
+          <ArrowRightIcon color="gray" strokeWidth={2} className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );

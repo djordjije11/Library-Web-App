@@ -218,7 +218,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Long getAvailableBookCopiesCount(Long bookId) {
-        return bookCopyRepository.countByBook_IdAndStatus(bookId, BookCopyStatus.AVAILABLE);
+    public Long getAvailableBookCopiesInBuildingCount(Long bookId, Long buildingId) {
+        return bookCopyRepository.countByBook_IdAndStatusAndBuildingId(bookId, BookCopyStatus.AVAILABLE, buildingId);
     }
 }

@@ -12,6 +12,7 @@ import org.mapstruct.Mapping;
 public interface BookCopyMapper extends HelperMapper {
     @Mapping(source = "book.publisher.name", target = "book.publisher")
     @Mapping(source = "book.authors", target = "book.authors", qualifiedByName = MAP_AUTHORS_TO_STRING)
+    @Mapping(source = "building", target = "building", qualifiedByName = MAP_BUILDING_TO_STRING)
     BookCopyDto map(BookCopy bookCopy);
 
     BookCopy map(BookCopyCreateDto bookCopyDto);

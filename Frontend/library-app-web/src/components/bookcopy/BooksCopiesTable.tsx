@@ -1,14 +1,14 @@
 import { useMemo } from "react";
-import BooksCopiesState from "../../store/bookcopy/table/BooksCopiesState";
+import BooksCopiesState from "../../store/bookcopy/table/by-all-books-in-building/BooksCopiesState";
 import { useAppDispatch, useAppSelector } from "../../store/config/hooks";
 import ModelTableProps from "../shared/table/ModelTableProps";
 import { Column } from "react-table";
 import { BookCopyDisplay } from "../../models/bookcopy/BookCopyDisplay";
-import { getAllBooksCopiesAvailableInBuildingAsyncThunk } from "../../store/bookcopy/table/booksCopiesThunks";
-import { booksCopiesActions } from "../../store/bookcopy/table/booksCopiesSlice";
+import { getAllBooksCopiesAvailableInBuildingAsyncThunk } from "../../store/bookcopy/table/by-all-books-in-building/booksCopiesThunks";
+import { booksCopiesActions } from "../../store/bookcopy/table/by-all-books-in-building/booksCopiesSlice";
 import CompleteTable from "../shared/table/CompleteTable";
 
-export default function BookCopyTable(props: ModelTableProps) {
+export default function BooksCopiesTable(props: ModelTableProps) {
   const { rowActions, onSelectedRow } = props;
   const booksCopiesState: BooksCopiesState = useAppSelector(
     (state) => state.booksCopies
@@ -55,6 +55,7 @@ export default function BookCopyTable(props: ModelTableProps) {
       columns={columns}
       data={data}
       loadDataAsync={loadDataAsync}
+      loading={booksCopiesState.loading}
       setRequestQueryParamsAction={booksCopiesActions.setRequestQueryParams}
       totalPages={booksCopiesState.totalPages}
       rowActions={rowActions}

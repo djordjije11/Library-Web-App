@@ -19,8 +19,15 @@ export default function ModalSelectLendingReturn(
       onClose={close}
       className="flex justify-center items-center"
     >
-      <Box sx={{ width: "60%", border: "none" }}>
-        <Card>
+      <Box
+        sx={{
+          width: "60%",
+          border: "none",
+          minWidth: "min-content",
+          height: "54%",
+        }}
+      >
+        <Card className="w-full h-full">
           <LendingUnreturnedTable
             onSelectedRow={(event, row) =>
               handleSelectedLending(row.original as LendingIncludingBookCopy)

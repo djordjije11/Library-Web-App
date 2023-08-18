@@ -7,4 +7,5 @@ export default interface ModelTableProps {
     event: MouseEvent<HTMLTableRowElement>,
     row: Row<{}>
   ) => void;
+  renderHeaderChildren?: (searchInputField: JSX.Element) => JSX.Element;
 }

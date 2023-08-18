@@ -21,11 +21,13 @@ export default function ModalSelectMember(
     >
       <Box
         sx={{
-          width: "50%",
           border: "none",
+          width: "50%",
+          minWidth: "min-content",
+          height: "54%",
         }}
       >
-        <Card>
+        <Card className="w-full h-full">
           <MemberTable
             onSelectedRow={(event, row) =>
               handleSelectedMember(row.original as MemberShort)

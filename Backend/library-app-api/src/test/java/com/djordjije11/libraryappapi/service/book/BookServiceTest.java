@@ -277,13 +277,13 @@ public abstract class BookServiceTest {
         var bookCopies = new ArrayList<BookCopy>() {{
             add(new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building1));
             add(new BookCopy("123456781", BookCopyStatus.AVAILABLE, dbBook, building1));
-            add(new BookCopy("123456782", BookCopyStatus.AVAILABLE, dbBook, building2));
         }};
         bookCopyRepository.saveAll(bookCopies);
+        bookCopyRepository.save(new BookCopy("123456782", BookCopyStatus.AVAILABLE, dbBook, building2));
 
-        Long availableBookCopiesCount = bookService.getAvailableBookCopiesCount(dbBook.getId());
+        Long availableBookCopiesInBuildingCount = bookService.getAvailableBookCopiesInBuildingCount(dbBook.getId(), building1.getId());
 
-        assertEquals(bookCopies.size(), availableBookCopiesCount);
+        assertEquals(bookCopies.size(), availableBookCopiesInBuildingCount);
     }
 
     @Test
