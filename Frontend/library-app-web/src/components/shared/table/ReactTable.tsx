@@ -5,8 +5,12 @@ import {
 } from "@heroicons/react/24/outline";
 import { Typography } from "@material-tailwind/react";
 import { MouseEvent } from "react";
-import { Row, TableInstance } from "react-table";
-import Loader from "../Loader";
+import { Cell, Row, TableInstance } from "react-table";
+
+export interface CellWrapperOption {
+  column: number;
+  renderCell: (cell: Cell<{}, any>) => JSX.Element;
+}
 
 export interface ReactTableProps {
   tableInstance: TableInstance;
@@ -16,6 +20,7 @@ export interface ReactTableProps {
     row: Row<{}>
   ) => void;
   columnSortOptions?: boolean[];
+  cellWrappers?: CellWrapperOption[];
 }
 
 function getTrueArray(length: number): boolean[] {
@@ -27,11 +32,28 @@ function getTrueArray(length: number): boolean[] {
 }
 
 export default function ReactTable(props: ReactTableProps) {
-  const { tableInstance, rowActions, onSelectedRow } = props;
+  const { tableInstance, rowActions, onSelectedRow, cellWrappers } = props;
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
   const columnSortOptions =
     props.columnSortOptions || getTrueArray(headerGroups[0].headers.length);
+
+  function renderTableCell(
+    cell: Cell<{}, any>,
+    columnIndex: number
+  ): JSX.Element {
+    const cellWrapper = cellWrappers?.find(
+      (cellWrapper) => cellWrapper.column === columnIndex
+    );
+    if (cellWrapper !== undefined) {
+      return cellWrapper.renderCell(cell);
+    }
+    return (
+      <Typography variant="small" color="blue-gray" className="font-normal">
+        {cell.render("Cell")}
+      </Typography>
+    );
+  }
 
   function renderTableBodyContent(): JSX.Element {
     if (rows.length === 0) {
@@ -60,7 +82,7 @@ export default function ReactTable(props: ReactTableProps) {
                       onSelectedRow(event, row),
                   })}
             >
-              {row.cells.map((cell) => {
+              {row.cells.map((cell, index) => {
                 return (
                   <td
                     {...cell.getCellProps()}
@@ -70,15 +92,7 @@ export default function ReactTable(props: ReactTableProps) {
                         : "border-b border-blue-gray-100"
                     }`}
                   >
-                    {
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {cell.render("Cell")}
-                      </Typography>
-                    }
+                    {renderTableCell(cell, index)}
                   </td>
                 );
               })}

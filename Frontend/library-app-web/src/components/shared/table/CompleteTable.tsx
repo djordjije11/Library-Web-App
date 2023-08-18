@@ -1,5 +1,5 @@
 import { useState, useEffect, MouseEvent } from "react";
-import ReactTable from "./ReactTable";
+import ReactTable, { CellWrapperOption } from "./ReactTable";
 import TablePagination from "./TablePagination";
 import TableSearchInput from "./TableSearchInput";
 import {
@@ -28,6 +28,7 @@ export interface CompleteTableProps {
     row: Row<{}>
   ) => void;
   columnSortOptions?: boolean[];
+  cellWrappers?: CellWrapperOption[];
   renderHeaderChildren?: (searchInputField: JSX.Element) => JSX.Element;
   dependencies?: any[];
 }
@@ -43,6 +44,7 @@ export default function CompleteTable(props: CompleteTableProps) {
     rowActions,
     onSelectedRow,
     columnSortOptions,
+    cellWrappers,
     renderHeaderChildren,
   } = props;
   const dependencies = props.dependencies || [];
@@ -111,6 +113,7 @@ export default function CompleteTable(props: CompleteTableProps) {
             rowActions={rowActions}
             onSelectedRow={onSelectedRow}
             columnSortOptions={columnSortOptions}
+            cellWrappers={cellWrappers}
           />
         )}
       </div>
