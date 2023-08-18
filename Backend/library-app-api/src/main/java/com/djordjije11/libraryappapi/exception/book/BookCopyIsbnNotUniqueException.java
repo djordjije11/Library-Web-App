@@ -1,6 +1,8 @@
 package com.djordjije11.libraryappapi.exception.book;
 
-public class BookCopyIsbnNotUniqueException extends Exception {
+import com.djordjije11.libraryappapi.exception.RequestNotValidException;
+
+public class BookCopyIsbnNotUniqueException extends RequestNotValidException {
     public BookCopyIsbnNotUniqueException() {
     }
 

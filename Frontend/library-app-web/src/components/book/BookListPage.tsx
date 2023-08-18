@@ -24,7 +24,7 @@ export default function BookListPage() {
   async function handleClickOnDeleteBookAsync(book: BookShort) {
     const confirmed = await questionAlertIsSureAsync(
       "Are you sure you want to delete?",
-      `Book: ${book.title} - ${book.authors}, published by ${book.publisher}`
+      `Book: ${book.title} - ${book.authors}, published by ${book.publisher.name}`
     );
     if (confirmed === false) {
       return;
@@ -44,6 +44,7 @@ export default function BookListPage() {
       <div>
         <Tooltip content="View copies">
           <IconButton
+            size="sm"
             variant="text"
             onClick={() => {
               navigate(get_LIST_COPIES_OF_BOOK_PAGE(book.id));
@@ -54,6 +55,7 @@ export default function BookListPage() {
         </Tooltip>
         <Tooltip content="Delete">
           <IconButton
+            size="sm"
             variant="text"
             onClick={() => handleClickOnDeleteBookAsync(book)}
           >
@@ -67,7 +69,7 @@ export default function BookListPage() {
   return (
     <BackgroundImage>
       <div className="flex items-center justify-center h-full">
-        <div className="w-11/12 min-w-min h-5/6 my-4">
+        <div className="w-11/12 min-w-min h-4/5 my-4">
           <Card className="w-full h-full">
             <div className="flex justify-center items-center mt-2 font-bold text-lg">
               <h3>List of books</h3>

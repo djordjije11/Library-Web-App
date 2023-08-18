@@ -29,6 +29,12 @@ export const GET_BOOK_COPIES_IN_ALL_BUILDINGS_URL = (bookId: number) =>
 export const GET_ALL_BOOKS_COPIES_AVAILABLE_IN_BUILDING = getUrl(
   `${BOOK}/all/${BOOK_COPY}`
 );
+export const ADD_BOOK_COPY_URL = (bookId: number) =>
+  getUrl(`${BOOK}/${bookId}/${BOOK_COPY}`);
+export const UPDATE_BOOK_COPY_URL = (bookId: number, bookCopyId: number) =>
+  getUrl(`${BOOK}/${bookId}/${BOOK_COPY}/${bookCopyId}`);
+export const DISCARD_BOOK_COPY_URL = (bookId: number, bookCopyId: number) =>
+  getUrl(`${BOOK}/${bookId}/${BOOK_COPY}/${bookCopyId}/discard`);
 
 export const ADD_LENDINGS_URL = getUrl(`${LENDING}/create`);
 export const RETURN_LENDINGS_URL = getUrl(`${LENDING}/return`);

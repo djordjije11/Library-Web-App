@@ -159,7 +159,7 @@ public class BookController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{bookId}/book-copy/{id}")
+    @PutMapping("/{bookId}/book-copy/{id}/discard")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> discardBookCopy(
             @PathVariable Long id,

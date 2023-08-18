@@ -78,6 +78,7 @@ export default function MemberListPage() {
       <div>
         <Tooltip content="Edit">
           <IconButton
+            size="sm"
             variant="text"
             onClick={() => handleClickOnUpdateMemberAsync(member)}
           >
@@ -86,6 +87,7 @@ export default function MemberListPage() {
         </Tooltip>
         <Tooltip content="Delete">
           <IconButton
+            size="sm"
             variant="text"
             onClick={() => handleClickOnDeleteMemberAsync(member)}
           >
@@ -130,7 +132,7 @@ export default function MemberListPage() {
           onClick={() => navigate(ADD_MEMBER_PAGE)}
         >
           <div className="flex justify-between items-center gap-3">
-            <UserPlusIcon width={"18px"} />
+            <UserPlusIcon className="w-4 h-4" />
             <span className="text-xs text-gray-800">Add a new member</span>
           </div>
         </Button>
@@ -141,7 +143,7 @@ export default function MemberListPage() {
   return (
     <BackgroundImage>
       <div className="flex items-center justify-center h-full">
-        <div className="w-10/12 my-4 min-w-min h-5/6">
+        <div className="w-9/12 my-4 min-w-min h-4/5">
           <ModalUpdateMember />
           <Card className="w-full h-full">
             <div className="flex justify-center items-center mt-2 font-bold text-lg">

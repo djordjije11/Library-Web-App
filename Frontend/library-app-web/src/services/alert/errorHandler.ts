@@ -74,3 +74,59 @@ export function handleBookDeleteError() {
     confirmButtonText: "OK",
   });
 }
+
+export function handleDiscardBookCopyError(error: AlertError) {
+  var title = "Invalid request";
+  var text = "";
+  switch (error.error) {
+    case ErrorType.RECORD_NOT_FOUND:
+      text = RECORD_NOT_FOUND_ERROR_TEXT;
+      break;
+    case ErrorType.RECORD_NOT_CURRENT_VERSION:
+      text = RECORD_NOT_CURRENT_VERSION_ERROR_TEXT;
+      break;
+    case ErrorType.REQUEST_NOT_AUTHORIZED:
+      text = "The book copy is not in the building, so you cannot discard it.";
+      break;
+    default:
+      text = UNKNOWN_ERROR_TEXT;
+      break;
+  }
+
+  Swal.fire({
+    title,
+    text,
+    icon: "error",
+    confirmButtonText: "OK",
+  });
+}
+
+export function handleBookCopyFormError(error: AlertError) {
+  var title = "Invalid request";
+  var text = "";
+  switch (error.error) {
+    case ErrorType.RECORD_NOT_FOUND:
+      text = RECORD_NOT_FOUND_ERROR_TEXT;
+      break;
+    case ErrorType.RECORD_NOT_CURRENT_VERSION:
+      text = RECORD_NOT_CURRENT_VERSION_ERROR_TEXT;
+      break;
+    case ErrorType.REQUEST_NOT_AUTHORIZED:
+      text =
+        "The book copy is not in the building, so you are not allowed to edit it.";
+      break;
+    case ErrorType.REQUEST_NOT_VALID:
+      text = "ISBN must be unique.";
+      break;
+    default:
+      text = UNKNOWN_ERROR_TEXT;
+      break;
+  }
+
+  Swal.fire({
+    title,
+    text,
+    icon: "error",
+    confirmButtonText: "OK",
+  });
+}

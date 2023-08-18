@@ -30,7 +30,7 @@ export interface CompleteTableProps {
   columnSortOptions?: boolean[];
   cellWrappers?: CellWrapperOption[];
   renderHeaderChildren?: (searchInputField: JSX.Element) => JSX.Element;
-  dependencies?: any[];
+  filterDependencies?: any[];
 }
 
 export default function CompleteTable(props: CompleteTableProps) {
@@ -47,7 +47,7 @@ export default function CompleteTable(props: CompleteTableProps) {
     cellWrappers,
     renderHeaderChildren,
   } = props;
-  const dependencies = props.dependencies || [];
+  const filterDependencies = props.filterDependencies || [];
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
   const [search, setSearch] = useState<string>("");
@@ -76,15 +76,21 @@ export default function CompleteTable(props: CompleteTableProps) {
 
   useEffect(() => {
     loadDataAsync();
-  }, [pageNumber, sortBy, ...dependencies]);
+  }, [pageNumber, sortBy]);
 
-  const searchDebounce = useAsyncDebounce(() => {
+  useEffect(() => {
+    onFilterChangeLoadAsync();
+  }, [...filterDependencies]);
+
+  async function onFilterChangeLoadAsync() {
     if (pageNumber !== 1) {
       setPageNumber(1);
       return;
     }
-    loadDataAsync();
-  }, 300);
+    await loadDataAsync();
+  }
+
+  const searchDebounce = useAsyncDebounce(onFilterChangeLoadAsync, 300);
 
   const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);

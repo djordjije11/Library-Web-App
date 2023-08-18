@@ -105,3 +105,14 @@ export function validatePassword(password: string): ValidationResult {
   }
   return getResultValid();
 }
+
+export function validateIsbn(isbn: string): ValidationResult {
+  if (checkNotBlank(isbn) === false) {
+    return getResultError("ISBN is required.");
+  }
+  const regex = /^\d{3}-\d{2}-\d{4}-\d{3}-\d{1}$/;
+  if (regex.test(isbn) === false) {
+    return getResultError("ISBN is not valid.");
+  }
+  return getResultValid();
+}

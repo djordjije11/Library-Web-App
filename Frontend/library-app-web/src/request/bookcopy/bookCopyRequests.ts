@@ -1,7 +1,10 @@
 import axios from "axios";
 import {
+  ADD_BOOK_COPY_URL,
+  DISCARD_BOOK_COPY_URL,
   GET_ALL_BOOKS_COPIES_AVAILABLE_IN_BUILDING,
   GET_BOOK_COPIES_IN_ALL_BUILDINGS_URL,
+  UPDATE_BOOK_COPY_URL,
 } from "../apiUrls";
 import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
 import RequestQueryParams, {
@@ -10,6 +13,7 @@ import RequestQueryParams, {
 import {
   BookCopyDisplay,
   BookCopyDisplayFromServer,
+  constructBookCopyDisplay,
   constructBookCopyDisplayArray,
 } from "../../models/bookcopy/BookCopyDisplay";
 import { BookCopyStatus } from "../../models/bookcopy/BookCopyStatus";
@@ -55,4 +59,42 @@ export async function getBookCopiesInAllBuildingsAsync(
   );
   const totalPages: number = extractTotalPagesFromHeaders(response.headers);
   return { bookCopies, totalPages };
+}
+
+export async function addBookCopyAsync(
+  bookCopy: BookCopyDisplay
+): Promise<BookCopyDisplay> {
+  console.log("HEJ");
+  const response = await axios.post(
+    ADD_BOOK_COPY_URL(bookCopy.book.id),
+    {
+      bookId: bookCopy.book.id,
+      isbn: bookCopy.isbn,
+      status: BookCopyStatus.AVAILABLE,
+    },
+    { headers: getHeaders() }
+  );
+  return constructBookCopyDisplay(response.data as BookCopyDisplayFromServer);
+}
+
+export async function updateBookCopyAsync(
+  bookCopy: BookCopyDisplay
+): Promise<BookCopyDisplay> {
+  const response = await axios.put(
+    UPDATE_BOOK_COPY_URL(bookCopy.book.id, bookCopy.id),
+    {
+      rowVersion: bookCopy.rowVersion,
+      isbn: bookCopy.isbn,
+    },
+    { headers: getHeaders() }
+  );
+  return constructBookCopyDisplay(response.data as BookCopyDisplayFromServer);
+}
+
+export async function discardBookCopyAsync(bookCopy: BookCopyDisplay) {
+  const response = await axios.put(
+    DISCARD_BOOK_COPY_URL(bookCopy.book.id, bookCopy.id),
+    { rowVersion: bookCopy.rowVersion },
+    { headers: getHeaders() }
+  );
 }

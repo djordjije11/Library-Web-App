@@ -100,7 +100,7 @@ export default function BookCopiesTable(props: ModelTableProps) {
       renderHeaderChildren={renderHeaderChildren}
       columnSortOptions={[true, true, true, false]}
       cellWrappers={[{ column: 2, renderCell: renderStatusCell }]}
-      dependencies={[bookCopiesState.status]}
+      filterDependencies={[bookCopiesState.status]}
     />
   );
 }

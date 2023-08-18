@@ -1,4 +1,3 @@
-import { AxiosResponseHeaders } from "axios";
 import { getAuthToken } from "../services/authentication/authTokenService";
 
 const HEADER_PAGINATION_TOTAL_PAGES = "x-pagination-total-pages";
