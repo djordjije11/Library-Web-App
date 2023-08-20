@@ -9,7 +9,6 @@ import UnspecifiedRoute from "./UnspecifiedRoute";
 import MemberAddPage from "../member/MemberAddPage";
 import MemberListPage from "../member/MemberListPage";
 import LendingAddPage from "../lending/LendingAddPage";
-import TestPage from "../TestPage";
 import LendingReturnPage from "../lending/LendingReturnPage";
 import BookListPage from "../book/BookListPage";
 import { BookCopiesListPage } from "../bookcopy/BookCopiesListPage";
@@ -35,7 +34,6 @@ export default function AppRouter() {
   return (
     <Routes>
       <Fragment>
-        <Route path="/test" element={<TestPage />} />
         <Route
           path={HOME_PAGE}
           element={
