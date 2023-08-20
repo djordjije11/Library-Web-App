@@ -64,7 +64,6 @@ export async function getBookCopiesInAllBuildingsAsync(
 export async function addBookCopyAsync(
   bookCopy: BookCopyDisplay
 ): Promise<BookCopyDisplay> {
-  console.log("HEJ");
   const response = await axios.post(
     ADD_BOOK_COPY_URL(bookCopy.book.id),
     {

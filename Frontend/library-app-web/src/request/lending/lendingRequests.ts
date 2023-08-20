@@ -44,10 +44,6 @@ export async function getUnreturnedLendingsByMemberAsync(
   memberId: number,
   requestQueryParams: RequestQueryParams
 ): Promise<{ lendings: LendingIncludingBookCopy[]; totalPages: number }> {
-  console.log(
-    GET_UNRETURNED_LENDINGS_BY_MEMBER(memberId) +
-      constructRequestQuery(requestQueryParams)
-  );
   const response = await axios.get(
     GET_UNRETURNED_LENDINGS_BY_MEMBER(memberId) +
       constructRequestQuery(requestQueryParams),
@@ -55,7 +51,6 @@ export async function getUnreturnedLendingsByMemberAsync(
       headers: getHeaders(),
     }
   );
-  console.log(response);
   const lendings = response.data as LendingIncludingBookCopy[];
   const totalPages = extractTotalPagesFromHeaders(response.headers);
   return { lendings, totalPages };

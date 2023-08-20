@@ -42,7 +42,6 @@ function decodeAuthToken(token: string): AuthClaims | null {
       buildingClaim: claims.building as BuildingClaim,
     };
   } catch (error) {
-    console.log(error);
     return null;
   }
 }

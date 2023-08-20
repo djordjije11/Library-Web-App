@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/config/hooks";
 import { loginAsyncThunk } from "../../store/authentication/authThunks";
 import LoginInput, {
@@ -26,8 +26,6 @@ export default function LoginForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {}, [authState.isError]);
 
   function navigateOnLogin() {
     const locationState = location.state as LocationState;

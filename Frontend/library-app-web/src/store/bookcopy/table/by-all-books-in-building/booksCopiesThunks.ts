@@ -19,7 +19,6 @@ export const getAllBooksCopiesAvailableInBuildingAsyncThunk = createAsyncThunk<
   async (_, { getState, rejectWithValue }) => {
     const state = getState() as StoreState;
     try {
-      console.log(state.booksCopies.requestQueryParams);
       return await getAllBooksCopiesAvailableInBuildingAsync(
         state.booksCopies.requestQueryParams
       );
