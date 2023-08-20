@@ -28,9 +28,10 @@ import { Row } from "react-table";
 import { getMembersAsyncThunk } from "../../store/member/table/membersThunks";
 import { Box, Modal } from "@mui/material";
 import MemberUpdateContainer from "./MemberUpdateContainer";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { ADD_MEMBER_PAGE } from "../routes/AppRouter";
+import GrayLoader from "../shared/loader/GrayLoader";
 
 export default function MemberListPage() {
   const memberUpdateState: MemberUpdateState = useAppSelector(
@@ -112,7 +113,7 @@ export default function MemberListPage() {
         >
           {memberUpdateState.loading ? (
             <div className="w-full flex justify-center">
-              <Loader />
+              <GrayLoader />
             </div>
           ) : (
             <MemberUpdateContainer close={closeModalAsync} />

@@ -1,4 +1,4 @@
-import { Card, IconButton, Tooltip } from "@material-tailwind/react";
+import { Button, Card, IconButton, Tooltip } from "@material-tailwind/react";
 import BackgroundImage from "../home/BackgroundImage";
 import BookTable from "./BookTable";
 import { BookShort } from "../../models/book/BookShort";
@@ -9,9 +9,18 @@ import { useAppDispatch } from "../../store/config/hooks";
 import { getBooksAsyncThunk } from "../../store/book/table/booksThunks";
 import { handleBookDeleteError } from "../../services/alert/errorHandler";
 import { Row } from "react-table";
-import { BookOpenIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  BookOpenIcon,
+  ClipboardDocumentIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-import { get_LIST_COPIES_OF_BOOK_PAGE } from "../routes/AppRouter";
+import {
+  ADD_BOOK_PAGE,
+  get_LIST_COPIES_OF_BOOK_PAGE,
+  get_UPDATE_BOOK_PAGE,
+} from "../routes/AppRouter";
 
 export interface BookViewCopiesNavigationState {
   book: BookShort;
@@ -53,6 +62,15 @@ export default function BookListPage() {
             <BookOpenIcon color="gray" className="h-4 w-4" />
           </IconButton>
         </Tooltip>
+        <Tooltip content="Edit">
+          <IconButton
+            size="sm"
+            variant="text"
+            onClick={() => navigate(get_UPDATE_BOOK_PAGE(book.id))}
+          >
+            <PencilIcon color="gray" className="h-4 w-4" />
+          </IconButton>
+        </Tooltip>
         <Tooltip content="Delete">
           <IconButton
             size="sm"
@@ -66,6 +84,24 @@ export default function BookListPage() {
     );
   }
 
+  function renderHeaderChildren(searchInputField: JSX.Element): JSX.Element {
+    return (
+      <div className="mt-2 flex justify-between">
+        {searchInputField}
+        <Button
+          className="mx-2 px-4 border border-blue-gray-100 hover:border-blue-gray-300"
+          color="white"
+          onClick={() => navigate(ADD_BOOK_PAGE)}
+        >
+          <div className="flex justify-between items-center gap-3">
+            <ClipboardDocumentIcon className="w-4 h-4" />
+            <span className="text-xs text-gray-800">Add a new book</span>
+          </div>
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <BackgroundImage>
       <div className="flex items-center justify-center h-full">
@@ -74,7 +110,10 @@ export default function BookListPage() {
             <div className="flex justify-center items-center mt-2 font-bold text-lg">
               <h3>List of books</h3>
             </div>
-            <BookTable rowActions={rowActions} />
+            <BookTable
+              rowActions={rowActions}
+              renderHeaderChildren={renderHeaderChildren}
+            />
           </Card>
         </div>
       </div>

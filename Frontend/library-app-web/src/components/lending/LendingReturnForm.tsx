@@ -18,7 +18,6 @@ import {
 import { returnLendingsAsyncThunk } from "../../store/lending/return/lendingsReturnThunks";
 import { successAlert } from "../../services/alert/successHandler";
 import { handleRecordNotFoundError } from "../../services/alert/errorHandler";
-import SelectMemberField from "../member/SelectMemberField";
 import SelectBookCopiesField from "../bookcopy/SelectBookCopiesField";
 import {
   LendingIncludingBookCopy,
@@ -27,6 +26,7 @@ import {
 import { BookCopyDisplay } from "../../models/bookcopy/BookCopyDisplay";
 import ModalSelectLendingReturn from "./ModalSelectLendingReturn";
 import { lendingsUnreturnedActions } from "../../store/lending/table/unreturned/lendingsUnreturnedSlice";
+import MemberSelectField from "../member/MemberSelectField";
 
 export default function LendingReturnForm() {
   const lendingsReturnState: LendingsReturnState = useAppSelector(
@@ -118,9 +118,9 @@ export default function LendingReturnForm() {
               label="Member"
               result={lendingsReturnInputResults.memberResult}
             >
-              <SelectMemberField
+              <MemberSelectField
                 member={lendingsReturnState.lendingsReturn.member}
-                onSelectMemberClick={() => setShowMemberModal(true)}
+                onSelectClick={() => setShowMemberModal(true)}
               />
             </FormField>
             <FormField

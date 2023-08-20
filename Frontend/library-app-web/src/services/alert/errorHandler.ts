@@ -130,3 +130,26 @@ export function handleBookCopyFormError(error: AlertError) {
     confirmButtonText: "OK",
   });
 }
+
+export function handleBookFormError(error: AlertError) {
+  var title = "Invalid request";
+  var text = "";
+  switch (error.error) {
+    case ErrorType.RECORD_NOT_FOUND:
+      text = RECORD_NOT_FOUND_ERROR_TEXT;
+      break;
+    case ErrorType.RECORD_NOT_CURRENT_VERSION:
+      text = RECORD_NOT_CURRENT_VERSION_ERROR_TEXT;
+      break;
+    default:
+      text = UNKNOWN_ERROR_TEXT;
+      break;
+  }
+
+  Swal.fire({
+    title,
+    text,
+    icon: "error",
+    confirmButtonText: "OK",
+  });
+}

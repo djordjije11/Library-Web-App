@@ -9,7 +9,7 @@ import { getBooksAsyncThunk } from "../../store/book/table/booksThunks";
 import { booksActions } from "../../store/book/table/booksSlice";
 
 export default function BookTable(props: ModelTableProps) {
-  const { rowActions, onSelectedRow } = props;
+  const { rowActions, onSelectedRow, renderHeaderChildren } = props;
   const booksState: BooksState = useAppSelector((state) => state.books);
   const dispatch = useAppDispatch();
 
@@ -56,6 +56,7 @@ export default function BookTable(props: ModelTableProps) {
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
       columnSortOptions={[true, true, false, true, true]}
+      renderHeaderChildren={renderHeaderChildren}
     />
   );
 }

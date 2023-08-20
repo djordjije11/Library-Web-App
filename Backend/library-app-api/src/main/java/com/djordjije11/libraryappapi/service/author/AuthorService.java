@@ -14,7 +14,8 @@ public interface AuthorService {
     /**
      * Returns the page of authors filtered by search text and selected by options of Pageable instance.
      * The search text should contain author's firstname or lastname.
-     * @param search by author's firstname or lastname.
+     *
+     * @param search   by author's firstname or lastname.
      * @param pageable contains options for skipping and taking database records and sorting them.
      * @return page of authors filtered by search text and selected by options of Pageable instance.
      */

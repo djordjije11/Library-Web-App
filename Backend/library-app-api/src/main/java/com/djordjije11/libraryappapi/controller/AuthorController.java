@@ -5,7 +5,6 @@ import com.djordjije11.libraryappapi.controller.request.RequestSortingParamsPars
 import com.djordjije11.libraryappapi.controller.request.author.AuthorRequestSortingParamsParser;
 import com.djordjije11.libraryappapi.controller.response.ResponseHeadersFactory;
 import com.djordjije11.libraryappapi.dto.author.AuthorShortDto;
-import com.djordjije11.libraryappapi.dto.book.BookShortDto;
 import com.djordjije11.libraryappapi.mapper.author.AuthorMapper;
 import com.djordjije11.libraryappapi.mapper.book.BookMapper;
 import com.djordjije11.libraryappapi.model.Author;

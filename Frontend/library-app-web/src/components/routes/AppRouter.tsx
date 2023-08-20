@@ -13,12 +13,17 @@ import TestPage from "../TestPage";
 import LendingReturnPage from "../lending/LendingReturnPage";
 import BookListPage from "../book/BookListPage";
 import { BookCopiesListPage } from "../bookcopy/BookCopiesListPage";
+import BookAddPage from "../book/BookAddPage";
+import BookUpdatePage from "../book/BookUpdatePage";
 
 export const LOGIN_PAGE = "/login";
 export const HOME_PAGE = "/";
 export const ADD_MEMBER_PAGE = "/member/add";
 export const LIST_MEMBER_PAGE = "/member/list";
-export const LIST_BOOK_PAGE = "/book";
+export const ADD_BOOK_PAGE = "/book/add";
+export const UPDATE_BOOK_PAGE = "/book/:id/edit";
+export const get_UPDATE_BOOK_PAGE = (id: number) => `/book/${id}/edit`;
+export const LIST_BOOK_PAGE = "/book/list";
 export const LIST_COPIES_OF_BOOK_PAGE = "/book/:id/copy";
 export const get_LIST_COPIES_OF_BOOK_PAGE = (bookId: number) =>
   `/book/${bookId}/copy`;
@@ -60,6 +65,22 @@ export default function AppRouter() {
           element={
             <AuthenticatedRoute>
               <MemberListPage />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path={ADD_BOOK_PAGE}
+          element={
+            <AuthenticatedRoute>
+              <BookAddPage />
+            </AuthenticatedRoute>
+          }
+        />
+        <Route
+          path={UPDATE_BOOK_PAGE}
+          element={
+            <AuthenticatedRoute>
+              <BookUpdatePage />
             </AuthenticatedRoute>
           }
         />

@@ -1,7 +1,6 @@
-import { Button } from "@material-tailwind/react";
 import { BookCopyDisplay } from "../../models/bookcopy/BookCopyDisplay";
 import BookCopyCard from "./BookCopyCard";
-import CardsContainer from "../shared/CardsContainer";
+import FormTableSelectMultiple from "../shared/form/FormTableSelectMultiple";
 
 export interface SelectBookCopiesFieldProps {
   bookCopies: BookCopyDisplay[];
@@ -14,22 +13,12 @@ export default function SelectBookCopiesField(
 ) {
   const { bookCopies, handleRemoveBookCopy, onSelectBookCopyClick } = props;
 
-  function SelectBookCopyButton(): JSX.Element {
-    return (
-      <Button onClick={onSelectBookCopyClick} color="blue-gray">
-        Add a book
-      </Button>
-    );
-  }
-
-  if (bookCopies.length === 0) {
-    return <SelectBookCopyButton />;
-  }
-
   return (
-    <>
-      <SelectBookCopyButton />
-      <CardsContainer>
+    <FormTableSelectMultiple
+      isAnySelected={bookCopies.length !== 0}
+      onSelectClick={onSelectBookCopyClick}
+      selectButtonText="Add a book"
+      selectedItemsRendered={
         <>
           {bookCopies.map((bookCopy) => (
             <BookCopyCard
@@ -39,7 +28,7 @@ export default function SelectBookCopiesField(
             />
           ))}
         </>
-      </CardsContainer>
-    </>
+      }
+    />
   );
 }

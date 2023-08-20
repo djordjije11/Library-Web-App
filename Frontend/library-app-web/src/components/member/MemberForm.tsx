@@ -181,7 +181,9 @@ export default function MemberForm(props: MemberFormProps) {
           </FormField>
         </CardBody>
         <CardFooter className="pt-0 flex justify-start items-center gap-2">
-          <Button type="submit">Submit</Button>
+          <Button type="submit" color="blue-gray">
+            Submit
+          </Button>
         </CardFooter>
       </form>
     </Card>

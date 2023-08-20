@@ -1,9 +1,6 @@
 package com.djordjije11.libraryappapi.mapper;
 
-import com.djordjije11.libraryappapi.model.Address;
-import com.djordjije11.libraryappapi.model.Author;
-import com.djordjije11.libraryappapi.model.Building;
-import com.djordjije11.libraryappapi.model.City;
+import com.djordjije11.libraryappapi.model.*;
 import org.mapstruct.Named;
 
 import java.util.List;
@@ -14,6 +11,7 @@ public interface HelperMapper {
     String MAP_ADDRESS_TO_STRING = "mapAddressToString";
     String MAP_CITY_TO_STRING = "mapCityToString";
     String MAP_BUILDING_TO_STRING = "mapBuildingToString";
+    String MAP_PUBLISHER_ID_TO_PUBLISHER = "mapPublisherIdToPublisher";
 
     @Named(MAP_AUTHORS_TO_STRING)
     default String mapAuthorsToString(List<Author> authors) {
@@ -45,5 +43,13 @@ public interface HelperMapper {
         }
         final Address address = building.getAddress();
         return String.format("%s %d, %s (%s)", address.getStreetName(), address.getStreetNumber(), address.getCity().getName(), address.getCity().getZipcode());
+    }
+
+    @Named(MAP_PUBLISHER_ID_TO_PUBLISHER)
+    default Publisher mapPublisherIdToPublisher(Long publisherId) {
+        if(publisherId == null){
+            return null;
+        }
+        return new Publisher(publisherId);
     }
 }

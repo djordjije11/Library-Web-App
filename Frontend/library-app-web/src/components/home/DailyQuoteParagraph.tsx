@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DailyQuote from "../../models/quotes/DailyQuote";
 import { getDailyQuoteAsync } from "../../request/quotes/quoteNinjasRequests";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loader/Loader";
 
 export default function DailyQuoteParagraph() {
   const [dailyQuote, setDailyQuote] = useState<DailyQuote>();

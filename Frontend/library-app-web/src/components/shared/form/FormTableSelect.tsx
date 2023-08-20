@@ -1,19 +1,21 @@
-import { Button, IconButton, Tooltip } from "@material-tailwind/react";
-import MemberShort from "../../models/member/MemberShort";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { Button, IconButton, Tooltip } from "@material-tailwind/react";
 
-export interface SelectMemberFieldProps {
-  member?: MemberShort;
-  onSelectMemberClick: () => void;
+export interface FormTableSelectProps {
+  isSelected: boolean;
+  onSelectClick: () => void;
+  selectButtonText: string;
+  selectedItemText: string;
 }
 
-export default function SelectMemberField(props: SelectMemberFieldProps) {
-  const { member, onSelectMemberClick } = props;
+export default function FormTableSelect(props: FormTableSelectProps) {
+  const { isSelected, onSelectClick, selectButtonText, selectedItemText } =
+    props;
 
-  if (member === undefined) {
+  if (isSelected === false) {
     return (
-      <Button onClick={onSelectMemberClick} color="blue-gray">
-        Select a member
+      <Button onClick={onSelectClick} color="blue-gray">
+        {selectButtonText}
       </Button>
     );
   }
@@ -28,19 +30,17 @@ export default function SelectMemberField(props: SelectMemberFieldProps) {
       }}
     >
       <div className="w-full p-3 font-medium border rounded-md border-slate-300 bg-white">
-        <span>
-          {member.firstname} {member.lastname}
-        </span>
+        <span>{selectedItemText}</span>
       </div>
       <div className="flex items-center">
-        <Tooltip content="Select a member">
+        <Tooltip content={selectButtonText}>
           <IconButton
             color="white"
             style={{
               border: "solid 1px gray",
               height: "100%",
             }}
-            onClick={onSelectMemberClick}
+            onClick={onSelectClick}
           >
             <PencilSquareIcon color="blue-gray" width={"20px"} />
           </IconButton>

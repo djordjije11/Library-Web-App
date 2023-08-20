@@ -55,7 +55,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -110,7 +110,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -156,7 +156,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, null);
+        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -179,7 +179,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.LENT, book1, building);
+        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.LENT, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -202,7 +202,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);
@@ -247,7 +247,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         building.setId(10L);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);
@@ -274,7 +274,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);
@@ -303,7 +303,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member1);
@@ -330,7 +330,7 @@ public abstract class LendingServiceTest {
         var building = new Building(address);
         buildingRepository.save(building);
         var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);

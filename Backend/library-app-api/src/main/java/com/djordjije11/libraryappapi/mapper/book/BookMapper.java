@@ -16,11 +16,11 @@ public interface BookMapper extends HelperMapper {
     BookShortDto mapShort(Book book);
 
     @Mapping(source = "authorsIds", target = "authors", qualifiedByName = MAP_IDS_TO_AUTHORS)
-    @Mapping(source = "publisherId", target = "publisher.id")
+    @Mapping(source = "publisherId", target = "publisher", qualifiedByName = MAP_PUBLISHER_ID_TO_PUBLISHER)
     Book map(BookCreateDto bookDto);
 
     @Mapping(source = "authorsIds", target = "authors", qualifiedByName = MAP_IDS_TO_AUTHORS)
-    @Mapping(source = "publisherId", target = "publisher.id")
+    @Mapping(source = "publisherId", target = "publisher", qualifiedByName = MAP_PUBLISHER_ID_TO_PUBLISHER)
     Book map(BookUpdateDto bookDto);
 
     BookDto map(Book book);

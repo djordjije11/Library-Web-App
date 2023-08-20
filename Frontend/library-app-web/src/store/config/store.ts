@@ -25,6 +25,10 @@ import BooksState from "../book/table/BooksState";
 import booksSlice from "../book/table/booksSlice";
 import BookCopiesState from "../bookcopy/table/by-book-all-buildings/BookCopiesState";
 import bookCopiesSlice from "../bookcopy/table/by-book-all-buildings/bookCopiesSlice";
+import PublishersState from "../publisher/table/PublishersState";
+import publishersSlice from "../publisher/table/publishersSlice";
+import AuthorsState from "../author/table/AuthorsState";
+import authorsSlice from "../author/table/authorsSlice";
 
 export interface StoreState {
   auth: AuthState;
@@ -34,6 +38,8 @@ export interface StoreState {
   books: BooksState;
   booksCopies: BooksCopiesState;
   bookCopies: BookCopiesState;
+  publishers: PublishersState;
+  authors: AuthorsState;
   lendingsAdd: LendingsAddState;
   lendingsReturn: LendingsReturnState;
   lendingsUnreturned: LendingsUnreturnedState;
@@ -48,6 +54,8 @@ const store: ToolkitStore = configureStore({
     books: booksSlice,
     booksCopies: booksCopiesSlice,
     bookCopies: bookCopiesSlice,
+    publishers: publishersSlice,
+    authors: authorsSlice,
     lendingsAdd: lendingsAddSlice,
     lendingsReturn: lendingsReturnSlice,
     lendingsUnreturned: lendingsUnreturnedSlice,

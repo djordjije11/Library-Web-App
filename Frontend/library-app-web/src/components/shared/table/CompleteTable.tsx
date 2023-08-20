@@ -13,7 +13,6 @@ import { SortByColumn } from "../../../models/request/SortBy";
 import RequestQueryParams from "../../../models/request/RequestQueryParams";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../../store/config/hooks";
-import Loader from "../Loader";
 
 export interface CompleteTableProps {
   columns: Column[];
@@ -82,6 +81,12 @@ export default function CompleteTable(props: CompleteTableProps) {
     onFilterChangeLoadAsync();
   }, [...filterDependencies]);
 
+  useEffect(() => {
+    if (totalPages < pageNumber && data.length !== 0) {
+      setPageNumber(totalPages);
+    }
+  }, [totalPages]);
+
   async function onFilterChangeLoadAsync() {
     if (pageNumber !== 1) {
       setPageNumber(1);
@@ -98,7 +103,11 @@ export default function CompleteTable(props: CompleteTableProps) {
   };
 
   return (
-    <div className="flex flex-col items-stretch overflow-x-auto overflow-y-auto w-full h-full justify-between">
+    <div
+      className={`flex flex-col items-stretch overflow-x-auto ${
+        loading ? "overflow-y-hidden" : "overflow-y-auto"
+      } w-full h-full justify-between`}
+    >
       <div className="h-full w-full">
         {renderHeaderChildren !== undefined ? (
           renderHeaderChildren(
@@ -111,7 +120,7 @@ export default function CompleteTable(props: CompleteTableProps) {
         )}
         {loading ? (
           <div className="h-full w-full flex justify-center items-center">
-            <Loader />
+            <></>
           </div>
         ) : (
           <ReactTable

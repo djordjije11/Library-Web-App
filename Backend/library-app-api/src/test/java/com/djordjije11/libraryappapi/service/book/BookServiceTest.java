@@ -474,13 +474,14 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
-        var bookCopy2 = new BookCopy("123456781", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy1 = new BookCopy("2423456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy2 = new BookCopy("6423456781", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
 
-        bookCopy1.setIsbn(bookCopy2.getIsbn());
-        assertThrows(BookCopyIsbnNotUniqueException.class, () -> bookService.updateCopy(bookCopy1));
+        var updateBookCopy = new BookCopy(bookCopy2.getIsbn(), BookCopyStatus.AVAILABLE, dbBook, building);
+        updateBookCopy.setId(bookCopy1.getId());
+        assertThrows(BookCopyIsbnNotUniqueException.class, () -> bookService.updateCopy(updateBookCopy));
     }
 
     @Test

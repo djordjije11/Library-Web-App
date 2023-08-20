@@ -13,10 +13,11 @@ public interface AuthenticationService {
      * Throws:
      * UsernameNotFoundException when the user profile with the input username does not exist in the library system's database,
      * RecordNotFoundException when the employee with the specified user profile does not exist in the library system's database.
+     *
      * @param request consists of the username and the password.
      * @return valid JWT token.
      * @throws UsernameNotFoundException when the user profile with the input username does not exist in the library system's database.
-     * @throws RecordNotFoundException when the employee with the specified user profile does not exist in the library system's database.
+     * @throws RecordNotFoundException   when the employee with the specified user profile does not exist in the library system's database.
      */
     JwtTokenDto login(LoginDto request);
 }

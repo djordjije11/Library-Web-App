@@ -60,7 +60,7 @@ export default function ReactTable(props: ReactTableProps) {
       return (
         <tr>
           <td colSpan={headerGroups[0].headers.length} align="center">
-            <div className="mt-2 text-lg">
+            <div className="m-2 text-lg">
               There is not any records in the database.
             </div>
           </td>

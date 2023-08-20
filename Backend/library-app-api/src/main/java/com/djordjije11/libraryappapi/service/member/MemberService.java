@@ -16,6 +16,7 @@ public interface MemberService {
     /**
      * Saves the member to the library system's database and returns the saved member.
      * Throws MemberIdCardNotUniqueException when idCardNumber of the member is not unique.
+     *
      * @param member a member to be saved.
      * @return saved member.
      * @throws MemberIdCardNotUniqueException when idCardNumber of the member is not unique in the library system's database.
@@ -24,6 +25,7 @@ public interface MemberService {
 
     /**
      * Returns the member by id. Throws RecordNotFoundException when the record does not exist in the library system's database.
+     *
      * @param id the member's id.
      * @return member by id.
      * @throws RecordNotFoundException when the record does not exist in the library system's database.
@@ -32,6 +34,7 @@ public interface MemberService {
 
     /**
      * Deletes the member by id. Throws MemberWithLendingsDeleteException when the member already has a history of lendings in the library system.
+     *
      * @param id the member's id.
      * @throws MemberWithLendingsDeleteException when the member already has a history of lendings in the library system.
      */
@@ -43,10 +46,11 @@ public interface MemberService {
      * RecordNotFoundException when the member with its id does not exist in the library system's database,
      * RecordNotCurrentVersionException when the record's rowVersion is not up-to-date,
      * MemberIdCardNotUniqueException when idCardNumber of the member is not unique in the library system's database.
+     *
      * @param member a member to be updated.
      * @return updated member.
-     * @throws MemberIdCardNotUniqueException when idCardNumber of the member is not unique in the library system's database.
-     * @throws RecordNotFoundException when the member with its id does not exist in the library system's database.
+     * @throws MemberIdCardNotUniqueException   when idCardNumber of the member is not unique in the library system's database.
+     * @throws RecordNotFoundException          when the member with its id does not exist in the library system's database.
      * @throws RecordNotCurrentVersionException when the record's rowVersion is not up-to-date.
      */
     Member update(Member member) throws MemberIdCardNotUniqueException, RecordNotFoundException;
@@ -54,7 +58,8 @@ public interface MemberService {
     /**
      * Returns the page of members filtered by search text and selected by options of Pageable instance.
      * The search text should contain member's idCardNumber, firstname, lastname or email.
-     * @param search by member's idCardNumber, firstname, lastname or email.
+     *
+     * @param search   by member's idCardNumber, firstname, lastname or email.
      * @param pageable contains options for skipping and taking database records and sorting them.
      * @return page of members filtered by search text and selected by options of Pageable instance.
      */

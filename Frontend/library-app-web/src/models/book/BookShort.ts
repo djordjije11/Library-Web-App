@@ -1,3 +1,5 @@
+import PublisherShort from "../publisher/PublisherShort";
+
 export interface BookShortFromServer {
   id: number;
   title: string;
@@ -9,7 +11,7 @@ export interface BookShortFromServer {
 export interface BookShort {
   id: number;
   title: string;
-  publisher: { name: string };
+  publisher: PublisherShort;
   authors: string;
   pagesNumber: number;
 }
@@ -18,7 +20,7 @@ export function constructBookShort(book: BookShortFromServer): BookShort {
   return {
     ...book,
     authors: formatAuthors(book.authors),
-    publisher: { name: book.publisher },
+    publisher: { name: book.publisher } as PublisherShort,
   };
 }
 

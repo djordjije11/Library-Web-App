@@ -22,7 +22,7 @@ export default function TableSearchInput(props: TableSearchInputProps) {
         <input
           type="text"
           placeholder="Search"
-          className="w-full py-2 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-gray-600"
+          className="w-full py-2 pl-12 pr-4 text-gray-500 border border-gray-400 rounded-md outline-none bg-gray-50 focus:bg-white focus:border-gray-600"
           value={search}
           onChange={onSearchChange}
         />

@@ -4,7 +4,7 @@ export interface FormInputProps {
   name: string;
   type: string;
   placeholder?: string;
-  value: string;
+  value: string | number | readonly string[] | undefined;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onClick?: MouseEventHandler<HTMLInputElement>;
   classes?: string;

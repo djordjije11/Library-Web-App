@@ -7,9 +7,17 @@ import {
 import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
-import { DELETE_BOOK_URL, GET_BOOKS_URL, GET_BOOK_URL } from "../apiUrls";
+import {
+  ADD_BOOK_URL,
+  DELETE_BOOK_URL,
+  GET_BOOKS_URL,
+  GET_BOOK_URL,
+  UPDATE_BOOK_URL,
+} from "../apiUrls";
 import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
 import { Book } from "../../models/book/Book";
+import BookAdd from "../../models/book/BookSave";
+import BookSave from "../../models/book/BookSave";
 
 export async function getBooksAsync(
   requestQueryParams: RequestQueryParams
@@ -37,4 +45,18 @@ export async function getBookAsync(
     book: Book;
     availableCopiesInBuildingCount: number;
   };
+}
+
+export async function addBookAsync(book: BookAdd): Promise<Book> {
+  const response = await axios.post(ADD_BOOK_URL, book, {
+    headers: getHeaders(),
+  });
+  return response.data as Book;
+}
+
+export async function updateBookAsync(book: BookSave): Promise<Book> {
+  const response = await axios.put(UPDATE_BOOK_URL(book.id), book, {
+    headers: getHeaders(),
+  });
+  return response.data as Book;
 }

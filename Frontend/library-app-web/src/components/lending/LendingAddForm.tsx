@@ -17,8 +17,8 @@ import { successAlert } from "../../services/alert/successHandler";
 import { handleRecordNotFoundError } from "../../services/alert/errorHandler";
 import ModalSelectMember from "../member/ModalSelectMember";
 import ModalSelectBookCopy from "../bookcopy/ModalSelectBookCopy";
-import SelectMemberField from "../member/SelectMemberField";
 import SelectBookCopiesField from "../bookcopy/SelectBookCopiesField";
+import MemberSelectField from "../member/MemberSelectField";
 
 export default function LendingAddForm() {
   const lendingsAddState: LendingsAddState = useAppSelector(
@@ -99,9 +99,9 @@ export default function LendingAddForm() {
               label="Member"
               result={lendingsAddInputResults.memberResult}
             >
-              <SelectMemberField
+              <MemberSelectField
                 member={lendingsAddState.lendingsAdd.member}
-                onSelectMemberClick={() => setShowMemberModal(true)}
+                onSelectClick={() => setShowMemberModal(true)}
               />
             </FormField>
             <FormField

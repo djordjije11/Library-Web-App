@@ -9,7 +9,7 @@ import {
   getBookCopiesInAllBuildingsAsyncThunk,
 } from "../../store/bookcopy/table/by-book-all-buildings/bookCopiesThunks";
 import BookCopiesState from "../../store/bookcopy/table/by-book-all-buildings/BookCopiesState";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loader/Loader";
 import { HOME_PAGE } from "../routes/AppRouter";
 import BookCopyStatusFilterDropdown from "./BookCopyStatusFilterDropdown";
 import { bookCopiesActions } from "../../store/bookcopy/table/by-book-all-buildings/bookCopiesSlice";
