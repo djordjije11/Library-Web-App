@@ -82,7 +82,7 @@ export default function CompleteTable(props: CompleteTableProps) {
   }, [...filterDependencies]);
 
   useEffect(() => {
-    if (totalPages < pageNumber && data.length !== 0) {
+    if (totalPages < pageNumber && totalPages !== 0) {
       setPageNumber(totalPages);
     }
   }, [totalPages]);

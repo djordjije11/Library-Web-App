@@ -34,7 +34,9 @@ export default function BookListPage() {
     const confirmed = await questionAlertIsSureAsync(
       "Are you sure you want to delete?",
       `Book: ${book.title}${!book.authors ? "" : ` - ${book.authors}`}${
-        !book.publisher ? "" : `, published by ${book.publisher.name}`
+        !book.publisher || !book.publisher.name
+          ? ""
+          : `, published by ${book.publisher.name}`
       }`
     );
     if (confirmed === false) {
