@@ -134,10 +134,11 @@ export default function BookForm(props: BookFormProps) {
                 size="lg"
                 label="About"
                 color="blue-gray"
-                className="bg-white"
+                className="bg-white max-w-full"
                 variant="outlined"
                 value={bookInput.description}
                 onChange={handlePropertyChanged}
+                containerProps={{ className: "min-w-0" }}
               />
             </FormField>
             <FormField name="pagesNumber" label="Number of pages">

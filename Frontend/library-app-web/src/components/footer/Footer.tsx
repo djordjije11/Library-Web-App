@@ -22,13 +22,15 @@ export default function Footer() {
   }
 
   return (
-    <div className="bg-gray-100 h-full flex items-center">
-      <footer className="p-6 bg-gray-100 h-fit flex w-full flex-row flex-wrap items-center justify-center border-t border-blue-gray-50 py-4 text-center md:justify-between">
-        <Typography className="font-normal">
-          &copy; {currentYear} Library
-        </Typography>
-        {renderBuildingIfAuthenticated()}
-      </footer>
+    <div className="bg-gray-100 h-full min-h-fit">
+      <div className="bg-gray-100">
+        <footer className="max-h-full p-6 bg-gray-100 h-fit flex w-full flex-row flex-wrap items-center justify-center border-t border-blue-gray-50 py-4 text-center md:justify-between">
+          <Typography className="font-normal">
+            &copy; {currentYear} Library
+          </Typography>
+          {renderBuildingIfAuthenticated()}
+        </footer>
+      </div>
     </div>
   );
 }

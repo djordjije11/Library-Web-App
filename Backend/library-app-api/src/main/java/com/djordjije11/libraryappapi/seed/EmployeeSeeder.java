@@ -58,7 +58,7 @@ public class EmployeeSeeder {
         userProfileRepository.save(userProfile1);
         var userProfile2 = new UserProfile("Mica333", passwordEncoder.encode("Micaa333"), UserRole.EMPLOYEE);
         userProfileRepository.save(userProfile2);
-        var userProfile3 = new UserProfile("AcaAca", passwordEncoder.encode("RadnaSkela10"), UserRole.EMPLOYEE);
+        var userProfile3 = new UserProfile("AcaAca", passwordEncoder.encode("AcaSifra5"), UserRole.EMPLOYEE);
         userProfileRepository.save(userProfile3);
 
         employees.add(
