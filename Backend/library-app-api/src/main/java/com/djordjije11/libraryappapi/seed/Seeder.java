@@ -29,10 +29,14 @@ public class Seeder implements CommandLineRunner {
         if (config.ACTIVE == false) {
             return;
         }
-        List<Building> buildings = buildingSeeder.seed(config.BUILDINGS_COUNT, config.CITIES_COUNT);
-        List<Employee> employees = employeeSeeder.seed(buildings, config.EMPLOYEES_COUNT);
-        List<BookCopy> bookCopies = bookSeeder.seed(buildings, config.PUBLISHER_COUNT, config.BOOK_COUNT, config.BOOK_COPY_MAX_PER_BOOK_COUNT);
-        List<Member> members = memberSeeder.seed(config.MEMBER_COUNT);
-        List<Lending> lendings = lendingSeeder.seed(members, bookCopies, config.LENDING_COUNT);
+        try {
+            List<Building> buildings = buildingSeeder.seed(config.BUILDINGS_COUNT, config.CITIES_COUNT);
+            List<Employee> employees = employeeSeeder.seed(buildings, config.EMPLOYEES_COUNT);
+            List<BookCopy> bookCopies = bookSeeder.seed(buildings, config.PUBLISHER_COUNT, config.BOOK_COUNT, config.BOOK_COPY_MAX_PER_BOOK_COUNT);
+            List<Member> members = memberSeeder.seed(config.MEMBER_COUNT);
+            List<Lending> lendings = lendingSeeder.seed(members, bookCopies, config.LENDING_COUNT);
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

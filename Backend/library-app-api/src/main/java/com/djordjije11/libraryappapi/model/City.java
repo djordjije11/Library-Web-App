@@ -110,11 +110,15 @@ public class City {
     }
 
     /**
-     * Sets the unique zipcode of the city. Should not be null.
+     * Sets the unique zipcode of the city. Must not be null.
      *
      * @param zipcode of the city.
+     * @throws ModelInvalidException when the zipcode is null.
      */
     public void setZipcode(String zipcode) {
+        if (zipcode == null) {
+            throw new ModelInvalidException(City.class, "City's zipcode must not be null.");
+        }
         this.zipcode = zipcode;
     }
 }

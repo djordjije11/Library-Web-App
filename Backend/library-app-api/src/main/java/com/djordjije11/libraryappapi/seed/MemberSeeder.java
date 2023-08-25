@@ -39,7 +39,7 @@ public class MemberSeeder {
 
     private LocalDate generateBirthday(){
         return LocalDate.now()
-                .minusYears(random.nextInt(80))
+                .minusYears(16 + random.nextInt(80))
                 .minusMonths(random.nextInt(12))
                 .minusDays(random.nextInt(31));
     }

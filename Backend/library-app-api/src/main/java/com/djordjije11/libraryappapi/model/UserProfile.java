@@ -124,7 +124,7 @@ public class UserProfile implements UserDetails {
      * @throws ModelInvalidException when the password is null or longer than 72 characters.
      */
     public void setPassword(String password) {
-        if (password == null || password.length() > 30) {
+        if (password == null || password.length() > 72) {
             throw new ModelInvalidException(UserProfile.class, "UserProfile's password must not be null and must not be longer than 72 characters.");
         }
         this.password = password;
