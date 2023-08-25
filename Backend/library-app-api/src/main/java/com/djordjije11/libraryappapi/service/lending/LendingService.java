@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Represents the service layer for a Lending class.
+ *
+ * @author Djordjije Radovic
  */
 public interface LendingService {
     /**

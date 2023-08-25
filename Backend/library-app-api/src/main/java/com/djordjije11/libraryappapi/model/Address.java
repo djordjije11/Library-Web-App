@@ -1,10 +1,13 @@
 package com.djordjije11.libraryappapi.model;
 
+import com.djordjije11.libraryappapi.exception.ModelInvalidException;
 import jakarta.persistence.*;
 
 /**
  * Represents a street address.
  * Consists of rowVersion, id, streetName and streetNumber.
+ *
+ * @author Djordjije Radovic
  */
 @Entity
 public class Address {
@@ -21,7 +24,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * A street name. Should not be null and should not be longer than 50 characters.
+     * A street name. Must not be null and must not be longer than 50 characters.
      */
     @Column(nullable = false, columnDefinition = "nvarchar(50)")
     private String streetName;
@@ -41,14 +44,15 @@ public class Address {
     }
 
     public Address(String streetName, Integer streetNumber, City city) {
-        this.streetName = streetName;
-        this.streetNumber = streetNumber;
-        this.city = city;
+        setStreetName(streetName);
+        setStreetNumber(streetNumber);
+        setCity(city);
     }
 
     /**
      * Returns the version of the database record.
-     * @return rowVersion
+     *
+     * @return rowVersion version of the database record.
      */
     public long getRowVersion() {
         return rowVersion;
@@ -56,7 +60,8 @@ public class Address {
 
     /**
      * Sets the version of the database record.
-     * @param rowVersion
+     *
+     * @param rowVersion version of the database record.
      */
     public void setRowVersion(long rowVersion) {
         this.rowVersion = rowVersion;
@@ -64,7 +69,8 @@ public class Address {
 
     /**
      * Returns the id, unique identification number.
-     * @return id
+     *
+     * @return unique identification number, primary key.
      */
     public Long getId() {
         return id;
@@ -72,7 +78,8 @@ public class Address {
 
     /**
      * Sets the id, unique identification number.
-     * @param id
+     *
+     * @param id unique identification number, primary key.
      */
     public void setId(Long id) {
         this.id = id;
@@ -80,23 +87,31 @@ public class Address {
 
     /**
      * Returns the street name.
-     * @return streetName
+     *
+     * @return streetName of the street of the address.
      */
     public String getStreetName() {
         return streetName;
     }
 
     /**
-     * Sets the street name. Should not be null and should not be longer than 50 characters.
-     * @param streetName
+     * Sets the street name.
+     * Must not be null and must not be longer than 50 characters.
+     *
+     * @param streetName of the street of the address.
+     * @throws ModelInvalidException when the streetName is null or longer than 50 characters.
      */
     public void setStreetName(String streetName) {
+        if (streetName == null || streetName.length() > 50) {
+            throw new ModelInvalidException(Author.class, "Street name of the address must not be null and must not be longer than 50 characters.");
+        }
         this.streetName = streetName;
     }
 
     /**
      * Returns the street number.
-     * @return streetNumber
+     *
+     * @return streetNumber of the street of the address.
      */
     public Integer getStreetNumber() {
         return streetNumber;
@@ -104,7 +119,8 @@ public class Address {
 
     /**
      * Sets the street number.
-     * @param streetNumber
+     *
+     * @param streetNumber of the street of the address.
      */
     public void setStreetNumber(Integer streetNumber) {
         this.streetNumber = streetNumber;
@@ -112,7 +128,8 @@ public class Address {
 
     /**
      * Returns the city of the address.
-     * @return city
+     *
+     * @return city of the address.
      */
     public City getCity() {
         return city;
@@ -120,7 +137,8 @@ public class Address {
 
     /**
      * Sets the city of the address.
-     * @param city
+     *
+     * @param city of the address.
      */
     public void setCity(City city) {
         this.city = city;

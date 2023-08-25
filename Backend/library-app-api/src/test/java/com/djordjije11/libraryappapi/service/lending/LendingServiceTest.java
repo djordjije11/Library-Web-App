@@ -42,7 +42,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void createLendings() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -54,8 +54,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("223-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -97,7 +97,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void createLendings_when_member_does_not_exist_throws_RecordNotFoundException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         member.setId(10L);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -109,8 +109,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("223-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -120,7 +120,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void createLendings_when_book_copy_does_not_exist_throws_RecordNotFoundException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -132,8 +132,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("123-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopy2.setId(10L);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -143,7 +143,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void createLendings_when_book_copy_is_not_in_the_building_throws_BookCopyNotInBuildingForLendingException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -155,8 +155,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, null);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("223-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -166,7 +166,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void createLendings_when_book_copy_is_not_available_throws_BookCopyNotAvailableForLendingException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -178,8 +178,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.AVAILABLE, book1, building);
-        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.LENT, book1, building);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy2 = new BookCopy("223-45-6789-023-1", BookCopyStatus.LENT, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var bookCopiesIds = List.of(bookCopy1.getId(), bookCopy2.getId());
@@ -189,7 +189,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void returnLendings() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -201,8 +201,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("234-56-7892-521-5", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);
@@ -234,7 +234,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void returnLendings_when_building_does_not_exist_throws_RecordNotFoundException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -246,8 +246,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         building.setId(10L);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("234-56-7892-521-5", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);
@@ -261,7 +261,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void returnLendings_when_lending_does_not_exist_throws_RecordNotFoundException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -273,8 +273,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("234-56-7892-521-5", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);
@@ -288,8 +288,8 @@ public abstract class LendingServiceTest {
 
     @Test
     public void returnLendings_when_member_is_not_valid_throws_LendingReturnedNotByMemberException() {
-        var member1 = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
-        var member2 = new Member("123456781", "Firstname", "Lastname", Gender.FEMALE, "email@yahooo.com", LocalDate.of(1997, Month.JULY, 7));
+        var member1 = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member2 = new Member("12345678152152", "Firstname", "Lastname", Gender.FEMALE, "email@yahooo.com", LocalDate.of(1997, Month.JULY, 7));
         memberRepository.save(member1);
         memberRepository.save(member2);
         var book1 = new Book("Title", "Description", null, 110);
@@ -302,8 +302,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("23456789", BookCopyStatus.LENT, book1, null);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("234-56-7895-215-2", BookCopyStatus.LENT, book1, null);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member1);
@@ -317,7 +317,7 @@ public abstract class LendingServiceTest {
 
     @Test
     public void returnLendings_when_lending_is_already_returned_throws_LendingAlreadyReturnedException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("1234567890231", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book1 = new Book("Title", "Description", null, 110);
         var book2 = new Book("Title 2", "Description 2", "Image Url", 220);
@@ -329,8 +329,8 @@ public abstract class LendingServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456789", BookCopyStatus.LENT, book1, null);
-        var bookCopy2 = new BookCopy("223456789", BookCopyStatus.AVAILABLE, book1, building);
+        var bookCopy1 = new BookCopy("123-45-6789-023-1", BookCopyStatus.LENT, book1, null);
+        var bookCopy2 = new BookCopy("223-45-6789-023-1", BookCopyStatus.AVAILABLE, book1, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
         var lending1 = new Lending(LocalDate.now(), bookCopy1, member);

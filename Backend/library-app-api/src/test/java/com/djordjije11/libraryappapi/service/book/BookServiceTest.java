@@ -156,7 +156,7 @@ public abstract class BookServiceTest {
     public void delete_when_copies_do_exist() {
         var book = new Book("Title", "Description", null, 110);
         var dbBook = bookRepository.save(book);
-        var bookCopy = new BookCopy("12346789", BookCopyStatus.LENT, dbBook, null);
+        var bookCopy = new BookCopy("123-46-7890-424-2", BookCopyStatus.LENT, dbBook, null);
         bookCopyRepository.save(bookCopy);
 
         assertThrows(BookWithCopiesDeleteException.class, () -> bookService.delete(dbBook.getId()));
@@ -275,11 +275,11 @@ public abstract class BookServiceTest {
         buildingRepository.save(building1);
         buildingRepository.save(building2);
         var bookCopies = new ArrayList<BookCopy>() {{
-            add(new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building1));
-            add(new BookCopy("123456781", BookCopyStatus.AVAILABLE, dbBook, building1));
+            add(new BookCopy("123-45-6780-525-5", BookCopyStatus.AVAILABLE, dbBook, building1));
+            add(new BookCopy("123-45-6781-525-5", BookCopyStatus.AVAILABLE, dbBook, building1));
         }};
         bookCopyRepository.saveAll(bookCopies);
-        bookCopyRepository.save(new BookCopy("123456782", BookCopyStatus.AVAILABLE, dbBook, building2));
+        bookCopyRepository.save(new BookCopy("123-45-6782-525-5", BookCopyStatus.AVAILABLE, dbBook, building2));
 
         Long availableBookCopiesInBuildingCount = bookService.getAvailableBookCopiesInBuildingCount(dbBook.getId(), building1.getId());
 
@@ -296,7 +296,7 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-525-5", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy);
 
         try {
@@ -324,7 +324,7 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-525-5", BookCopyStatus.AVAILABLE, dbBook, building);
 
         assertThrows(RecordNotFoundException.class, () -> bookService.discardCopy(bookCopy));
     }
@@ -345,7 +345,7 @@ public abstract class BookServiceTest {
         var building2 = new Building(address2);
         buildingRepository.save(building1);
         buildingRepository.save(building2);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building1);
+        var bookCopy = new BookCopy("123-45-6780-525-5", BookCopyStatus.AVAILABLE, dbBook, building1);
         bookCopyRepository.save(bookCopy);
         var bookCopyToDiscard = new BookCopy(bookCopy.getId());
         bookCopyToDiscard.setBuilding(building2);
@@ -363,7 +363,7 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-525-5", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy);
         var bookCopyToDiscard = new BookCopy(bookCopy.getId());
         bookCopyToDiscard.setBuilding(building);
@@ -382,9 +382,9 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-525-5", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy);
-        bookCopy.setIsbn("123456789");
+        bookCopy.setIsbn("123-45-6789-525-5");
 
         try {
             bookService.updateCopy(bookCopy);
@@ -414,7 +414,7 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-525-5", BookCopyStatus.AVAILABLE, dbBook, building);
 
         assertThrows(RecordNotFoundException.class, () -> bookService.updateCopy(bookCopy));
     }
@@ -435,11 +435,11 @@ public abstract class BookServiceTest {
         var building2 = new Building(address2);
         buildingRepository.save(building1);
         buildingRepository.save(building2);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building1);
+        var bookCopy = new BookCopy("123-45-6780-255-1", BookCopyStatus.AVAILABLE, dbBook, building1);
         bookCopyRepository.save(bookCopy);
         var bookCopyToUpdate = new BookCopy(bookCopy.getId());
         bookCopyToUpdate.setBuilding(building2);
-        bookCopyToUpdate.setIsbn("123456789");
+        bookCopyToUpdate.setIsbn("123-45-6789-525-5");
 
         assertThrows(BookCopyNotInBuildingException.class, () -> bookService.updateCopy(bookCopyToUpdate));
     }
@@ -454,10 +454,10 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-255-1", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy);
         var bookCopyToUpdate = new BookCopy(bookCopy.getId());
-        bookCopyToUpdate.setIsbn("123456789");
+        bookCopyToUpdate.setIsbn("123-45-6789-525-5");
         bookCopyToUpdate.setBuilding(building);
         bookCopyToUpdate.setRowVersion(bookCopy.getRowVersion() - 1);
 
@@ -474,8 +474,8 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("2423456780", BookCopyStatus.AVAILABLE, dbBook, building);
-        var bookCopy2 = new BookCopy("6423456781", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy1 = new BookCopy("242-34-5678-052-2", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy2 = new BookCopy("642-34-5678-142-5", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy1);
         bookCopyRepository.save(bookCopy2);
 
@@ -494,7 +494,7 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-255-1", BookCopyStatus.AVAILABLE, dbBook, building);
 
         try {
             bookService.createCopy(bookCopy);
@@ -524,7 +524,7 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, book, building);
+        var bookCopy = new BookCopy("123-45-6780-255-1", BookCopyStatus.AVAILABLE, book, building);
 
         assertThrows(RecordNotFoundException.class, () -> bookService.createCopy(bookCopy));
     }
@@ -538,7 +538,7 @@ public abstract class BookServiceTest {
         var address = new Address("StreetName", 10, city);
         addressRepository.save(address);
         var building = new Building(address);
-        var bookCopy = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy = new BookCopy("123-45-6780-255-1", BookCopyStatus.AVAILABLE, dbBook, building);
 
         assertThrows(RecordNotFoundException.class, () -> bookService.createCopy(bookCopy));
     }
@@ -553,8 +553,8 @@ public abstract class BookServiceTest {
         addressRepository.save(address);
         var building = new Building(address);
         buildingRepository.save(building);
-        var bookCopy1 = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
-        var bookCopy2 = new BookCopy("123456780", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy1 = new BookCopy("123-45-6780-255-1", BookCopyStatus.AVAILABLE, dbBook, building);
+        var bookCopy2 = new BookCopy("123-45-6780-255-1", BookCopyStatus.AVAILABLE, dbBook, building);
         bookCopyRepository.save(bookCopy1);
 
         assertThrows(BookCopyIsbnNotUniqueException.class, () -> bookService.createCopy(bookCopy2));

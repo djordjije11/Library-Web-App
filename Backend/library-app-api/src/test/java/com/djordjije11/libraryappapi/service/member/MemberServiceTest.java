@@ -38,7 +38,7 @@ public abstract class MemberServiceTest {
 
     @Test
     public void create() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         try {
             memberService.create(member);
         } catch (MemberIdCardNotUniqueException e) {
@@ -62,16 +62,16 @@ public abstract class MemberServiceTest {
 
     @Test
     public void create_when_idCardNumber_is_not_unique_throws_MemberIdCardNotUniqueException() {
-        var member1 = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member1 = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member1);
-        var member2 = new Member("123456789", "Firstname", "Lastname", Gender.FEMALE, "email@yahoo.com", LocalDate.of(2000, Month.AUGUST, 10));
+        var member2 = new Member("12345678901234", "Firstname", "Lastname", Gender.FEMALE, "email@yahoo.com", LocalDate.of(2000, Month.AUGUST, 10));
 
         assertThrows(MemberIdCardNotUniqueException.class, () -> memberService.create(member2));
     }
 
     @Test
     public void delete() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
 
         try {
@@ -85,11 +85,11 @@ public abstract class MemberServiceTest {
 
     @Test
     public void delete_when_member_has_lendings_throws_MemberWithLendingsDeleteException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
         var book = new Book("Title", "Description", null, 110);
         bookRepository.save(book);
-        var bookCopy = new BookCopy("123456789", BookCopyStatus.LENT, book, null);
+        var bookCopy = new BookCopy("123-45-6789-012-4", BookCopyStatus.LENT, book, null);
         bookCopyRepository.save(bookCopy);
         var lending = new Lending(LocalDate.now(), bookCopy, member);
         lendingRepository.save(lending);
@@ -99,9 +99,9 @@ public abstract class MemberServiceTest {
 
     @Test
     public void update() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
-        var updateMember = new Member("103456789", "Firstname 2", "Lastname 2", Gender.FEMALE, "emailll@gmail.com", LocalDate.of(2000, Month.FEBRUARY, 7));
+        var updateMember = new Member("10345678901234", "Firstname 2", "Lastname 2", Gender.FEMALE, "emailll@gmail.com", LocalDate.of(2000, Month.FEBRUARY, 7));
         updateMember.setId(member.getId());
 
         try {
@@ -126,7 +126,7 @@ public abstract class MemberServiceTest {
 
     @Test
     public void update_when_member_does_not_exist_throws_RecordNotFoundException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         member.setId(10L);
 
         assertThrows(RecordNotFoundException.class, () -> memberService.update(member));
@@ -134,9 +134,9 @@ public abstract class MemberServiceTest {
 
     @Test
     public void update_when_RowVersion_is_not_valid_throws_RecordNotCurrentVersionException() {
-        var member = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
         memberRepository.save(member);
-        var updateMember = new Member("103456789", "Firstname 2", "Lastname 2", Gender.FEMALE, "emailll@gmail.com", LocalDate.of(2000, Month.FEBRUARY, 7));
+        var updateMember = new Member("10345678901234", "Firstname 2", "Lastname 2", Gender.FEMALE, "emailll@gmail.com", LocalDate.of(2000, Month.FEBRUARY, 7));
         updateMember.setId(member.getId());
         updateMember.setRowVersion(member.getRowVersion() - 1);
 
@@ -145,8 +145,8 @@ public abstract class MemberServiceTest {
 
     @Test
     public void update_when_idCardNumber_is_not_unique_throws_MemberIdCardNotUniqueException() {
-        var member1 = new Member("123456789", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
-        var member2 = new Member("103456789", "Firstname 2", "Lastname 2", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.SEPTEMBER, 25));
+        var member1 = new Member("12345678901234", "Firstname", "Lastname", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.FEBRUARY, 7));
+        var member2 = new Member("10345678901234", "Firstname 2", "Lastname 2", Gender.MALE, "email@gmail.com", LocalDate.of(2001, Month.SEPTEMBER, 25));
         memberRepository.save(member1);
         memberRepository.save(member2);
         var updateMember = new Member(member2.getIdCardNumber(), "Firstname 3", "Lastname 3", Gender.FEMALE, "emailll@gmail.com", LocalDate.of(2000, Month.FEBRUARY, 7));

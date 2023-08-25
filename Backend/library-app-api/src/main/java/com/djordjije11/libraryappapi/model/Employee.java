@@ -1,10 +1,15 @@
 package com.djordjije11.libraryappapi.model;
 
+import com.djordjije11.libraryappapi.exception.ModelInvalidException;
 import jakarta.persistence.*;
+
+import java.util.regex.Pattern;
 
 /**
  * Represents an employee in a library.
  * Consists of rowVersion, id, idCardNumber, firstname, lastname, gender, email, building and userProfile.
+ *
+ * @author Djordjije Radovic
  */
 @Entity
 public class Employee {
@@ -21,17 +26,18 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * A unique person's identity card number. Should not be longer than 20 characters.
+     * A unique person's identity card number.
+     * Must not be null, must not be shorter than 10 characters and must not be longer than 20 characters and must match regex: ^\d{10,20}$ .
      */
     @Column(nullable = false, unique = true, columnDefinition = "varchar(20)")
     private String idCardNumber;
     /**
-     * An employee's firstname. Should not be longer than 255 characters.
+     * An employee's firstname. Must not be null and must not be longer than 255 characters.
      */
     @Column(nullable = false, columnDefinition = "nvarchar(255)")
     private String firstname;
     /**
-     * An employee's lastname. Should not be longer than 255 characters.
+     * An employee's lastname. Must not be null and must not be longer than 255 characters.
      */
     @Column(nullable = false, columnDefinition = "nvarchar(255)")
     private String lastname;
@@ -42,7 +48,7 @@ public class Employee {
     @Column(columnDefinition = "varchar(10) CHECK (gender in ('MALE', 'FEMALE'))")
     private Gender gender;
     /**
-     * An employee's email. Should not be longer than 320 characters.
+     * An employee's email. Must not be null and must not be longer than 320 characters.
      */
     @Column(nullable = false, columnDefinition = "varchar(320)")
     private String email;
@@ -62,27 +68,28 @@ public class Employee {
     }
 
     public Employee(String idCardNumber, String firstname, String lastname, Gender gender, String email, Building building) {
-        this.idCardNumber = idCardNumber;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.gender = gender;
-        this.email = email;
-        this.building = building;
+        setIdCardNumber(idCardNumber);
+        setFirstname(firstname);
+        setLastname(lastname);
+        setGender(gender);
+        setEmail(email);
+        setBuilding(building);
     }
 
     public Employee(String idCardNumber, String firstname, String lastname, Gender gender, String email, Building building, UserProfile userProfile) {
-        this.idCardNumber = idCardNumber;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.gender = gender;
-        this.email = email;
-        this.building = building;
-        this.userProfile = userProfile;
+        setIdCardNumber(idCardNumber);
+        setFirstname(firstname);
+        setLastname(lastname);
+        setGender(gender);
+        setEmail(email);
+        setBuilding(building);
+        setUserProfile(userProfile);
     }
 
     /**
      * Returns the version of the database record.
-     * @return rowVersion
+     *
+     * @return rowVersion version of the database record.
      */
     public long getRowVersion() {
         return rowVersion;
@@ -90,7 +97,8 @@ public class Employee {
 
     /**
      * Sets the version of the database record.
-     * @param rowVersion
+     *
+     * @param rowVersion version of the database record.
      */
     public void setRowVersion(long rowVersion) {
         this.rowVersion = rowVersion;
@@ -98,7 +106,8 @@ public class Employee {
 
     /**
      * Returns the id, unique identification number.
-     * @return id
+     *
+     * @return id unique identification number, primary key.
      */
     public Long getId() {
         return id;
@@ -106,7 +115,8 @@ public class Employee {
 
     /**
      * Sets the id, unique identification number.
-     * @param id
+     *
+     * @param id unique identification number, primary key.
      */
     public void setId(Long id) {
         this.id = id;
@@ -114,55 +124,75 @@ public class Employee {
 
     /**
      * Returns the unique person's identity card number.
-     * @return idCardNumber
+     *
+     * @return idCardNumber the unique person's identity card number.
      */
     public String getIdCardNumber() {
         return idCardNumber;
     }
 
     /**
-     * Sets the unique person's identity card number. Should not be longer than 20 characters.
-     * @param idCardNumber
+     * Sets the unique person's identity card number.
+     * Must not be null, must not be shorter than 10 characters and must not be longer than 20 characters and must match regex: ^\d{10,20}$ .
+     *
+     * @param idCardNumber the unique person's identity card number.
+     * @throws ModelInvalidException when the idCardNumber is null or shorter than 10 characters or longer than 20 characters or does not match regex: ^\d{10,20}$ .
      */
     public void setIdCardNumber(String idCardNumber) {
+        if (idCardNumber == null || idCardNumber.length() < 10 || idCardNumber.length() > 20 || Pattern.matches("^\\d{10,20}$", idCardNumber) == false) {
+            throw new ModelInvalidException(Employee.class, "Employee's must not be shorter than 10 characters and must not be longer than 20 characters and must match regex: ^\\d{10,20}$ .");
+        }
         this.idCardNumber = idCardNumber;
     }
 
     /**
      * Returns the employee's firstname.
-     * @return firstname
+     *
+     * @return firstname of the employee.
      */
     public String getFirstname() {
         return firstname;
     }
 
     /**
-     * Sets the employee's firstname. Should not be longer than 255 characters.
-     * @param firstname
+     * Sets the employee's firstname. Must not be null and must not be longer than 255 characters.
+     *
+     * @param firstname of the employee.
+     * @throws ModelInvalidException when the firstname is null or longer than 255 characters.
      */
     public void setFirstname(String firstname) {
+        if (firstname == null || firstname.length() > 255) {
+            throw new ModelInvalidException(Employee.class, "Employee's firstname must not be null and must not be longer than 255 characters.");
+        }
         this.firstname = firstname;
     }
 
     /**
      * Returns the employee's lastname.
-     * @return lastname
+     *
+     * @return lastname of the employee.
      */
     public String getLastname() {
         return lastname;
     }
 
     /**
-     * Sets the employee's lastname. Should not be longer than 255 characters.
-     * @param lastname
+     * Sets the employee's lastname. Must not be null and must not be longer than 255 characters.
+     *
+     * @param lastname of the employee.
+     * @throws ModelInvalidException when the lastname is null or longer than 255 characters.
      */
     public void setLastname(String lastname) {
+        if (lastname == null || lastname.length() > 255) {
+            throw new ModelInvalidException(Employee.class, "Employee's lastname must not be null and must not be longer than 255 characters.");
+        }
         this.lastname = lastname;
     }
 
     /**
      * Returns the employee's gender.
-     * @return gender
+     *
+     * @return gender of the employee.
      */
     public Gender getGender() {
         return gender;
@@ -170,7 +200,8 @@ public class Employee {
 
     /**
      * Sets the employee's gender. Can be male or female.
-     * @param gender
+     *
+     * @param gender of the employee.
      */
     public void setGender(Gender gender) {
         this.gender = gender;
@@ -178,23 +209,30 @@ public class Employee {
 
     /**
      * Returns the employee's email.
-     * @return
+     *
+     * @return email of the employee.
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Sets the employee's email. Should not be longer than 320 characters.
-     * @param email
+     * Sets the employee's email. Must not be null and must not be longer than 320 characters.
+     *
+     * @param email of the employee.
+     * @throws ModelInvalidException when the email is null or longer than 320 characters.
      */
     public void setEmail(String email) {
+        if (email == null || email.length() > 320) {
+            throw new ModelInvalidException(Employee.class, "Employee's email must not be null and must not be longer than 320 characters.");
+        }
         this.email = email;
     }
 
     /**
      * Returns the building the employee works in.
-     * @return building
+     *
+     * @return building the employee works in.
      */
     public Building getBuilding() {
         return building;
@@ -202,7 +240,8 @@ public class Employee {
 
     /**
      * Sets the building the employee works in.
-     * @param building
+     *
+     * @param building the employee works in.
      */
     public void setBuilding(Building building) {
         this.building = building;
@@ -210,7 +249,8 @@ public class Employee {
 
     /**
      * Returns the employee's user profile in the library system.
-     * @return
+     *
+     * @return userProfile of the employee in the library system.
      */
     public UserProfile getUserProfile() {
         return userProfile;
@@ -218,7 +258,8 @@ public class Employee {
 
     /**
      * Sets the employee's user profile in the library system.
-     * @param userProfile
+     *
+     * @param userProfile of the employee in the library system.
      */
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;

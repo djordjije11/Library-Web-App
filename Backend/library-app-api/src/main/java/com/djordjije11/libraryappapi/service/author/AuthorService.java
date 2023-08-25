@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Represents the service layer for an Author class.
+ *
+ * @author Djordjije Radovic
  */
 public interface AuthorService {
     /**

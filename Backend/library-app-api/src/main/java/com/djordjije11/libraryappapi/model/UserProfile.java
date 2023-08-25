@@ -1,5 +1,6 @@
 package com.djordjije11.libraryappapi.model;
 
+import com.djordjije11.libraryappapi.exception.ModelInvalidException;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +12,8 @@ import java.util.Collections;
 /**
  * Represents a profile of a library system user.
  * Consists of id, username, password and role.
+ *
+ * @author Djordjije Radovic
  */
 @Entity
 public class UserProfile implements UserDetails {
@@ -21,12 +24,12 @@ public class UserProfile implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * A unique username. Should not be null and should not be longer than 30 characters.
+     * A unique username. Must not be null and must not be longer than 30 characters.
      */
     @Column(nullable = false, unique = true, columnDefinition = "varchar(30)")
     private String username;
     /**
-     * A user's password. Should not be null and should not be longer than 72 characters.
+     * A user's password. Must not be null and must not be longer than 72 characters.
      */
     @Column(nullable = false, columnDefinition = "nvarchar(72)")
     private String password;
@@ -40,14 +43,15 @@ public class UserProfile implements UserDetails {
     }
 
     public UserProfile(String username, String password, UserRole role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
+        setUsername(username);
+        setPassword(password);
+        setRole(role);
     }
 
     /**
      * Returns the id, unique identification number.
-     * @return id
+     *
+     * @return id unique identification number, primary key.
      */
     public Long getId() {
         return id;
@@ -55,7 +59,8 @@ public class UserProfile implements UserDetails {
 
     /**
      * Sets the id, unique identification number.
-     * @param id
+     *
+     * @param id unique identification number, primary key.
      */
     public void setId(Long id) {
         this.id = id;
@@ -63,7 +68,8 @@ public class UserProfile implements UserDetails {
 
     /**
      * Returns the user's role in the library system.
-     * @return role
+     *
+     * @return role of the user in the library system.
      */
     public UserRole getRole() {
         return role;
@@ -71,7 +77,8 @@ public class UserProfile implements UserDetails {
 
     /**
      * Sets the user's role in the library system. Can be employee or admin.
-     * @param role
+     *
+     * @param role of the user in the library system.
      */
     public void setRole(UserRole role) {
         this.role = role;
@@ -79,7 +86,8 @@ public class UserProfile implements UserDetails {
 
     /**
      * Returns the username.
-     * @return username
+     *
+     * @return username of the user.
      */
     @Override
     public String getUsername() {
@@ -87,16 +95,22 @@ public class UserProfile implements UserDetails {
     }
 
     /**
-     * Sets the unique username. Should not be null and should not be longer than 30 characters.
-     * @param username
+     * Sets the unique username. Must not be null and must not be longer than 30 characters.
+     *
+     * @param username of the user.
+     * @throws ModelInvalidException when the username is null or longer than 30 characters.
      */
     public void setUsername(String username) {
+        if (username == null || username.length() > 30) {
+            throw new ModelInvalidException(UserProfile.class, "UserProfile's username must not be null and must not be longer than 30 characters.");
+        }
         this.username = username;
     }
 
     /**
      * Returns the user's password.
-     * @return password
+     *
+     * @return password of the user.
      */
     @Override
     public String getPassword() {
@@ -104,10 +118,15 @@ public class UserProfile implements UserDetails {
     }
 
     /**
-     * Sets the user's password. Should not be null and should not be longer than 72 characters.
-     * @param password
+     * Sets the user's password. Must not be null and must not be longer than 72 characters.
+     *
+     * @param password of the user.
+     * @throws ModelInvalidException when the password is null or longer than 72 characters.
      */
     public void setPassword(String password) {
+        if (password == null || password.length() > 30) {
+            throw new ModelInvalidException(UserProfile.class, "UserProfile's password must not be null and must not be longer than 72 characters.");
+        }
         this.password = password;
     }
 

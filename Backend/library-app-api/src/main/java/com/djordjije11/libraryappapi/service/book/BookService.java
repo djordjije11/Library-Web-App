@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * Represents the service layer for a Book and BookCopy classes.
+ *
+ * @author Djordjije Radovic
  */
 public interface BookService {
     /**

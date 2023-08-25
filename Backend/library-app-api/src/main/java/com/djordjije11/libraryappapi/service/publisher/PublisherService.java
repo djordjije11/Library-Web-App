@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * Represents the service layer for a Publisher class.
+ *
+ * @author Djordjije Radovic
  */
 public interface PublisherService {
     /**

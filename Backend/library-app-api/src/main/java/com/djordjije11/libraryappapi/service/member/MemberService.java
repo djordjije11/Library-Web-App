@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * Represents the service layer for a Member class.
+ *
+ * @author Djordjije Radovic
  */
 public interface MemberService {
     /**

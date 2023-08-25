@@ -1,6 +1,7 @@
 package com.djordjije11.libraryappapi.model;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,6 +9,8 @@ import java.util.Objects;
 /**
  * Represents a library building.
  * Consists of id, address and employees.
+ *
+ * @author Djordjije Radovic
  */
 @Entity
 public class Building {
@@ -35,17 +38,18 @@ public class Building {
     public Building() {
     }
 
-    public Building(Long id){
+    public Building(Long id) {
         this.id = id;
     }
 
-    public Building(Address address){
+    public Building(Address address) {
         this.address = address;
     }
 
     /**
      * Returns the id, unique identification number.
-     * @return id
+     *
+     * @return id unique identification number, primary key.
      */
     public Long getId() {
         return id;
@@ -53,7 +57,8 @@ public class Building {
 
     /**
      * Sets the id, unique identification number.
-     * @param id
+     *
+     * @param id unique identification number, primary key.
      */
     public void setId(Long id) {
         this.id = id;
@@ -61,7 +66,8 @@ public class Building {
 
     /**
      * Returns the address of the library building.
-     * @return address
+     *
+     * @return address of the library building.
      */
     public Address getAddress() {
         return address;
@@ -69,7 +75,8 @@ public class Building {
 
     /**
      * Sets the address of the library building.
-     * @param address
+     *
+     * @param address of the library building.
      */
     public void setAddress(Address address) {
         this.address = address;
@@ -77,7 +84,8 @@ public class Building {
 
     /**
      * Returns the list of employees that work in the library building.
-     * @return employees
+     *
+     * @return employees that work in the library building.
      */
     public List<Employee> getEmployees() {
         return employees;
@@ -85,7 +93,8 @@ public class Building {
 
     /**
      * Sets the list of employees that work in the library building.
-     * @param employees
+     *
+     * @param employees that work in the library building.
      */
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
@@ -93,7 +102,8 @@ public class Building {
 
     /**
      * Returns if buildings are equal. Buildings are equal if theirs ids are equal.
-     * @param o
+     *
+     * @param o object that is being compared. Should be type of Building and have the same id as the building.
      * @return true if buildings' ids are equal. Otherwise, returns false.
      */
     @Override
@@ -108,6 +118,7 @@ public class Building {
 
     /**
      * Returns a hashcode of an id. When id is null, returns 0.
+     *
      * @return id.hashcode() when id is not null. When null, returns 0.
      */
     @Override

@@ -1,10 +1,13 @@
 package com.djordjije11.libraryappapi.model;
 
+import com.djordjije11.libraryappapi.exception.ModelInvalidException;
 import jakarta.persistence.*;
 
 /**
  * Represents a city.
  * Consists of rowVersion, id, name and zipcode.
+ *
+ * @author Djordjije Radovic
  */
 @Entity
 public class City {
@@ -21,12 +24,12 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * A city name. Should not be null and should not be longer than 100 characters.
+     * A city name. Must not be null and must not be longer than 100 characters.
      */
     @Column(nullable = false, columnDefinition = "nvarchar(100)")
     private String name;
     /**
-     * A unique zipcode of the city. Should not be null.
+     * A unique zipcode of the city. Must not be null.
      */
     @Column(nullable = false, unique = true)
     private String zipcode;
@@ -34,14 +37,15 @@ public class City {
     public City() {
     }
 
-    public City(String name, String zipcode){
-        this.name = name;
-        this.zipcode = zipcode;
+    public City(String name, String zipcode) {
+        setName(name);
+        setZipcode(zipcode);
     }
 
     /**
      * Returns the version of the database record.
-     * @return rowVersion
+     *
+     * @return rowVersion version of the database record.
      */
     public long getRowVersion() {
         return rowVersion;
@@ -49,7 +53,8 @@ public class City {
 
     /**
      * Sets the version of the database record.
-     * @param rowVersion
+     *
+     * @param rowVersion version of the database record.
      */
     public void setRowVersion(long rowVersion) {
         this.rowVersion = rowVersion;
@@ -57,7 +62,8 @@ public class City {
 
     /**
      * Returns the id, unique identification number.
-     * @return id
+     *
+     * @return id unique identification number, primary key.
      */
     public Long getId() {
         return id;
@@ -65,7 +71,8 @@ public class City {
 
     /**
      * Sets the id, unique identification number.
-     * @param id
+     *
+     * @param id unique identification number, primary key.
      */
     public void setId(Long id) {
         this.id = id;
@@ -73,23 +80,30 @@ public class City {
 
     /**
      * Returns the name of the city.
-     * @return name
+     *
+     * @return name of the city.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Sets the name of the city. Should not be null and should not be longer than 100 characters.
-     * @param name
+     * Sets the name of the city. Must not be null and must not be longer than 100 characters.
+     *
+     * @param name of the city.
+     * @throws ModelInvalidException when the name is null or longer than 100 characters.
      */
     public void setName(String name) {
+        if (name == null || name.length() > 100) {
+            throw new ModelInvalidException(City.class, "City's name must not be null and must not be longer than 100 characters.");
+        }
         this.name = name;
     }
 
     /**
      * Returns the unique zipcode of the city.
-     * @return zipcode
+     *
+     * @return zipcode of the city.
      */
     public String getZipcode() {
         return zipcode;
@@ -97,7 +111,8 @@ public class City {
 
     /**
      * Sets the unique zipcode of the city. Should not be null.
-     * @param zipcode
+     *
+     * @param zipcode of the city.
      */
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;

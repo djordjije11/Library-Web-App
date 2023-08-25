@@ -8,6 +8,7 @@ public record BookCopyCreateDto(
         @NotNull(message = "ISBN is mandatory.")
         @Pattern(regexp = "^\\d{3}-\\d{2}-\\d{4}-\\d{3}-\\d{1}$", message = "ISBN is not valid.")
         String isbn,
+        @NotNull(message = "Status is mandatory.")
         BookCopyStatus status,
         Long bookId
 ) {
