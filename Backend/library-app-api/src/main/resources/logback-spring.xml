@@ -2,7 +2,7 @@
 <configuration>
     <!-- Normal debug log appender -->
     <appender name="debug" class="ch.qos.logback.core.FileAppender">
-        <file>debug.log</file>
+        <file>logs/debug.log</file>
 
         <encoder>
             <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
@@ -10,9 +10,8 @@
     </appender>
 
     <appender name="enrolls" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>Enrolls.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>Enrolls-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>logs/enrolls/Enrolls-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>5MB</maxFileSize>
             <rollingStyle>Size</rollingStyle>
             <maxRollBackups>5</maxRollBackups>
