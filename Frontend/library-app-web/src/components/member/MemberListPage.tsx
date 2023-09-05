@@ -17,6 +17,7 @@ import {
   PencilIcon,
   TrashIcon,
   UserPlusIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import MemberShort from "../../models/member/MemberShort";
 import { Row } from "react-table";
@@ -134,9 +135,29 @@ export default function MemberListPage() {
           }}
         >
           <Card className="w-full h-full">
-            <div className="flex justify-center items-center font-bold text-lg m-4">
-              Member: {memberForLendings?.firstname}{" "}
-              {memberForLendings?.lastname}
+            <div
+              className="font-bold my-3"
+              style={{
+                display: "grid",
+                gridAutoFlow: "column",
+                gridTemplateColumns: "8% auto 8%",
+              }}
+            >
+              <div></div>
+              <div className="flex justify-center">
+                <h3>
+                  Member: {memberForLendings?.firstname}{" "}
+                  {memberForLendings?.lastname}
+                </h3>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setShowLendingsByMemberModal(false)}
+                >
+                  <XMarkIcon width={"18px"} />
+                </button>
+              </div>
             </div>
             <LendingByMemberTable />
           </Card>
