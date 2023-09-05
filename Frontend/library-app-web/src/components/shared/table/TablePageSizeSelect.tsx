@@ -32,8 +32,8 @@ export function TablePageSizeSelect(props: TablePageSizeSelectProps) {
   return (
     <div className="flex gap-2">
       <PageSizeOption pageSizeOption={5} />
-      <PageSizeOption pageSizeOption={10} />
       <PageSizeOption pageSizeOption={15} />
+      <PageSizeOption pageSizeOption={30} />
     </div>
   );
 }
