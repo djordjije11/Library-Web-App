@@ -1,22 +1,22 @@
 import MemberShort from "../member/MemberShort";
 import { LendingIncludingBookCopy } from "./LendingIncludingBookCopy";
 
-export interface LendingsReturn {
+export interface LendingsByMember {
   lendings: LendingIncludingBookCopy[];
   member: MemberShort;
 }
 
-export interface LendingsReturnFromServer {
+export interface LendingsReturn {
   lendingsIds: number[];
   memberId: number;
 }
 
-export function constructLendingsReturnFromServer(
-  lendingsReturn: LendingsReturn
-): LendingsReturnFromServer {
+export function constructLendingsReturn(
+  lendingsByMember: LendingsByMember
+): LendingsReturn {
   return {
-    memberId: lendingsReturn.member.id,
-    lendingsIds: extractIdsFromLendings(lendingsReturn.lendings),
+    memberId: lendingsByMember.member.id,
+    lendingsIds: extractIdsFromLendings(lendingsByMember.lendings),
   };
 }
 

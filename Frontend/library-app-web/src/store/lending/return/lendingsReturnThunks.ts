@@ -15,7 +15,7 @@ export const returnLendingsAsyncThunk = createAsyncThunk<
   async (_, { getState, rejectWithValue }) => {
     const state = getState() as StoreState;
     try {
-      await returnLendingsAsync(state.lendingsReturn.lendingsReturn);
+      await returnLendingsAsync(state.lendingsReturn.lendingsByMember);
     } catch (error) {
       return rejectWithValue(constructAlertError(error as ResponseError));
     }

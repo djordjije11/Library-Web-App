@@ -19,8 +19,8 @@ import BooksCopiesState from "../bookcopy/table/by-all-books-in-building/BooksCo
 import booksCopiesSlice from "../bookcopy/table/by-all-books-in-building/booksCopiesSlice";
 import { LendingsReturnState } from "../lending/return/LendingsReturnState";
 import lendingsReturnSlice from "../lending/return/lendingsReturnSlice";
-import { LendingsUnreturnedState } from "../lending/table/unreturned/LendingsUnreturnedState";
-import lendingsUnreturnedSlice from "../lending/table/unreturned/lendingsUnreturnedSlice";
+import { LendingsByMemberUnreturnedState } from "../lending/table/by-member/unreturned/LendingsByMemberUnreturnedState";
+import lendingsByMemberUnreturnedSlice from "../lending/table/by-member/unreturned/lendingsByMemberUnreturnedSlice";
 import BooksState from "../book/table/BooksState";
 import booksSlice from "../book/table/booksSlice";
 import BookCopiesState from "../bookcopy/table/by-book-all-buildings/BookCopiesState";
@@ -29,6 +29,8 @@ import PublishersState from "../publisher/table/PublishersState";
 import publishersSlice from "../publisher/table/publishersSlice";
 import AuthorsState from "../author/table/AuthorsState";
 import authorsSlice from "../author/table/authorsSlice";
+import { LendingsByMemberState } from "../lending/table/by-member/all/LendingsByMemberState";
+import lendingsByMemberSlice from "../lending/table/by-member/all/lendingsByMemberSlice";
 
 export interface StoreState {
   auth: AuthState;
@@ -42,7 +44,8 @@ export interface StoreState {
   authors: AuthorsState;
   lendingsAdd: LendingsAddState;
   lendingsReturn: LendingsReturnState;
-  lendingsUnreturned: LendingsUnreturnedState;
+  lendingsByMemberUnreturned: LendingsByMemberUnreturnedState;
+  lendingsByMember: LendingsByMemberState;
 }
 
 const store: ToolkitStore = configureStore({
@@ -58,7 +61,8 @@ const store: ToolkitStore = configureStore({
     authors: authorsSlice,
     lendingsAdd: lendingsAddSlice,
     lendingsReturn: lendingsReturnSlice,
-    lendingsUnreturned: lendingsUnreturnedSlice,
+    lendingsByMemberUnreturned: lendingsByMemberUnreturnedSlice,
+    lendingsByMember: lendingsByMemberSlice,
   },
 });
 

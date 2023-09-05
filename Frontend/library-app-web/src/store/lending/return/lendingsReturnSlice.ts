@@ -5,7 +5,7 @@ import { returnLendingsAsyncThunk } from "./lendingsReturnThunks";
 import MemberShort from "../../../models/member/MemberShort";
 
 const initialState: LendingsReturnState = {
-  lendingsReturn: { lendings: [] as LendingIncludingBookCopy[] },
+  lendingsByMember: { lendings: [] as LendingIncludingBookCopy[] },
 } as LendingsReturnState;
 
 const lendingsReturnSlice = createSlice({
@@ -14,24 +14,24 @@ const lendingsReturnSlice = createSlice({
   reducers: {
     setMember: (state, action: PayloadAction<MemberShort>) => {
       if (
-        state.lendingsReturn.member !== undefined &&
-        state.lendingsReturn.member.id !== action.payload.id
+        state.lendingsByMember.member !== undefined &&
+        state.lendingsByMember.member.id !== action.payload.id
       ) {
-        state.lendingsReturn.lendings = [] as LendingIncludingBookCopy[];
+        state.lendingsByMember.lendings = [] as LendingIncludingBookCopy[];
       }
-      state.lendingsReturn.member = action.payload;
+      state.lendingsByMember.member = action.payload;
     },
     addLending: (state, action: PayloadAction<LendingIncludingBookCopy>) => {
       if (
-        state.lendingsReturn.lendings.some(
+        state.lendingsByMember.lendings.some(
           (lending) => lending.id === action.payload.id
         ) === false
       ) {
-        state.lendingsReturn.lendings.push(action.payload);
+        state.lendingsByMember.lendings.push(action.payload);
       }
     },
     removeLendingByBookCopyId: (state, action: PayloadAction<number>) => {
-      state.lendingsReturn.lendings = state.lendingsReturn.lendings.filter(
+      state.lendingsByMember.lendings = state.lendingsByMember.lendings.filter(
         (lending) => lending.bookCopy.id !== action.payload
       );
     },
@@ -47,7 +47,7 @@ const lendingsReturnSlice = createSlice({
     });
     builder.addCase(returnLendingsAsyncThunk.fulfilled, (state) => {
       state.loading = false;
-      state.lendingsReturn = initialState.lendingsReturn;
+      state.lendingsByMember = initialState.lendingsByMember;
     });
   },
 });

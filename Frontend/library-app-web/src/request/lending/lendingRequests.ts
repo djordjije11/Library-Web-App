@@ -5,14 +5,16 @@ import {
 } from "../../models/lending/LendingsAdd";
 import {
   ADD_LENDINGS_URL,
+  GET_LENDINGS_BY_MEMBER,
   GET_UNRETURNED_LENDINGS_BY_MEMBER,
   RETURN_LENDINGS_URL,
 } from "../apiUrls";
 import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
 import {
+  LendingsByMember,
   LendingsReturn,
-  constructLendingsReturnFromServer,
-} from "../../models/lending/LendingsReturn";
+  constructLendingsReturn,
+} from "../../models/lending/LendingsByMember";
 import { LendingIncludingBookCopy } from "../../models/lending/LendingIncludingBookCopy";
 import RequestQueryParams, {
   constructRequestQuery,
@@ -31,11 +33,11 @@ export async function addLendingsAsync(
 }
 
 export async function returnLendingsAsync(
-  lendingsReturn: LendingsReturn
+  lendingsByMember: LendingsByMember
 ): Promise<void> {
   const response = await axios.put(
     RETURN_LENDINGS_URL,
-    constructLendingsReturnFromServer(lendingsReturn),
+    constructLendingsReturn(lendingsByMember),
     { headers: getHeaders() }
   );
 }
@@ -46,6 +48,22 @@ export async function getUnreturnedLendingsByMemberAsync(
 ): Promise<{ lendings: LendingIncludingBookCopy[]; totalPages: number }> {
   const response = await axios.get(
     GET_UNRETURNED_LENDINGS_BY_MEMBER(memberId) +
+      constructRequestQuery(requestQueryParams),
+    {
+      headers: getHeaders(),
+    }
+  );
+  const lendings = response.data as LendingIncludingBookCopy[];
+  const totalPages = extractTotalPagesFromHeaders(response.headers);
+  return { lendings, totalPages };
+}
+
+export async function getLendingsByMemberAsync(
+  memberId: number,
+  requestQueryParams: RequestQueryParams
+): Promise<{ lendings: LendingIncludingBookCopy[]; totalPages: number }> {
+  const response = await axios.get(
+    GET_LENDINGS_BY_MEMBER(memberId) +
       constructRequestQuery(requestQueryParams),
     {
       headers: getHeaders(),

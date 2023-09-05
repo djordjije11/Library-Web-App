@@ -1,8 +1,8 @@
 import AlertError from "../../../models/error/AlertError";
-import { LendingsReturn } from "../../../models/lending/LendingsReturn";
+import { LendingsByMember } from "../../../models/lending/LendingsByMember";
 
 export interface LendingsReturnState {
-  lendingsReturn: LendingsReturn;
+  lendingsByMember: LendingsByMember;
   loading: boolean;
   isError: boolean;
   error?: AlertError;

@@ -25,7 +25,7 @@ import {
 } from "../../models/lending/LendingIncludingBookCopy";
 import { BookCopyDisplay } from "../../models/bookcopy/BookCopyDisplay";
 import ModalSelectLendingReturn from "./ModalSelectLendingReturn";
-import { lendingsUnreturnedActions } from "../../store/lending/table/unreturned/lendingsUnreturnedSlice";
+import { lendingsByMemberUnreturnedActions } from "../../store/lending/table/by-member/unreturned/lendingsByMemberUnreturnedSlice";
 import MemberSelectField from "../member/MemberSelectField";
 
 export default function LendingReturnForm() {
@@ -40,7 +40,7 @@ export default function LendingReturnForm() {
 
   function handleSelectedMember(member: MemberShort) {
     dispatch(lendingsReturnActions.setMember(member));
-    dispatch(lendingsUnreturnedActions.setMember(member));
+    dispatch(lendingsByMemberUnreturnedActions.setMember(member));
     setShowMemberModal(false);
   }
 
@@ -54,7 +54,7 @@ export default function LendingReturnForm() {
   }
 
   function handleSelectBookCopyClick() {
-    if (lendingsReturnState.lendingsReturn.member === undefined) {
+    if (lendingsReturnState.lendingsByMember.member === undefined) {
       setLendingsReturnInputResults((prev) => ({
         ...prev,
         lendingsResult: getResultError("Select a member first."),
@@ -67,11 +67,11 @@ export default function LendingReturnForm() {
   function validateForm(): boolean {
     const memberIdResult = validateRequiredAny(
       "Member",
-      lendingsReturnState.lendingsReturn.member
+      lendingsReturnState.lendingsByMember.member
     );
     const lendingsResult = validateRequiredArray(
       "Books",
-      lendingsReturnState.lendingsReturn.lendings
+      lendingsReturnState.lendingsByMember.lendings
     );
     setLendingsReturnInputResults((prev) => ({
       ...prev,
@@ -119,7 +119,7 @@ export default function LendingReturnForm() {
               result={lendingsReturnInputResults.memberResult}
             >
               <MemberSelectField
-                member={lendingsReturnState.lendingsReturn.member}
+                member={lendingsReturnState.lendingsByMember.member}
                 onSelectClick={() => setShowMemberModal(true)}
               />
             </FormField>
@@ -131,7 +131,7 @@ export default function LendingReturnForm() {
             >
               <SelectBookCopiesField
                 bookCopies={getBookCopiesFromLendings(
-                  lendingsReturnState.lendingsReturn.lendings
+                  lendingsReturnState.lendingsByMember.lendings
                 )}
                 handleRemoveBookCopy={handleRemoveLending}
                 onSelectBookCopyClick={handleSelectBookCopyClick}

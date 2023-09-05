@@ -1,10 +1,4 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  IconButton,
-  Tooltip,
-} from "@material-tailwind/react";
+import { Button, Card, IconButton, Tooltip } from "@material-tailwind/react";
 import BackgroundImage from "../home/BackgroundImage";
 import MemberTable from "./MemberTable";
 import MemberUpdateState from "../../store/member/update/MemberUpdateState";
@@ -19,6 +13,7 @@ import { questionAlertIsSureAsync } from "../../services/alert/questionAlert";
 import { deleteMemberAsync } from "../../request/member/memberRequests";
 import { successAlert } from "../../services/alert/successHandler";
 import {
+  BookOpenIcon,
   PencilIcon,
   TrashIcon,
   UserPlusIcon,
@@ -28,25 +23,39 @@ import { Row } from "react-table";
 import { getMembersAsyncThunk } from "../../store/member/table/membersThunks";
 import { Box, Modal } from "@mui/material";
 import MemberUpdateContainer from "./MemberUpdateContainer";
-import Loader from "../shared/loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { ADD_MEMBER_PAGE } from "../routes/AppRouter";
 import GrayLoader from "../shared/loader/GrayLoader";
+import { lendingsByMemberActions } from "../../store/lending/table/by-member/all/lendingsByMemberSlice";
+import LendingByMemberTable from "../lending/LendingByMemberTable";
+import { LendingsByMemberState } from "../../store/lending/table/by-member/all/LendingsByMemberState";
 
 export default function MemberListPage() {
   const memberUpdateState: MemberUpdateState = useAppSelector(
     (state) => state.memberUpdate
   );
+  const [memberForLendings, setMemberForLendings] = useState<MemberShort>(
+    {} as MemberShort
+  );
   const dispatch = useAppDispatch();
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showUpdateMemberModal, setShowUpdateMemberModal] =
+    useState<boolean>(false);
+  const [showLendingsByMemberModal, setShowLendingsByMemberModal] =
+    useState<boolean>(false);
   const navigate = useNavigate();
 
+  async function handleClickOnViewLendingsHistoryAsync(member: MemberShort) {
+    setMemberForLendings(member);
+    dispatch(lendingsByMemberActions.setMember(member));
+    setShowLendingsByMemberModal(true);
+  }
+
   async function handleClickOnUpdateMemberAsync(member: MemberShort) {
-    setShowModal(true);
+    setShowUpdateMemberModal(true);
     try {
       await dispatch(getMemberAsyncThunk(member.id)).unwrap();
     } catch (error) {
-      setShowModal(false);
+      setShowUpdateMemberModal(false);
       handleRecordNotFoundError();
     }
   }
@@ -69,7 +78,7 @@ export default function MemberListPage() {
   }
 
   async function closeModalAsync() {
-    setShowModal(false);
+    setShowUpdateMemberModal(false);
     await dispatch(getMembersAsyncThunk());
   }
 
@@ -77,6 +86,15 @@ export default function MemberListPage() {
     const member = row.original as MemberShort;
     return (
       <div>
+        <Tooltip content="View lendings history">
+          <IconButton
+            size="sm"
+            variant="text"
+            onClick={() => handleClickOnViewLendingsHistoryAsync(member)}
+          >
+            <BookOpenIcon color="gray" className="h-4 w-4" />
+          </IconButton>
+        </Tooltip>
         <Tooltip content="Edit">
           <IconButton
             size="sm"
@@ -99,11 +117,39 @@ export default function MemberListPage() {
     );
   }
 
+  function ModalLendingsByMember(): JSX.Element {
+    return (
+      <Modal
+        open={showLendingsByMemberModal}
+        onClose={() => setShowLendingsByMemberModal(false)}
+        className="flex justify-center items-center"
+      >
+        <Box
+          sx={{
+            width: "70%",
+            border: "none",
+            minWidth: "min-content",
+            minHeight: "min-content",
+            height: "60%",
+          }}
+        >
+          <Card className="w-full h-full">
+            <div className="flex justify-center items-center font-bold text-lg m-4">
+              Member: {memberForLendings?.firstname}{" "}
+              {memberForLendings?.lastname}
+            </div>
+            <LendingByMemberTable />
+          </Card>
+        </Box>
+      </Modal>
+    );
+  }
+
   function ModalUpdateMember(): JSX.Element {
     return (
       <Modal
-        open={showModal}
-        onClose={() => setShowModal(false)}
+        open={showUpdateMemberModal}
+        onClose={() => setShowUpdateMemberModal(false)}
         className="flex justify-center items-center"
       >
         <Box
@@ -145,6 +191,7 @@ export default function MemberListPage() {
     <BackgroundImage>
       <div className="flex items-center justify-center h-full">
         <div className="w-9/12 my-4 min-w-min h-4/5">
+          <ModalLendingsByMember />
           <ModalUpdateMember />
           <Card className="w-full h-full">
             <div className="flex justify-center items-center mt-2 font-bold text-lg">

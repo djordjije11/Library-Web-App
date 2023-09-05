@@ -48,3 +48,5 @@ export const ADD_LENDINGS_URL = getUrl(`${LENDING}/create`);
 export const RETURN_LENDINGS_URL = getUrl(`${LENDING}/return`);
 export const GET_UNRETURNED_LENDINGS_BY_MEMBER = (memberId: number) =>
   getUrl(`${LENDING}/${MEMBER}/${memberId}/unreturned`);
+export const GET_LENDINGS_BY_MEMBER = (memberId: number) =>
+  getUrl(`${LENDING}/${MEMBER}/${memberId}`);

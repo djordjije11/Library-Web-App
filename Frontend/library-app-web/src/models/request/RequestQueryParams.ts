@@ -11,6 +11,9 @@ export default interface RequestQueryParams {
 export function constructRequestQuery(
   requestQueryParams: RequestQueryParams
 ): string {
+  if (requestQueryParams === undefined) {
+    return "";
+  }
   const queries: string[] = [];
   if (requestQueryParams.pageable !== undefined) {
     queries.push(constructPageableQuery(requestQueryParams.pageable));

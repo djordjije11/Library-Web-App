@@ -1,7 +1,7 @@
 import { Box, Modal } from "@mui/material";
 import { LendingIncludingBookCopy } from "../../models/lending/LendingIncludingBookCopy";
 import { Card } from "@material-tailwind/react";
-import LendingUnreturnedTable from "./LendingUnreturnedTable";
+import LendingUnreturnedTable from "./LendingByMemberUnreturnedTable";
 
 export interface ModalSelectLendingReturnProps {
   show: boolean;
