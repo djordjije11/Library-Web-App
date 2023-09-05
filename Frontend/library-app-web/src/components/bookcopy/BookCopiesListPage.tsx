@@ -9,7 +9,6 @@ import {
   getBookCopiesInAllBuildingsAsyncThunk,
 } from "../../store/bookcopy/table/by-book-all-buildings/bookCopiesThunks";
 import BookCopiesState from "../../store/bookcopy/table/by-book-all-buildings/BookCopiesState";
-import Loader from "../shared/loader/Loader";
 import { HOME_PAGE } from "../routes/AppRouter";
 import BookCopyStatusFilterDropdown from "./BookCopyStatusFilterDropdown";
 import { bookCopiesActions } from "../../store/bookcopy/table/by-book-all-buildings/bookCopiesSlice";
@@ -198,29 +197,32 @@ export function BookCopiesListPage() {
   return (
     <BackgroundImage>
       <div className="flex items-center justify-center h-full">
-        {bookCopiesState.book === undefined ? (
-          <Loader />
-        ) : (
-          <div className="w-7/12 my-4 min-w-min h-4/5">
-            <ModalAddBookCopy />
-            <ModalUpdateBookCopy />
-            <Card className="h-full w-full">
-              <div className="flex justify-center items-center font-bold text-lg m-4">
-                {bookCopiesState.book.title}
-              </div>
-              {/* <BookInfo
+        <div className="w-7/12 my-4 min-w-min h-4/5">
+          <ModalAddBookCopy />
+          <ModalUpdateBookCopy />
+          <Card className="h-full w-full">
+            {bookCopiesState.book === undefined ||
+            bookCopiesState.bookLoading ? (
+              <></>
+            ) : (
+              <>
+                <div className="flex justify-center items-center font-bold text-lg m-4">
+                  {bookCopiesState.book.title}
+                </div>
+                {/* <BookInfo
                 book={bookCopiesState.book}
                 availableCopiesInBuildingCount={
                   bookCopiesState.availableCopiesInBuildingCount
                 }
               /> */}
-              <BookCopiesTable
-                renderHeaderChildren={renderHeaderChildren}
-                rowActions={rowActions}
-              />
-            </Card>
-          </div>
-        )}
+                <BookCopiesTable
+                  renderHeaderChildren={renderHeaderChildren}
+                  rowActions={rowActions}
+                />
+              </>
+            )}
+          </Card>
+        </div>
       </div>
     </BackgroundImage>
   );

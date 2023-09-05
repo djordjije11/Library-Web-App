@@ -21,6 +21,7 @@ import {
   get_LIST_COPIES_OF_BOOK_PAGE,
   get_UPDATE_BOOK_PAGE,
 } from "../routes/AppRouter";
+import { bookCopiesActions } from "../../store/bookcopy/table/by-book-all-buildings/bookCopiesSlice";
 
 export interface BookViewCopiesNavigationState {
   book: BookShort;
@@ -60,6 +61,7 @@ export default function BookListPage() {
             size="sm"
             variant="text"
             onClick={() => {
+              dispatch(bookCopiesActions.setBookLoading(true));
               navigate(get_LIST_COPIES_OF_BOOK_PAGE(book.id));
             }}
           >

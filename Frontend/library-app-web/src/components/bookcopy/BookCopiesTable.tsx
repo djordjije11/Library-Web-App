@@ -92,7 +92,7 @@ export default function BookCopiesTable(props: ModelTableProps) {
       columns={columns}
       data={data}
       loadDataAsync={loadDataAsync}
-      loading={bookCopiesState.loading}
+      loading={bookCopiesState.copiesLoading}
       setRequestQueryParamsAction={bookCopiesActions.setRequestQueryParams}
       totalPages={bookCopiesState.totalPages}
       rowActions={rowActions}

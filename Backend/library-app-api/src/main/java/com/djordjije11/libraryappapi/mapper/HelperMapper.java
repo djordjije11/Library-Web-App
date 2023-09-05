@@ -3,6 +3,8 @@ package com.djordjije11.libraryappapi.mapper;
 import com.djordjije11.libraryappapi.model.*;
 import org.mapstruct.Named;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public interface HelperMapper {
@@ -20,8 +22,8 @@ public interface HelperMapper {
 
     @Named(MAP_IDS_TO_AUTHORS)
     default List<Author> mapIdsToAuthors(List<Long> authorsIds) {
-        if (authorsIds == null) {
-            return null;
+        if (authorsIds == null || authorsIds.size() == 0) {
+            return new ArrayList<>();
         }
         return authorsIds.stream().map(lId -> new Author(lId)).toList();
     }

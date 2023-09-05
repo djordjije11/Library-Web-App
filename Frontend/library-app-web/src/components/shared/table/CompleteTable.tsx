@@ -132,13 +132,17 @@ export default function CompleteTable(props: CompleteTableProps) {
           />
         )}
       </div>
-      <div className="my-2">
-        <TablePagination
-          currentPage={pageNumber}
-          setCurrentPage={setPageNumber}
-          pagesCount={totalPages}
-        />
-      </div>
+      {loading ? (
+        <></>
+      ) : (
+        <div className="my-2">
+          <TablePagination
+            currentPage={pageNumber}
+            setCurrentPage={setPageNumber}
+            pagesCount={totalPages}
+          />
+        </div>
+      )}
     </div>
   );
 }

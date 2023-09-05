@@ -20,6 +20,9 @@ const bookCopiesSlice = createSlice({
     setBook: (state, action: PayloadAction<Book>) => {
       state.book = action.payload;
     },
+    setBookLoading: (state, action: PayloadAction<boolean>) => {
+      state.bookLoading = action.payload;
+    },
     setRequestQueryParams: (
       state,
       action: PayloadAction<RequestQueryParams>
@@ -34,24 +37,29 @@ const bookCopiesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getBookAsyncThunk.pending, (state) => {
+      state.bookLoading = true;
+    });
     builder.addCase(getBookAsyncThunk.fulfilled, (state, action) => {
       state.availableCopiesInBuildingCount =
         action.payload.availableCopiesInBuildingCount;
       state.book = action.payload.book;
+      state.bookLoading = false;
     });
     builder.addCase(getBookAsyncThunk.rejected, (state, action) => {
       state.isError = true;
       state.error = action.payload;
+      state.bookLoading = false;
     });
     builder.addCase(getBookCopiesInAllBuildingsAsyncThunk.pending, (state) => {
-      state.loading = true;
+      state.copiesLoading = true;
     });
     builder.addCase(
       getBookCopiesInAllBuildingsAsyncThunk.fulfilled,
       (state, action) => {
         state.bookCopies = action.payload.bookCopies;
         state.totalPages = action.payload.totalPages;
-        state.loading = false;
+        state.copiesLoading = false;
       }
     );
     builder.addCase(
@@ -59,7 +67,7 @@ const bookCopiesSlice = createSlice({
       (state, action) => {
         state.isError = true;
         state.error = action.payload;
-        state.loading = false;
+        state.copiesLoading = false;
       }
     );
   },

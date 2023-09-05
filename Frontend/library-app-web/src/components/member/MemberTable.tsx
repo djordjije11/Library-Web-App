@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Column, Row } from "react-table";
+import { Column } from "react-table";
 import { useAppDispatch, useAppSelector } from "../../store/config/hooks";
 import MembersState from "../../store/member/table/MembersState";
 import { getMembersAsyncThunk } from "../../store/member/table/membersThunks";

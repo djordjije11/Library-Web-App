@@ -11,7 +11,8 @@ export default interface BookCopiesState {
   totalPages: number;
   requestQueryParams: RequestQueryParams;
   status?: BookCopyStatus;
-  loading: boolean;
+  bookLoading: boolean;
+  copiesLoading: boolean;
   isError: boolean;
   error?: AlertError;
 }
