@@ -8,7 +8,7 @@ import { getBooksAsync } from "../../../request/book/bookRequests";
 import ResponseError from "../../../request/ResponseError";
 
 export const getBooksAsyncThunk = createAsyncThunk<
-  { books: BookShort[]; totalPages: number },
+  { books: BookShort[]; totalPages: number; totalItemsCount: number },
   void,
   { rejectValue: AlertError }
 >("books/getBooksAsync", async (_, { getState, rejectWithValue }) => {

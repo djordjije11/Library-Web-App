@@ -60,6 +60,7 @@ export default function LendingByMemberTable(props: ModelTableProps) {
         lendingsByMemberActions.setRequestQueryParams
       }
       totalPages={lendingsByMemberState.totalPages}
+      totalItemsCount={lendingsByMemberState.totalItemsCount}
       onSelectedRow={onSelectedRow}
       rowActions={rowActions}
     />

@@ -9,6 +9,7 @@ export default interface BookCopiesState {
   availableCopiesInBuildingCount: number;
   bookCopies: BookCopyDisplay[];
   totalPages: number;
+  totalItemsCount: number;
   requestQueryParams: RequestQueryParams;
   status?: BookCopyStatus;
   bookLoading: boolean;

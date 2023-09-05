@@ -8,7 +8,7 @@ import MemberShort from "../../../models/member/MemberShort";
 import { StoreState } from "../../config/store";
 
 export const getMembersAsyncThunk = createAsyncThunk<
-  { members: MemberShort[]; totalPages: number },
+  { members: MemberShort[]; totalPages: number; totalItemsCount: number },
   void,
   { rejectValue: AlertError }
 >("members/getMembersAsync", async (_, { getState, rejectWithValue }) => {

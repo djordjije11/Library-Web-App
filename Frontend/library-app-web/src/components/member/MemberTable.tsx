@@ -56,6 +56,7 @@ export default function MemberTable(props: ModelTableProps) {
       loading={membersState.loading}
       setRequestQueryParamsAction={membersActions.setRequestQueryParams}
       totalPages={membersState.totalPages}
+      totalItemsCount={membersState.totalItemsCount}
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
       renderHeaderChildren={renderHeaderChildren}

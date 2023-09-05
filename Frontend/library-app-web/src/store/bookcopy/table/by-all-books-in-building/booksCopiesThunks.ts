@@ -11,6 +11,7 @@ export const getAllBooksCopiesAvailableInBuildingAsyncThunk = createAsyncThunk<
   {
     bookCopies: BookCopyDisplay[];
     totalPages: number;
+    totalItemsCount: number;
   },
   void,
   { rejectValue: AlertError }

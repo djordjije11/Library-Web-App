@@ -9,10 +9,13 @@ import {
   GET_UNRETURNED_LENDINGS_BY_MEMBER,
   RETURN_LENDINGS_URL,
 } from "../apiUrls";
-import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
+import {
+  extractTotalItemsCountFromHeaders,
+  extractTotalPagesFromHeaders,
+  getHeaders,
+} from "../requestHeaders";
 import {
   LendingsByMember,
-  LendingsReturn,
   constructLendingsReturn,
 } from "../../models/lending/LendingsByMember";
 import { LendingIncludingBookCopy } from "../../models/lending/LendingIncludingBookCopy";
@@ -45,7 +48,11 @@ export async function returnLendingsAsync(
 export async function getUnreturnedLendingsByMemberAsync(
   memberId: number,
   requestQueryParams: RequestQueryParams
-): Promise<{ lendings: LendingIncludingBookCopy[]; totalPages: number }> {
+): Promise<{
+  lendings: LendingIncludingBookCopy[];
+  totalPages: number;
+  totalItemsCount: number;
+}> {
   const response = await axios.get(
     GET_UNRETURNED_LENDINGS_BY_MEMBER(memberId) +
       constructRequestQuery(requestQueryParams),
@@ -55,13 +62,18 @@ export async function getUnreturnedLendingsByMemberAsync(
   );
   const lendings = response.data as LendingIncludingBookCopy[];
   const totalPages = extractTotalPagesFromHeaders(response.headers);
-  return { lendings, totalPages };
+  const totalItemsCount = extractTotalItemsCountFromHeaders(response.headers);
+  return { lendings, totalPages, totalItemsCount };
 }
 
 export async function getLendingsByMemberAsync(
   memberId: number,
   requestQueryParams: RequestQueryParams
-): Promise<{ lendings: LendingIncludingBookCopy[]; totalPages: number }> {
+): Promise<{
+  lendings: LendingIncludingBookCopy[];
+  totalPages: number;
+  totalItemsCount: number;
+}> {
   const response = await axios.get(
     GET_LENDINGS_BY_MEMBER(memberId) +
       constructRequestQuery(requestQueryParams),
@@ -71,5 +83,6 @@ export async function getLendingsByMemberAsync(
   );
   const lendings = response.data as LendingIncludingBookCopy[];
   const totalPages = extractTotalPagesFromHeaders(response.headers);
-  return { lendings, totalPages };
+  const totalItemsCount = extractTotalItemsCountFromHeaders(response.headers);
+  return { lendings, totalPages, totalItemsCount };
 }

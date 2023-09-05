@@ -5,6 +5,7 @@ import RequestQueryParams from "../../../models/request/RequestQueryParams";
 export default interface MembersState {
   members: MemberShort[];
   totalPages: number;
+  totalItemsCount: number;
   requestQueryParams: RequestQueryParams;
   loading: boolean;
   isError: boolean;

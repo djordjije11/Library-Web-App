@@ -25,6 +25,7 @@ const booksSlice = createSlice({
       state.loading = false;
       state.books = action.payload.books;
       state.totalPages = action.payload.totalPages;
+      state.totalItemsCount = action.payload.totalItemsCount;
     });
     builder.addCase(getBooksAsyncThunk.rejected, (state, action) => {
       state.loading = false;

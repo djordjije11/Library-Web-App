@@ -40,7 +40,12 @@ public class CorsFilterConfig {
                 HttpMethod.OPTIONS.name(),
                 HttpMethod.DELETE.name()
         ));
-        config.setExposedHeaders(Arrays.asList(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, HttpHeaders.CONTENT_TYPE, ResponseHeadersFactory.PAGINATION_TOTAL_PAGES));
+        config.setExposedHeaders(Arrays.asList(
+                HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+                HttpHeaders.CONTENT_TYPE,
+                ResponseHeadersFactory.PAGINATION_TOTAL_PAGES,
+                ResponseHeadersFactory.PAGINATION_TOTAL_ENTRIES
+        ));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

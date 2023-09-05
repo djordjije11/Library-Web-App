@@ -55,6 +55,7 @@ export default function LendingByMemberUnreturnedTable(props: ModelTableProps) {
         lendingsByMemberUnreturnedActions.setRequestQueryParams
       }
       totalPages={lendingsByMemberUnreturnedState.totalPages}
+      totalItemsCount={lendingsByMemberUnreturnedState.totalItemsCount}
       onSelectedRow={onSelectedRow}
       rowActions={rowActions}
     />

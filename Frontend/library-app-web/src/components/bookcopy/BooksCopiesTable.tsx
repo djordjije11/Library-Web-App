@@ -58,6 +58,7 @@ export default function BooksCopiesTable(props: ModelTableProps) {
       loading={booksCopiesState.loading}
       setRequestQueryParamsAction={booksCopiesActions.setRequestQueryParams}
       totalPages={booksCopiesState.totalPages}
+      totalItemsCount={booksCopiesState.totalItemsCount}
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
       columnSortOptions={[true, true, true, false, true]}

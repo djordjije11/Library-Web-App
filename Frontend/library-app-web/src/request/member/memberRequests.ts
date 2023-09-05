@@ -6,7 +6,11 @@ import {
   GET_MEMBER_URL,
   UPDATE_MEMBER_URL,
 } from "../apiUrls";
-import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
+import {
+  extractTotalItemsCountFromHeaders,
+  extractTotalPagesFromHeaders,
+  getHeaders,
+} from "../requestHeaders";
 import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
@@ -16,7 +20,11 @@ import MemberShort from "../../models/member/MemberShort";
 
 export async function getMembersAsync(
   requestQueryParams: RequestQueryParams
-): Promise<{ members: MemberShort[]; totalPages: number }> {
+): Promise<{
+  members: MemberShort[];
+  totalPages: number;
+  totalItemsCount: number;
+}> {
   const response = await axios.get(
     GET_MEMBERS_URL + constructRequestQuery(requestQueryParams),
     {
@@ -25,7 +33,11 @@ export async function getMembersAsync(
   );
   const members = response.data as MemberShort[];
   const totalPages: number = extractTotalPagesFromHeaders(response.headers);
-  return { members, totalPages };
+  console.log(response.headers);
+  const totalItemsCount: number = extractTotalItemsCountFromHeaders(
+    response.headers
+  );
+  return { members, totalPages, totalItemsCount };
 }
 
 export async function getMemberAsync(id: number): Promise<MemberDetail> {

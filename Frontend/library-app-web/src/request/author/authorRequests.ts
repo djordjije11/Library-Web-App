@@ -4,16 +4,25 @@ import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
 import { GET_AUTHORS_URL } from "../apiUrls";
-import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
+import {
+  extractTotalItemsCountFromHeaders,
+  extractTotalPagesFromHeaders,
+  getHeaders,
+} from "../requestHeaders";
 
 export async function getAuthorsAsync(
   requestQueryParams: RequestQueryParams
-): Promise<{ authors: AuthorShort[]; totalPages: number }> {
+): Promise<{
+  authors: AuthorShort[];
+  totalPages: number;
+  totalItemsCount: number;
+}> {
   const response = await axios.get(
     GET_AUTHORS_URL + constructRequestQuery(requestQueryParams),
     { headers: getHeaders() }
   );
   const authors = response.data as AuthorShort[];
   const totalPages = extractTotalPagesFromHeaders(response.headers);
-  return { authors, totalPages };
+  const totalItemsCount = extractTotalItemsCountFromHeaders(response.headers);
+  return { authors, totalPages, totalItemsCount };
 }

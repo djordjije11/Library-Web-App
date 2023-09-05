@@ -24,6 +24,7 @@ const publishersSlice = createSlice({
     builder.addCase(getPublishersAsyncThunk.fulfilled, (state, action) => {
       state.loading = false;
       state.totalPages = action.payload.totalPages;
+      state.totalItemsCount = action.payload.totalItemsCount;
       state.publishers = action.payload.publishers;
     });
     builder.addCase(getPublishersAsyncThunk.rejected, (state, action) => {

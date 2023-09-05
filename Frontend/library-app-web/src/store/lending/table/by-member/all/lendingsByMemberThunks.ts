@@ -8,7 +8,11 @@ import { getLendingsByMemberAsync } from "../../../../../request/lending/lending
 import ResponseError from "../../../../../request/ResponseError";
 
 export const getLendingsByMemberAsyncThunk = createAsyncThunk<
-  { lendings: LendingIncludingBookCopy[]; totalPages: number },
+  {
+    lendings: LendingIncludingBookCopy[];
+    totalPages: number;
+    totalItemsCount: number;
+  },
   void,
   { rejectValue: AlertError }
 >(

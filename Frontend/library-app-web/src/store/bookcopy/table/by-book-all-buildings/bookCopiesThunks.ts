@@ -10,7 +10,11 @@ import { Book } from "../../../../models/book/Book";
 import { getBookAsync } from "../../../../request/book/bookRequests";
 
 export const getBookCopiesInAllBuildingsAsyncThunk = createAsyncThunk<
-  { bookCopies: BookCopyDisplay[]; totalPages: number },
+  {
+    bookCopies: BookCopyDisplay[];
+    totalPages: number;
+    totalItemsCount: number;
+  },
   number,
   { rejectValue: AlertError }
 >(

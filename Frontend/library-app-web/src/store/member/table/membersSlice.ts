@@ -26,6 +26,7 @@ const membersSlice = createSlice({
     builder.addCase(getMembersAsyncThunk.fulfilled, (state, action) => {
       state.members = action.payload.members;
       state.totalPages = action.payload.totalPages;
+      state.totalItemsCount = action.payload.totalItemsCount;
       state.loading = false;
     });
     builder.addCase(getMembersAsyncThunk.rejected, (state, action) => {

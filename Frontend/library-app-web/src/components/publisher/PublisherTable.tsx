@@ -44,6 +44,7 @@ export default function PublisherTable(props: ModelTableProps) {
       data={data}
       loadDataAsync={loadDataAsync}
       totalPages={publishersState.totalPages}
+      totalItemsCount={publishersState.totalItemsCount}
       loading={publishersState.loading}
       setRequestQueryParamsAction={publishersActions.setRequestQueryParams}
       onSelectedRow={onSelectedRow}

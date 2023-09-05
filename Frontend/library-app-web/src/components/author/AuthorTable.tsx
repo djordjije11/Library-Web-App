@@ -48,6 +48,7 @@ export default function AuthorTable(props: ModelTableProps) {
       loading={authorsState.loading}
       setRequestQueryParamsAction={authorsActions.setRequestQueryParams}
       totalPages={authorsState.totalPages}
+      totalItemsCount={authorsState.totalItemsCount}
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
       renderHeaderChildren={renderHeaderChildren}

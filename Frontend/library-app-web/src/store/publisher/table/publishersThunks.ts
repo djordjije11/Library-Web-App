@@ -8,7 +8,7 @@ import { getPublishersAsync } from "../../../request/publisher/publishersRequest
 import PublisherShort from "../../../models/publisher/PublisherShort";
 
 export const getPublishersAsyncThunk = createAsyncThunk<
-  { publishers: PublisherShort[]; totalPages: number },
+  { publishers: PublisherShort[]; totalPages: number; totalItemsCount: number },
   void,
   { rejectValue: AlertError }
 >("publishers/getPublishersAsync", async (_, { getState, rejectWithValue }) => {

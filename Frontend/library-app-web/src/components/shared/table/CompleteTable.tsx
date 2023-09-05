@@ -13,7 +13,7 @@ import { SortByColumn } from "../../../models/request/SortBy";
 import RequestQueryParams from "../../../models/request/RequestQueryParams";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../../store/config/hooks";
-import { Option, Select, Typography } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 import { TablePageSizeSelect } from "./TablePageSizeSelect";
 
 export interface CompleteTableProps {
@@ -22,6 +22,7 @@ export interface CompleteTableProps {
   loadDataAsync: () => Promise<void>;
   setRequestQueryParamsAction: ActionCreatorWithPayload<RequestQueryParams>;
   totalPages: number;
+  totalItemsCount?: number;
   loading: boolean;
   rowActions?: (row: Row<{}>) => JSX.Element;
   onSelectedRow?: (
@@ -41,6 +42,7 @@ export default function CompleteTable(props: CompleteTableProps) {
     loadDataAsync,
     setRequestQueryParamsAction,
     totalPages,
+    totalItemsCount,
     loading,
     rowActions,
     onSelectedRow,
@@ -151,7 +153,7 @@ export default function CompleteTable(props: CompleteTableProps) {
         <></>
       ) : (
         <div className="my-2 flex flex-col">
-          <div className="flex justify-start w-full">
+          <div className="flex justify-between w-full">
             <div className="flex gap-2 mx-12">
               <Typography variant="small">
                 <span>Page size:</span>
@@ -161,6 +163,15 @@ export default function CompleteTable(props: CompleteTableProps) {
                 setPageSize={setPageSize}
               />
             </div>
+            {totalItemsCount !== undefined ? (
+              <div className="mx-12">
+                <Typography variant="small">
+                  <span>Total items count: {totalItemsCount}</span>
+                </Typography>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
           <TablePagination
             currentPage={pageNumber}

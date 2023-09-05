@@ -5,6 +5,7 @@ import RequestQueryParams from "../../../models/request/RequestQueryParams";
 export default interface BooksState {
   books: BookShort[];
   totalPages: number;
+  totalItemsCount: number;
   requestQueryParams: RequestQueryParams;
   loading: boolean;
   isError: boolean;

@@ -95,6 +95,7 @@ export default function BookCopiesTable(props: ModelTableProps) {
       loading={bookCopiesState.copiesLoading}
       setRequestQueryParamsAction={bookCopiesActions.setRequestQueryParams}
       totalPages={bookCopiesState.totalPages}
+      totalItemsCount={bookCopiesState.totalItemsCount}
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
       renderHeaderChildren={renderHeaderChildren}

@@ -1,6 +1,7 @@
 import { getAuthToken } from "../services/authentication/authTokenService";
 
 const HEADER_PAGINATION_TOTAL_PAGES = "x-pagination-total-pages";
+const HEADER_PAGINATION_TOTAL_ENTRIES = "x-pagination-total-entries";
 
 export interface AuthorizationHeader {
   Authorization: string;
@@ -23,4 +24,8 @@ export function getHeaders(): any {
 
 export function extractTotalPagesFromHeaders(headers: any): number {
   return Number(headers[HEADER_PAGINATION_TOTAL_PAGES]);
+}
+
+export function extractTotalItemsCountFromHeaders(headers: any): number {
+  return Number(headers[HEADER_PAGINATION_TOTAL_ENTRIES]);
 }

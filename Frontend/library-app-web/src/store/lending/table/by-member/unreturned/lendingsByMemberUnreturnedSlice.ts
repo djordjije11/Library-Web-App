@@ -43,6 +43,7 @@ const lendingsByMemberUnreturnedSlice = createSlice({
       (state, action) => {
         state.lendingsByMember.lendings = action.payload.lendings;
         state.totalPages = action.payload.totalPages;
+        state.totalItemsCount = action.payload.totalItemsCount;
         state.loading = false;
       }
     );

@@ -4,11 +4,19 @@ import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
 import { GET_PUBLISHERS_URL } from "../apiUrls";
-import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
+import {
+  extractTotalItemsCountFromHeaders,
+  extractTotalPagesFromHeaders,
+  getHeaders,
+} from "../requestHeaders";
 
 export async function getPublishersAsync(
   requestQueryParams: RequestQueryParams
-): Promise<{ publishers: PublisherShort[]; totalPages: number }> {
+): Promise<{
+  publishers: PublisherShort[];
+  totalPages: number;
+  totalItemsCount: number;
+}> {
   const response = await axios.get(
     GET_PUBLISHERS_URL + constructRequestQuery(requestQueryParams),
     {
@@ -17,5 +25,6 @@ export async function getPublishersAsync(
   );
   const publishers = response.data as PublisherShort[];
   const totalPages = extractTotalPagesFromHeaders(response.headers);
-  return { publishers, totalPages };
+  const totalItemsCount = extractTotalItemsCountFromHeaders(response.headers);
+  return { publishers, totalPages, totalItemsCount };
 }

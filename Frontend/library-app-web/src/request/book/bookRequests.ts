@@ -14,21 +14,30 @@ import {
   GET_BOOK_URL,
   UPDATE_BOOK_URL,
 } from "../apiUrls";
-import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
+import {
+  extractTotalItemsCountFromHeaders,
+  extractTotalPagesFromHeaders,
+  getHeaders,
+} from "../requestHeaders";
 import { Book } from "../../models/book/Book";
 import BookAdd from "../../models/book/BookSave";
 import BookSave from "../../models/book/BookSave";
 
 export async function getBooksAsync(
   requestQueryParams: RequestQueryParams
-): Promise<{ books: BookShort[]; totalPages: number }> {
+): Promise<{
+  books: BookShort[];
+  totalPages: number;
+  totalItemsCount: number;
+}> {
   const response = await axios.get(
     GET_BOOKS_URL + constructRequestQuery(requestQueryParams),
     { headers: getHeaders() }
   );
   const books = constructBookShortArray(response.data as BookShortFromServer[]);
   const totalPages = extractTotalPagesFromHeaders(response.headers);
-  return { books, totalPages };
+  const totalItemsCount = extractTotalItemsCountFromHeaders(response.headers);
+  return { books, totalPages, totalItemsCount };
 }
 
 export async function deleteBookAsync(id: number) {

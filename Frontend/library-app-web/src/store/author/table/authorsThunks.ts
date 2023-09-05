@@ -8,7 +8,7 @@ import ResponseError from "../../../request/ResponseError";
 import AuthorShort from "../../../models/author/AuthorShort";
 
 export const getAuthorsAsyncThunk = createAsyncThunk<
-  { authors: AuthorShort[]; totalPages: number },
+  { authors: AuthorShort[]; totalPages: number; totalItemsCount: number },
   void,
   { rejectValue: AlertError }
 >("authors/getAuthorsAsync", async (_, { getState, rejectWithValue }) => {

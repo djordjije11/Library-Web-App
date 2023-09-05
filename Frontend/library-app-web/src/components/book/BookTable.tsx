@@ -53,6 +53,7 @@ export default function BookTable(props: ModelTableProps) {
       loading={booksState.loading}
       setRequestQueryParamsAction={booksActions.setRequestQueryParams}
       totalPages={booksState.totalPages}
+      totalItemsCount={booksState.totalItemsCount}
       rowActions={rowActions}
       onSelectedRow={onSelectedRow}
       columnSortOptions={[true, true, false, true, true]}

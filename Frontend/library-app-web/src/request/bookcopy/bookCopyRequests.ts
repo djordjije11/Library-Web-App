@@ -6,7 +6,11 @@ import {
   GET_BOOK_COPIES_IN_ALL_BUILDINGS_URL,
   UPDATE_BOOK_COPY_URL,
 } from "../apiUrls";
-import { extractTotalPagesFromHeaders, getHeaders } from "../requestHeaders";
+import {
+  extractTotalItemsCountFromHeaders,
+  extractTotalPagesFromHeaders,
+  getHeaders,
+} from "../requestHeaders";
 import RequestQueryParams, {
   constructRequestQuery,
 } from "../../models/request/RequestQueryParams";
@@ -23,6 +27,7 @@ export async function getAllBooksCopiesAvailableInBuildingAsync(
 ): Promise<{
   bookCopies: BookCopyDisplay[];
   totalPages: number;
+  totalItemsCount: number;
 }> {
   const response = await axios.get(
     GET_ALL_BOOKS_COPIES_AVAILABLE_IN_BUILDING +
@@ -36,9 +41,13 @@ export async function getAllBooksCopiesAvailableInBuildingAsync(
   );
 
   const totalPages: number = extractTotalPagesFromHeaders(response.headers);
+  const totalItemsCount: number = extractTotalItemsCountFromHeaders(
+    response.headers
+  );
   return {
     bookCopies,
     totalPages,
+    totalItemsCount,
   };
 }
 
@@ -46,7 +55,11 @@ export async function getBookCopiesInAllBuildingsAsync(
   bookId: number,
   requestQueryParams: RequestQueryParams,
   status?: BookCopyStatus
-): Promise<{ bookCopies: BookCopyDisplay[]; totalPages: number }> {
+): Promise<{
+  bookCopies: BookCopyDisplay[];
+  totalPages: number;
+  totalItemsCount: number;
+}> {
   var url =
     GET_BOOK_COPIES_IN_ALL_BUILDINGS_URL(bookId) +
     constructRequestQuery(requestQueryParams);
@@ -58,7 +71,10 @@ export async function getBookCopiesInAllBuildingsAsync(
     response.data as BookCopyDisplayFromServer[]
   );
   const totalPages: number = extractTotalPagesFromHeaders(response.headers);
-  return { bookCopies, totalPages };
+  const totalItemsCount: number = extractTotalItemsCountFromHeaders(
+    response.headers
+  );
+  return { bookCopies, totalPages, totalItemsCount };
 }
 
 export async function addBookCopyAsync(

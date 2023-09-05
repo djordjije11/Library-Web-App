@@ -5,6 +5,7 @@ import RequestQueryParams from "../../../../models/request/RequestQueryParams";
 export default interface BooksCopiesState {
   bookCopies: BookCopyDisplay[];
   totalPages: number;
+  totalItemsCount: number;
   requestQueryParams: RequestQueryParams;
   loading: boolean;
   isError: boolean;

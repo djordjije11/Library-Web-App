@@ -59,6 +59,7 @@ const bookCopiesSlice = createSlice({
       (state, action) => {
         state.bookCopies = action.payload.bookCopies;
         state.totalPages = action.payload.totalPages;
+        state.totalItemsCount = action.payload.totalItemsCount;
         state.copiesLoading = false;
       }
     );
