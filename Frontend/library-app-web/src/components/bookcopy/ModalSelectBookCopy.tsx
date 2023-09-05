@@ -22,7 +22,7 @@ export default function ModalSelectBookCopy(props: ModalSelectBookCopyProps) {
           width: "80%",
           border: "none",
           minWidth: "min-content",
-          height: "54%",
+          height: "58%",
         }}
       >
         <Card className="h-full w-full">

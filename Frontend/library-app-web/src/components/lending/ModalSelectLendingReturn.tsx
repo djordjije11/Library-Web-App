@@ -24,7 +24,7 @@ export default function ModalSelectLendingReturn(
           width: "60%",
           border: "none",
           minWidth: "min-content",
-          height: "54%",
+          height: "58%",
         }}
       >
         <Card className="w-full h-full">

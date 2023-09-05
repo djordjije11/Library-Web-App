@@ -25,11 +25,11 @@ function App() {
         theme="colored"
       />
       <div
-        className="min-h-screen"
+        className="min-h-screen max-h-screen"
         style={{
           display: "grid",
           gridAutoFlow: "row",
-          gridTemplateRows: "9% auto 8%",
+          gridTemplateRows: "9% 83% 8%",
         }}
       >
         <Header />

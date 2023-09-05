@@ -130,11 +130,11 @@ export default function MemberListPage() {
             width: "70%",
             border: "none",
             minWidth: "min-content",
+            height: "64%",
             minHeight: "min-content",
-            height: "60%",
           }}
         >
-          <Card className="w-full h-full">
+          <Card className="w-full h-full min-h-min">
             <div
               className="font-bold my-3"
               style={{

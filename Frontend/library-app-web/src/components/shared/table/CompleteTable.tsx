@@ -13,6 +13,8 @@ import { SortByColumn } from "../../../models/request/SortBy";
 import RequestQueryParams from "../../../models/request/RequestQueryParams";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useAppDispatch } from "../../../store/config/hooks";
+import { Option, Select, Typography } from "@material-tailwind/react";
+import { TablePageSizeSelect } from "./TablePageSizeSelect";
 
 export interface CompleteTableProps {
   columns: Column[];
@@ -79,7 +81,7 @@ export default function CompleteTable(props: CompleteTableProps) {
 
   useEffect(() => {
     onFilterChangeLoadAsync();
-  }, [...filterDependencies]);
+  }, [pageSize, ...filterDependencies]);
 
   useEffect(() => {
     if (totalPages < pageNumber && totalPages !== 0) {
@@ -104,38 +106,62 @@ export default function CompleteTable(props: CompleteTableProps) {
 
   return (
     <div
-      className={`flex flex-col items-stretch overflow-x-auto ${
-        loading ? "overflow-y-hidden" : "overflow-y-auto"
-      } w-full h-full justify-between`}
+      className="overflow-x-auto w-full h-full min-h-fit"
+      style={{
+        display: "grid",
+        gridAutoFlow: "row",
+        gridTemplateRows: "85% 15%",
+      }}
     >
-      <div className="h-full w-full">
-        {renderHeaderChildren !== undefined ? (
-          renderHeaderChildren(
-            <TableSearchInput search={search} onSearchChange={onSearchChange} />
-          )
-        ) : (
-          <div className="mt-2 flex justify-between">
-            <TableSearchInput search={search} onSearchChange={onSearchChange} />
-          </div>
-        )}
-        {loading ? (
-          <div className="h-full w-full flex justify-center items-center">
-            <></>
-          </div>
-        ) : (
-          <ReactTable
-            tableInstance={tableInstance}
-            rowActions={rowActions}
-            onSelectedRow={onSelectedRow}
-            columnSortOptions={columnSortOptions}
-            cellWrappers={cellWrappers}
-          />
-        )}
+      <div className="w-full h-full">
+        <div className="w-full h-full flex flex-col items-stretch">
+          {renderHeaderChildren !== undefined ? (
+            renderHeaderChildren(
+              <TableSearchInput
+                search={search}
+                onSearchChange={onSearchChange}
+              />
+            )
+          ) : (
+            <div className="mt-2 flex justify-between">
+              <TableSearchInput
+                search={search}
+                onSearchChange={onSearchChange}
+              />
+            </div>
+          )}
+          {loading ? (
+            <div className="h-full w-full flex justify-center items-center">
+              <></>
+            </div>
+          ) : (
+            <div className="w-full h-full overflow-y-auto">
+              <ReactTable
+                tableInstance={tableInstance}
+                rowActions={rowActions}
+                onSelectedRow={onSelectedRow}
+                columnSortOptions={columnSortOptions}
+                cellWrappers={cellWrappers}
+              />
+            </div>
+          )}
+        </div>
       </div>
       {loading ? (
         <></>
       ) : (
-        <div className="my-2">
+        <div className="my-2 flex flex-col">
+          <div className="flex justify-start w-full">
+            <div className="flex gap-2 mx-12">
+              <Typography variant="small">
+                <span>Page size:</span>
+              </Typography>
+              <TablePageSizeSelect
+                pageSize={pageSize}
+                setPageSize={setPageSize}
+              />
+            </div>
+          </div>
           <TablePagination
             currentPage={pageNumber}
             setCurrentPage={setPageNumber}
