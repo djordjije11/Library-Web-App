@@ -14,6 +14,7 @@ export default function DailyQuoteParagraph() {
         const quoteFromApi = await getDailyQuoteAsync();
         setDailyQuote(quoteFromApi);
       } catch (error) {
+        console.log(error);
         return;
       } finally {
         setLoading(false);

@@ -197,7 +197,7 @@ export function BookCopiesListPage() {
   return (
     <BackgroundImage>
       <div className="flex items-center justify-center h-full">
-        <div className="w-7/12 my-4 min-w-min h-4/5">
+        <div className="w-7/12 my-4 min-w-min h-5/6">
           <ModalAddBookCopy />
           <ModalUpdateBookCopy />
           <Card className="h-full w-full">
