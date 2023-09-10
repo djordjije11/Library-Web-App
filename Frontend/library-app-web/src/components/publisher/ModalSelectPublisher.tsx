@@ -24,7 +24,7 @@ export default function ModalSelectPublisher(
           border: "none",
           width: "50%",
           minWidth: "min-content",
-          height: "54%",
+          height: "56%",
         }}
       >
         <Card className="w-full h-full">

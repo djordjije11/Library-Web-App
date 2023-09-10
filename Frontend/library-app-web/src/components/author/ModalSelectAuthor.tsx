@@ -22,7 +22,7 @@ export default function ModalSelectAuthor(props: ModalSelectAuthorProps) {
           width: "80%",
           border: "none",
           minWidth: "min-content",
-          height: "54%",
+          height: "56%",
         }}
       >
         <Card className="h-full w-full">

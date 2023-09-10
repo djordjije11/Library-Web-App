@@ -6,7 +6,7 @@ import {
   Textarea,
 } from "@material-tailwind/react";
 import { Book } from "../../models/book/Book";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { successAlert } from "../../services/alert/successHandler";
 import FormField from "../shared/form/FormField";
 import BookSaveInputResults from "../../models/book/BookSaveInputResults";
@@ -32,7 +32,7 @@ export interface BookFormProps {
 
 export default function BookForm(props: BookFormProps) {
   const { clearOnSubmit, formHeader, onSubmitAsync } = props;
-  const initialBook = { authors: [] as AuthorShort[] } as Book;
+  const initialBook = { description: "", authors: [] as AuthorShort[] } as Book;
   const [bookInput, setBookInput] = useState<Book>(props.book || initialBook);
   const [bookInputResults, setBookInputResults] =
     useState<BookSaveInputResults>({} as BookSaveInputResults);
@@ -49,6 +49,10 @@ export default function BookForm(props: BookFormProps) {
       } as Book;
     });
   }
+
+  useEffect(() => {
+    setBookInput((prev) => ({ ...prev, ...props.book }));
+  }, [props.book]);
 
   function validateForm(): boolean {
     const titleResult = validateRequired("Title", bookInput.title);

@@ -7,7 +7,6 @@ import BookForm from "./BookForm";
 import { useEffect, useMemo, useState } from "react";
 import { HOME_PAGE } from "../routes/AppRouter";
 import AuthorShort from "../../models/author/AuthorShort";
-import Loader from "../shared/loader/Loader";
 import { Card } from "@material-tailwind/react";
 import GrayLoader from "../shared/loader/GrayLoader";
 
@@ -37,7 +36,10 @@ export default function BookUpdatePage() {
   }, []);
 
   async function onSubmitAsync(book: Book): Promise<Book> {
-    return await updateBookAsync(constructBookSave(book));
+    const updatedBook = await updateBookAsync(constructBookSave(book));
+    console.log(updatedBook);
+    setBookUpdate(updatedBook);
+    return updatedBook;
   }
 
   function BookUpdateFormHeader(): JSX.Element {
