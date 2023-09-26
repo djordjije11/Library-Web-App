@@ -22,5 +22,11 @@ The software system is built on a three-level architecture, comprising the follo
 
 ![Software architecture](https://github.com/djordjije11/Library-Web-App/blob/main/images/software%20architecture.png?raw=true "Software architecture")
 
+## User interface
+
+![Login page](https://github.com/djordjije11/Library-Web-App/blob/main/images/login%20ui.png?raw=true "Login page")
+![Home page](https://github.com/djordjije11/Library-Web-App/blob/main/images/home%20page%20ui.png?raw=true "Home page")
+![Table view](https://github.com/djordjije11/Library-Web-App/blob/main/images/table%20ui.png?raw=true "Table view")
+
 ### Detailed documentation in Serbian language
 [Link ka dokumentaciji](https://github.com/djordjije11/Library-Web-App/blob/main/dokumentacija/Diplomski%20rad%20%20-%20%C4%90or%C4%91ije%20Radovi%C4%87%202019-0162.pdf)
